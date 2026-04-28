@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback, type FC } from "react";
 import { useLang } from "../hooks/useLang";
+import { useIsMobile } from "../hooks/useIsMobile";
 import { ScanLine, BODY_FONT } from "../components/UI";
 
 interface Card { pickup: number; respawn: number; offset: number; itemType: string; }
@@ -69,6 +70,7 @@ function getGrade(acc: number, min: number) {
 
 const Trainer: FC = () => {
   const { lang } = useLang();
+  const mob = useIsMobile();
   const t = T[lang];
   const [screen, setScreen] = useState<"start" | "play" | "results">("start");
   const [mode, setMode] = useState<number | string>(25);
@@ -129,7 +131,7 @@ const Trainer: FC = () => {
   const gd = t.grades[grade as keyof typeof t.grades];
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "calc(100vh - 48px)", padding: "68px 20px 20px" }}>
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "calc(100vh - 48px)", padding: mob ? "60px 12px 16px" : "68px 20px 20px", overflowX: "hidden" }}>
       <ScanLine />
       <div style={{ maxWidth: 520, width: "100%" }}>
 
@@ -138,12 +140,12 @@ const Trainer: FC = () => {
             <div style={{ fontSize: 11, letterSpacing: 6, color: "#ff3e3e", marginBottom: 8, fontWeight: 600 }}>A R E N A  1</div>
             <h1 style={{ fontSize: "clamp(28px,6vw,42px)", fontWeight: 900, color: "#fff", margin: "0 0 8px", letterSpacing: 2 }}>{t.title}</h1>
             <div style={{ fontFamily: BODY_FONT, fontSize: 13, color: "#555", marginBottom: 20 }}>{t.subtitle}</div>
-            <a href="https://t.me/quaketimingbot" target="_blank" rel="noopener noreferrer" style={{ display: "inline-block", padding: "12px 32px", background: "#fbbf24", border: "none", color: "#08080c", fontSize: 11, fontWeight: 700, letterSpacing: 3, textTransform: "uppercase", cursor: "pointer", fontFamily: "'Orbitron',monospace", textDecoration: "none", marginBottom: 40 }}>{t.tgBtn}</a>
+            <a href="https://t.me/quaketimingbot" target="_blank" rel="noopener noreferrer" style={{ display: "inline-block", padding: mob ? "10px 20px" : "12px 32px", background: "#fbbf24", border: "none", color: "#08080c", fontSize: mob ? 10 : 11, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", cursor: "pointer", fontFamily: "'Orbitron',monospace", textDecoration: "none", marginBottom: mob ? 28 : 40 }}>{t.tgBtn}</a>
             <div style={{ display: "flex", gap: 2, marginBottom: 32 }}>
               {([{ m: 25, l: t.modeRA, s: t.modeRASub }, { m: 35, l: t.modeMH, s: t.modeMHSub }, { m: "mix", l: t.modeMix, s: t.modeMixSub }] as const).map((o) => (
-                <button key={String(o.m)} onClick={() => setMode(o.m)} style={{ flex: 1, padding: "20px 12px", background: mode === o.m ? "rgba(255,62,62,0.08)" : "rgba(255,255,255,0.02)", border: "none", borderTop: mode === o.m ? "3px solid #ff3e3e" : "3px solid #333", cursor: "pointer", textAlign: "center" }}>
-                  <div style={{ fontSize: 14, fontWeight: 700, color: mode === o.m ? "#ff3e3e" : "#888", fontFamily: "'Orbitron',monospace" }}>{o.l}</div>
-                  <div style={{ fontFamily: BODY_FONT, fontSize: 11, color: "#555", marginTop: 6 }}>{o.s}</div>
+                <button key={String(o.m)} onClick={() => setMode(o.m)} style={{ flex: 1, padding: mob ? "14px 6px" : "20px 12px", background: mode === o.m ? "rgba(255,62,62,0.08)" : "rgba(255,255,255,0.02)", border: "none", borderTop: mode === o.m ? "3px solid #ff3e3e" : "3px solid #333", cursor: "pointer", textAlign: "center" }}>
+                  <div style={{ fontSize: mob ? 12 : 14, fontWeight: 700, color: mode === o.m ? "#ff3e3e" : "#888", fontFamily: "'Orbitron',monospace" }}>{o.l}</div>
+                  <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 10 : 11, color: "#555", marginTop: 6 }}>{o.s}</div>
                 </button>
               ))}
             </div>
@@ -160,7 +162,7 @@ const Trainer: FC = () => {
                 <div key={i} style={{ textAlign: "center" }}><div style={{ fontFamily: BODY_FONT, fontSize: 20, fontWeight: 700, color: s.c }}>{s.v}</div><div style={{ fontSize: 9, letterSpacing: 2, color: "#555", textTransform: "uppercase" }}>{s.l}</div></div>
               ))}
             </div>
-            <div style={{ background: checked ? (isCorrect ? "rgba(74,222,128,0.06)" : "rgba(248,113,113,0.06)") : "rgba(255,255,255,0.03)", border: checked ? `2px solid ${isCorrect ? "#4ade80" : "#f87171"}` : "2px solid #222", padding: "40px 24px", textAlign: "center", marginBottom: 20, transition: "all 0.3s" }}>
+            <div style={{ background: checked ? (isCorrect ? "rgba(74,222,128,0.06)" : "rgba(248,113,113,0.06)") : "rgba(255,255,255,0.03)", border: checked ? `2px solid ${isCorrect ? "#4ade80" : "#f87171"}` : "2px solid #222", padding: mob ? "28px 16px" : "40px 24px", textAlign: "center", marginBottom: 20, transition: "all 0.3s" }}>
               <div style={{ fontFamily: BODY_FONT, fontSize: 11, color: "#666", marginBottom: 8 }}>{cards[idx].itemType}</div>
               <div style={{ fontSize: "clamp(48px,12vw,72px)", fontWeight: 900, color: "#ff3e3e", fontFamily: "'Orbitron',monospace", lineHeight: 1 }}>{fmt(cards[idx].pickup)}</div>
               <div style={{ fontFamily: BODY_FONT, fontSize: 13, color: "#888", marginTop: 16 }}>{t.qPre} {fmt(cards[idx].pickup)}. {t.qSuf}</div>
