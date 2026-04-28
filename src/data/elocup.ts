@@ -41,7 +41,7 @@ export const ELOCUP: Record<"ru" | "en", EloCupData> = {
       mappool: "Маппул",
       maps: ["Aerowalk", "Battleforged", "Blood Run", "Campgrounds", "Cure", "Dismemberment", "Furious Heights", "Lost World", "Hektik", "Silence", "Sinister", "Toxicity", "Vertical Vengeance"],
       prize: "1 000 RUB + donations",
-      cta: "Перейти в Discord",
+      cta: "Для участия — Discord",
     },
     archive: { num: "02", label: "АРХИВ РЕЗУЛЬТАТОВ", t1: "Прошедшие", t2: "турниры", bracket: "Сетка турнира" },
     footer: "ARENA 1 ELO CUP · WEEKLY DUEL TOURNAMENT · 2026",
