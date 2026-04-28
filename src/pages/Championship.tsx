@@ -162,8 +162,8 @@ const Championship: FC = () => {
       </section>
 
       <footer style={{ padding: m ? "40px 16px" : "60px 20px", textAlign: "center", borderTop: "1px solid rgba(255,255,255,0.04)" }}>
-        <div style={{ fontSize: 20, fontWeight: 900, color: "#333", letterSpacing: 4 }}>ARENA <span style={{ color: "#ff3e3e" }}>1</span></div>
-        <div style={{ fontSize: 10, color: "#333", letterSpacing: 3, marginTop: 8 }}>{t.footer}</div>
+        <div style={{ fontSize: 20, fontWeight: 900, color: "#555", letterSpacing: 4 }}>ARENA <span style={{ color: "#ff3e3e" }}>1</span></div>
+        <div style={{ fontSize: 10, color: "#555", letterSpacing: 3, marginTop: 8 }}>{t.footer}</div>
       </footer>
     </div>
   );

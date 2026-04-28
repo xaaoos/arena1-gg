@@ -164,8 +164,8 @@ const Verified: FC = () => {
 
       <footer style={{ padding: mob ? "40px 16px" : "60px 20px", textAlign: "center", borderTop: "1px solid rgba(0,240,255,0.08)" }}>
         <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 13 : 14, color: "#666", fontStyle: "italic", lineHeight: 1.8, marginBottom: 24 }}>{t.fq1}<br /><span style={{ color: "#00f0ff", fontWeight: 500 }}>{t.fq2}</span></div>
-        <div style={{ fontSize: 16, fontWeight: 900, color: "#333", letterSpacing: 4 }}>ARENA <span style={{ color: "#00f0ff" }}>1</span></div>
-        <div style={{ fontSize: 10, color: "#333", letterSpacing: 3, marginTop: 8 }}>{t.footer}</div>
+        <div style={{ fontSize: 16, fontWeight: 900, color: "#555", letterSpacing: 4 }}>ARENA <span style={{ color: "#00f0ff" }}>1</span></div>
+        <div style={{ fontSize: 10, color: "#555", letterSpacing: 3, marginTop: 8 }}>{t.footer}</div>
       </footer>
     </div>
   );

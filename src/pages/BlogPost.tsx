@@ -45,7 +45,7 @@ const BlogPost: FC = () => {
     return (
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "calc(100vh - 48px)", padding: "68px 20px 20px", textAlign: "center" }}>
         <ScanLine />
-        <div style={{ fontSize: 48, fontWeight: 900, color: "#333", marginBottom: 16 }}>404</div>
+        <div style={{ fontSize: 48, fontWeight: 900, color: "#555", marginBottom: 16 }}>404</div>
         <div style={{ fontFamily: BODY_FONT, fontSize: 14, color: "#555", marginBottom: 32 }}>{lang === "ru" ? "Статья не найдена" : "Post not found"}</div>
         <Link to="/blog" style={{ fontFamily: BODY_FONT, fontSize: 13, color: AC, textDecoration: "none" }}>{lang === "ru" ? "Назад к блогу" : "Back to blog"}</Link>
       </div>
@@ -94,8 +94,8 @@ const BlogPost: FC = () => {
       </article>
 
       <footer style={{ padding: mob ? "40px 16px" : "60px 20px", textAlign: "center", borderTop: `1px solid ${AC}10` }}>
-        <div style={{ fontSize: 16, fontWeight: 900, color: "#333", letterSpacing: 4 }}>ARENA <span style={{ color: "#ff3e3e" }}>1</span></div>
-        <div style={{ fontSize: 10, color: "#333", letterSpacing: 3, marginTop: 8 }}>ARENA 1 BLOG · 2026</div>
+        <div style={{ fontSize: 16, fontWeight: 900, color: "#555", letterSpacing: 4 }}>ARENA <span style={{ color: "#ff3e3e" }}>1</span></div>
+        <div style={{ fontSize: 10, color: "#555", letterSpacing: 3, marginTop: 8 }}>ARENA 1 BLOG · 2026</div>
       </footer>
     </div>
   );

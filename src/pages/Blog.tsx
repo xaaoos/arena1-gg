@@ -33,8 +33,8 @@ const Blog: FC = () => {
       </section>
 
       <footer style={{ padding: mob ? "40px 16px" : "60px 20px", textAlign: "center", borderTop: `1px solid ${AC}10` }}>
-        <div style={{ fontSize: 16, fontWeight: 900, color: "#333", letterSpacing: 4 }}>ARENA <span style={{ color: "#ff3e3e" }}>1</span></div>
-        <div style={{ fontSize: 10, color: "#333", letterSpacing: 3, marginTop: 8 }}>ARENA 1 BLOG · 2026</div>
+        <div style={{ fontSize: 16, fontWeight: 900, color: "#555", letterSpacing: 4 }}>ARENA <span style={{ color: "#ff3e3e" }}>1</span></div>
+        <div style={{ fontSize: 10, color: "#555", letterSpacing: 3, marginTop: 8 }}>ARENA 1 BLOG · 2026</div>
       </footer>
     </div>
   );
