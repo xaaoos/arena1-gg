@@ -43,7 +43,7 @@ const EloCup: FC = () => {
           <div style={{ fontSize: 11, letterSpacing: 6, color: AC, marginBottom: 20, fontWeight: 600 }}>{t.hero.tag}</div>
           <h1 style={{ fontSize: "clamp(48px,11vw,110px)", fontWeight: 900, margin: 0, lineHeight: 0.85, letterSpacing: -2, color: "#fff" }}>{t.hero.t1} <span style={{ color: AC }}>{t.hero.t2}</span></h1>
           <div style={{ fontFamily: BODY_FONT, fontSize: 15, color: "#888", marginTop: 28, lineHeight: 1.8, maxWidth: 560, margin: "28px auto 0" }}>{t.hero.sub}</div>
-          <a href="https://discord.gg/ahW7s9cCav" target="_blank" rel="noopener noreferrer" style={{ marginTop: 44, padding: "14px 40px", background: AC, border: "none", color: "#08080c", fontSize: 12, fontWeight: 700, letterSpacing: 3, textTransform: "uppercase", cursor: "pointer", fontFamily: "'Orbitron',monospace", textDecoration: "none", display: "inline-block" }}>{t.next.cta}</a>
+          <a href="https://discord.gg/dgPwNAph2j" target="_blank" rel="noopener noreferrer" style={{ marginTop: 44, padding: "14px 40px", background: AC, border: "none", color: "#08080c", fontSize: 12, fontWeight: 700, letterSpacing: 3, textTransform: "uppercase", cursor: "pointer", fontFamily: "'Orbitron',monospace", textDecoration: "none", display: "inline-block" }}>{t.next.cta}</a>
         </div>
       </section>
 
@@ -59,7 +59,7 @@ const EloCup: FC = () => {
               <div style={{ fontSize: "clamp(20px,4vw,28px)", fontWeight: 900, color: "#fff", letterSpacing: 1 }}>{t.next.name}</div>
               <div style={{ fontFamily: BODY_FONT, fontSize: 13, color: "#666", marginTop: 6 }}>{t.next.date}</div>
             </div>
-            <a href="https://discord.gg/ahW7s9cCav" target="_blank" rel="noopener noreferrer" style={{ padding: "12px 32px", background: AC, border: "none", color: "#08080c", fontSize: 11, fontWeight: 700, letterSpacing: 3, textTransform: "uppercase", cursor: "pointer", fontFamily: "'Orbitron',monospace", textDecoration: "none", display: "inline-block" }}>{t.next.cta}</a>
+            <a href="https://discord.gg/dgPwNAph2j" target="_blank" rel="noopener noreferrer" style={{ padding: "12px 32px", background: AC, border: "none", color: "#08080c", fontSize: 11, fontWeight: 700, letterSpacing: 3, textTransform: "uppercase", cursor: "pointer", fontFamily: "'Orbitron',monospace", textDecoration: "none", display: "inline-block" }}>{t.next.cta}</a>
           </div>
 
           {/* Info grid */}
