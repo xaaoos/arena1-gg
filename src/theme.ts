@@ -1,0 +1,20 @@
+/** CSS variable references for use in inline styles */
+export const C = {
+  bg: "var(--bg)",
+  bgCard: "var(--bg-card)",
+  bgNav: "var(--bg-nav)",
+  bgNavSub: "var(--bg-nav-sub)",
+  text: "var(--text)",
+  heading: "var(--text-heading)",
+  body: "var(--text-body)",
+  muted: "var(--text-muted)",
+  subtle: "var(--text-subtle)",
+  footer: "var(--text-footer)",
+  secondary: "var(--text-secondary)",
+  link: "var(--text-link)",
+  border: "var(--border)",
+  borderLight: "var(--border-light)",
+  inputBg: "var(--input-bg)",
+  inputBorder: "var(--input-border)",
+  scanline: "var(--scanline)",
+} as const;

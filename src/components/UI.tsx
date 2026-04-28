@@ -1,10 +1,11 @@
 import { useState, useEffect, type FC, type ReactNode } from "react";
+import { C } from "../theme";
 
 export const BODY_FONT = "'JetBrains Mono', monospace";
 
 export const ScanLine: FC = () => (
   <div style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 9999,
-    background: "repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.03) 2px,rgba(0,0,0,0.03) 4px)" }} />
+    background: `repeating-linear-gradient(0deg,transparent,transparent 2px,${C.scanline} 2px,${C.scanline} 4px)` }} />
 );
 
 export const GlitchText: FC<{ children: ReactNode }> = ({ children }) => {
@@ -24,7 +25,7 @@ export const CUnit: FC<{ value: number; label: string }> = ({ value, label }) =>
   <div style={{ textAlign: "center", minWidth: 0, flex: "1 1 0" }}>
     <div style={{ fontSize: "clamp(28px,7vw,56px)", fontWeight: 900, fontFamily: "'Orbitron',monospace", color: "#ff3e3e", lineHeight: 1,
       textShadow: "0 0 24px rgba(255,62,62,0.5),0 0 48px rgba(255,62,62,0.15)" }}>{String(value).padStart(2, "0")}</div>
-    <div style={{ fontSize: "clamp(8px,1.5vw,10px)", letterSpacing: "clamp(1px,0.5vw,3px)", color: "#555", marginTop: 6, textTransform: "uppercase", fontWeight: 600 }}>{label}</div>
+    <div style={{ fontSize: "clamp(8px,1.5vw,10px)", letterSpacing: "clamp(1px,0.5vw,3px)", color: C.muted, marginTop: 6, textTransform: "uppercase", fontWeight: 600 }}>{label}</div>
   </div>
 );
 
@@ -35,5 +36,5 @@ export const SL: FC<{ num: string; text: string; color?: string }> = ({ num, tex
 );
 
 export const ST: FC<{ children: ReactNode }> = ({ children }) => (
-  <h2 style={{ fontSize: "clamp(22px,5vw,48px)", fontWeight: 800, color: "#fff", lineHeight: 1.1, margin: "0 0 24px" }}>{children}</h2>
+  <h2 style={{ fontSize: "clamp(22px,5vw,48px)", fontWeight: 800, color: C.heading, lineHeight: 1.1, margin: "0 0 24px" }}>{children}</h2>
 );

@@ -4,6 +4,7 @@ import { useIsMobile } from "../hooks/useIsMobile";
 import { ELOCUP } from "../data/elocup";
 import { ScanLine, SL, ST, BODY_FONT } from "../components/UI";
 import { Icon } from "../components/Icons";
+import { C } from "../theme";
 
 const AC = "#4ade80";
 const PLACE_C: Record<string, string> = { "1": "#ffd700", "2": "#c0c0c0", "3": "#cd7f32" };
@@ -31,21 +32,20 @@ const EloCup: FC = () => {
   return (
     <div style={{ overflowX: "hidden" }}>
       <ScanLine />
-      {/* Sub-nav */}
-      <nav style={{ position: "fixed", top: 48, left: 0, right: 0, zIndex: 99, background: "rgba(8,8,12,0.92)", backdropFilter: "blur(12px)", borderBottom: `1px solid ${AC}18`, display: "flex", justifyContent: "center", overflowX: "auto", WebkitOverflowScrolling: "touch" }}>
+      <nav style={{ position: "fixed", top: 48, left: 0, right: 0, zIndex: 99, background: C.bgNavSub, backdropFilter: "blur(12px)", borderBottom: `1px solid ${AC}18`, display: "flex", justifyContent: "center", overflowX: "auto", WebkitOverflowScrolling: "touch", transition: "background 0.3s" }}>
         {NAV_IDS.map((id, i) => (
-          <button key={id} onClick={() => scrollTo(id)} style={{ background: "none", border: "none", cursor: "pointer", color: active === id ? AC : "#555", fontSize: mob ? 10 : 11, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", padding: mob ? "10px 10px" : "12px 14px", whiteSpace: "nowrap", borderBottom: active === id ? `2px solid ${AC}` : "2px solid transparent", transition: "all 0.3s", fontFamily: "'Orbitron',sans-serif", flexShrink: 0 }}>{t.nav[i]}</button>
+          <button key={id} onClick={() => scrollTo(id)} style={{ background: "none", border: "none", cursor: "pointer", color: active === id ? AC : C.muted, fontSize: mob ? 10 : 11, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", padding: mob ? "10px 10px" : "12px 14px", whiteSpace: "nowrap", borderBottom: active === id ? `2px solid ${AC}` : "2px solid transparent", transition: "all 0.3s", fontFamily: "'Orbitron',sans-serif", flexShrink: 0 }}>{t.nav[i]}</button>
         ))}
       </nav>
 
       {/* Hero */}
       <section ref={setRef("hero")} data-section="hero" style={{ minHeight: "100vh", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", position: "relative", padding: mob ? "100px 16px 40px" : "120px 20px 40px", textAlign: "center", background: `radial-gradient(ellipse at 50% 20%,rgba(74,222,128,0.06) 0%,transparent 60%)` }}>
-        <div style={{ position: "absolute", inset: 0, pointerEvents: "none", backgroundImage: `linear-gradient(rgba(74,222,128,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(74,222,128,0.03) 1px,transparent 1px)`, backgroundSize: "60px 60px" }} />
+        <div style={{ position: "absolute", inset: 0, pointerEvents: "none", backgroundImage: `linear-gradient(rgba(74,222,128,var(--grid-line)) 1px,transparent 1px),linear-gradient(90deg,rgba(74,222,128,var(--grid-line)) 1px,transparent 1px)`, backgroundSize: "60px 60px" }} />
         <div style={{ position: "relative", zIndex: 1, maxWidth: 700, width: "100%" }}>
           <div style={{ marginBottom: mob ? 24 : 40, display: "flex", justifyContent: "center" }}><Icon type="trophy" color={AC} size={mob ? 36 : 48} /></div>
           <div style={{ fontSize: mob ? 9 : 11, letterSpacing: mob ? 3 : 6, color: AC, marginBottom: 20, fontWeight: 600 }}>{t.hero.tag}</div>
-          <h1 style={{ fontSize: "clamp(48px,11vw,110px)", fontWeight: 900, margin: 0, lineHeight: 0.85, letterSpacing: -2, color: "#fff" }}>{t.hero.t1} <span style={{ color: AC }}>{t.hero.t2}</span></h1>
-          <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 13 : 15, color: "#888", marginTop: 28, lineHeight: 1.8, maxWidth: 560, margin: "28px auto 0" }}>{t.hero.sub}</div>
+          <h1 style={{ fontSize: "clamp(48px,11vw,110px)", fontWeight: 900, margin: 0, lineHeight: 0.85, letterSpacing: -2, color: C.heading }}>{t.hero.t1} <span style={{ color: AC }}>{t.hero.t2}</span></h1>
+          <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 13 : 15, color: C.body, marginTop: 28, lineHeight: 1.8, maxWidth: 560, margin: "28px auto 0" }}>{t.hero.sub}</div>
           <a href="https://discord.gg/dgPwNAph2j" target="_blank" rel="noopener noreferrer" style={{ marginTop: mob ? 32 : 44, padding: mob ? "12px 28px" : "14px 40px", background: AC, border: "none", color: "#08080c", fontSize: mob ? 11 : 12, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", cursor: "pointer", fontFamily: "'Orbitron',monospace", textDecoration: "none", display: "inline-block", whiteSpace: "nowrap" }}>{t.next.cta}</a>
         </div>
       </section>
@@ -55,33 +55,30 @@ const EloCup: FC = () => {
         <SL num={t.next.num} text={t.next.label} color={AC} />
         <ST>{t.next.t1}<br /><span style={{ color: AC }}>{t.next.t2}</span></ST>
 
-        <div style={{ background: "rgba(255,255,255,0.02)", border: `1px solid ${AC}22`, overflow: "hidden" }}>
-          {/* Header */}
+        <div style={{ background: C.bgCard, border: `1px solid ${AC}22`, overflow: "hidden" }}>
           <div style={{ padding: mob ? "20px 16px" : "28px 32px", borderBottom: `1px solid ${AC}18`, display: "flex", flexDirection: mob ? "column" : "row", justifyContent: "space-between", alignItems: mob ? "flex-start" : "center", gap: 16 }}>
             <div>
-              <div style={{ fontSize: "clamp(18px,4vw,28px)", fontWeight: 900, color: "#fff", letterSpacing: 1 }}>{t.next.name}</div>
-              <div style={{ fontFamily: BODY_FONT, fontSize: 13, color: "#666", marginTop: 6 }}>{t.next.date}</div>
+              <div style={{ fontSize: "clamp(18px,4vw,28px)", fontWeight: 900, color: C.heading, letterSpacing: 1 }}>{t.next.name}</div>
+              <div style={{ fontFamily: BODY_FONT, fontSize: 13, color: C.secondary, marginTop: 6 }}>{t.next.date}</div>
             </div>
             <a href="https://discord.gg/dgPwNAph2j" target="_blank" rel="noopener noreferrer" style={{ padding: mob ? "10px 20px" : "12px 32px", background: AC, border: "none", color: "#08080c", fontSize: 11, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", cursor: "pointer", fontFamily: "'Orbitron',monospace", textDecoration: "none", display: "inline-block", whiteSpace: "nowrap" }}>{t.next.cta}</a>
           </div>
 
-          {/* Info grid */}
           <div style={{ display: "grid", gridTemplateColumns: mob ? "1fr" : "repeat(auto-fit,minmax(180px,1fr))", gap: 1, background: `${AC}12` }}>
             {[
               { label: "ELO", value: t.next.elo },
               { label: "FORMAT", value: t.next.format },
               { label: "PRIZE", value: t.next.prize },
             ].map((item) => (
-              <div key={item.label} style={{ background: "#08080c", padding: mob ? "16px 16px" : "24px 28px" }}>
-                <div style={{ fontSize: 9, letterSpacing: 3, color: "#555", marginBottom: 8, textTransform: "uppercase" }}>{item.label}</div>
-                <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 14 : 15, color: "#fff", fontWeight: 600 }}>{item.value}</div>
+              <div key={item.label} style={{ background: C.bg, padding: mob ? "16px 16px" : "24px 28px", transition: "background 0.3s" }}>
+                <div style={{ fontSize: 9, letterSpacing: 3, color: C.muted, marginBottom: 8, textTransform: "uppercase" }}>{item.label}</div>
+                <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 14 : 15, color: C.heading, fontWeight: 600 }}>{item.value}</div>
               </div>
             ))}
           </div>
 
-          {/* Map pool */}
           <div style={{ padding: mob ? "16px 16px" : "24px 32px", borderTop: `1px solid ${AC}12` }}>
-            <div style={{ fontSize: 9, letterSpacing: 3, color: "#555", marginBottom: 14, textTransform: "uppercase" }}>{t.next.mappool}</div>
+            <div style={{ fontSize: 9, letterSpacing: 3, color: C.muted, marginBottom: 14, textTransform: "uppercase" }}>{t.next.mappool}</div>
             <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
               {t.next.maps.map((mp) => (
                 <span key={mp} style={{ fontFamily: BODY_FONT, fontSize: mob ? 11 : 12, color: AC, padding: mob ? "4px 8px" : "6px 12px", background: "rgba(74,222,128,0.06)", border: "1px solid rgba(74,222,128,0.12)", letterSpacing: 0.5 }}>{mp}</span>
@@ -98,27 +95,25 @@ const EloCup: FC = () => {
 
         <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
           {t.past.map((cup, ci) => (
-            <div key={ci} style={{ background: "rgba(255,255,255,0.02)", border: "1px solid #1a1a1a", overflow: "hidden" }}>
-              {/* Cup header */}
-              <div style={{ padding: mob ? "16px 16px" : "24px 28px", borderBottom: "1px solid #1a1a1a", display: "flex", flexDirection: mob ? "column" : "row", justifyContent: "space-between", alignItems: mob ? "flex-start" : "center", gap: 12 }}>
+            <div key={ci} style={{ background: C.bgCard, border: `1px solid ${C.border}`, overflow: "hidden" }}>
+              <div style={{ padding: mob ? "16px 16px" : "24px 28px", borderBottom: `1px solid ${C.border}`, display: "flex", flexDirection: mob ? "column" : "row", justifyContent: "space-between", alignItems: mob ? "flex-start" : "center", gap: 12 }}>
                 <div>
-                  <div style={{ fontSize: mob ? 16 : 18, fontWeight: 800, color: "#fff", letterSpacing: 1 }}>{cup.name}</div>
-                  <div style={{ fontFamily: BODY_FONT, fontSize: 12, color: "#555", marginTop: 4 }}>{cup.date}</div>
+                  <div style={{ fontSize: mob ? 16 : 18, fontWeight: 800, color: C.heading, letterSpacing: 1 }}>{cup.name}</div>
+                  <div style={{ fontFamily: BODY_FONT, fontSize: 12, color: C.muted, marginTop: 4 }}>{cup.date}</div>
                 </div>
                 <a href={cup.bracketUrl} target="_blank" rel="noopener noreferrer" style={{ fontFamily: BODY_FONT, fontSize: 11, color: AC, letterSpacing: 1, textDecoration: "none", padding: "8px 16px", border: `1px solid ${AC}33` }}>{t.archive.bracket} &#8599;</a>
               </div>
 
-              {/* Standings */}
               <div style={{ display: "flex", flexDirection: "column" }}>
                 {cup.standings.map((s, si) => {
-                  const pc = PLACE_C[s.place] ?? "#888";
+                  const pc = PLACE_C[s.place] ?? C.body;
                   const isTop3 = ["1", "2", "3"].includes(s.place);
                   return (
-                    <div key={si} style={{ display: "grid", gridTemplateColumns: mob ? "48px 1fr" : "64px 1fr", alignItems: "center", padding: mob ? "12px 16px" : "14px 28px", borderTop: si > 0 ? "1px solid rgba(255,255,255,0.03)" : "none", background: isTop3 ? `${pc}08` : "transparent" }}>
+                    <div key={si} style={{ display: "grid", gridTemplateColumns: mob ? "48px 1fr" : "64px 1fr", alignItems: "center", padding: mob ? "12px 16px" : "14px 28px", borderTop: si > 0 ? `1px solid ${C.borderLight}` : "none", background: isTop3 ? `${pc}08` : "transparent" }}>
                       <div style={{ fontSize: isTop3 ? (mob ? 16 : 18) : 13, fontWeight: isTop3 ? 900 : 600, color: pc, fontFamily: "'Orbitron',monospace" }}>
                         {s.place === "1" ? "🥇" : s.place === "2" ? "🥈" : s.place === "3" ? "🥉" : `#${s.place}`}
                       </div>
-                      <div style={{ fontFamily: BODY_FONT, fontSize: isTop3 ? (mob ? 13 : 15) : (mob ? 12 : 13), color: isTop3 ? "#fff" : "#888", fontWeight: isTop3 ? 700 : 400, letterSpacing: 0.5, overflowWrap: "break-word" }}>
+                      <div style={{ fontFamily: BODY_FONT, fontSize: isTop3 ? (mob ? 13 : 15) : (mob ? 12 : 13), color: isTop3 ? C.heading : C.body, fontWeight: isTop3 ? 700 : 400, letterSpacing: 0.5, overflowWrap: "break-word" }}>
                         {s.players.join(", ")}
                       </div>
                     </div>
@@ -130,9 +125,9 @@ const EloCup: FC = () => {
         </div>
       </section>
 
-      <footer style={{ padding: mob ? "40px 16px" : "60px 20px", textAlign: "center", borderTop: `1px solid ${AC}10` }}>
-        <div style={{ fontSize: 16, fontWeight: 900, color: "#555", letterSpacing: 4 }}>ARENA <span style={{ color: AC }}>1</span></div>
-        <div style={{ fontSize: 10, color: "#555", letterSpacing: 3, marginTop: 8 }}>{t.footer}</div>
+      <footer style={{ padding: mob ? "40px 16px" : "60px 20px", textAlign: "center", borderTop: `1px solid ${C.borderLight}` }}>
+        <div style={{ fontSize: 16, fontWeight: 900, color: C.footer, letterSpacing: 4 }}>ARENA <span style={{ color: AC }}>1</span></div>
+        <div style={{ fontSize: 10, color: C.footer, letterSpacing: 3, marginTop: 8 }}>{t.footer}</div>
       </footer>
     </div>
   );

@@ -2,6 +2,8 @@ import { useState, type FC } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useLang } from "../hooks/useLang";
 import { useIsMobile } from "../hooks/useIsMobile";
+import { useTheme } from "../hooks/useTheme";
+import { C } from "../theme";
 
 const PAGES = [
   { path: "/", label: "Championship", color: "#ff3e3e" },
@@ -17,6 +19,7 @@ const isActive = (pathname: string, path: string) =>
 export const TopNav: FC = () => {
   const { pathname } = useLocation();
   const { lang, setLang } = useLang();
+  const { theme, toggle } = useTheme();
   const mobile = useIsMobile();
   const [open, setOpen] = useState(false);
   const activePage = PAGES.find((p) => isActive(pathname, p.path)) ?? PAGES[0];
@@ -25,12 +28,13 @@ export const TopNav: FC = () => {
     <>
       <div style={{
         position: "fixed", top: 0, left: 0, right: 0, zIndex: 200,
-        background: "rgba(8,8,12,0.95)", backdropFilter: "blur(12px)",
+        background: C.bgNav, backdropFilter: "blur(12px)",
         borderBottom: `1px solid ${activePage.color}22`,
         display: "flex", alignItems: "center", padding: "0 16px", height: 48,
+        transition: "background 0.3s",
       }}>
         <Link to="/" style={{ textDecoration: "none", display: "flex", alignItems: "center", flexShrink: 0 }}>
-          <span style={{ fontSize: 15, fontWeight: 900, color: "#fff", letterSpacing: 2, fontFamily: "'Orbitron',monospace", whiteSpace: "nowrap" }}>
+          <span style={{ fontSize: 15, fontWeight: 900, color: C.heading, letterSpacing: 2, fontFamily: "'Orbitron',monospace", whiteSpace: "nowrap" }}>
             ARENA <span style={{ color: "#ff3e3e" }}>1</span>
           </span>
         </Link>
@@ -42,7 +46,7 @@ export const TopNav: FC = () => {
                 textDecoration: "none", padding: "14px 12px",
                 fontSize: 10, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase",
                 fontFamily: "'Orbitron',sans-serif",
-                color: isActive(pathname, p.path) ? p.color : "#555",
+                color: isActive(pathname, p.path) ? p.color : C.muted,
                 borderBottom: isActive(pathname, p.path) ? `2px solid ${p.color}` : "2px solid transparent",
                 transition: "all 0.3s",
               }}>{p.label}</Link>
@@ -51,10 +55,19 @@ export const TopNav: FC = () => {
         )}
 
         <div style={{ marginLeft: "auto", display: "flex", gap: 4, alignItems: "center" }}>
+          {/* Theme toggle */}
+          <button onClick={toggle} style={{
+            background: "none", border: "none", cursor: "pointer",
+            color: C.muted, fontSize: 16, padding: "0 6px",
+            transition: "color 0.3s", lineHeight: 1,
+          }} title={theme === "dark" ? "Light mode" : "Dark mode"}>
+            {theme === "dark" ? "☀" : "☾"}
+          </button>
+
           {(["ru", "en"] as const).map((l) => (
             <button key={l} onClick={() => setLang(l)} style={{
               background: "none", border: "none", cursor: "pointer",
-              color: lang === l ? activePage.color : "#444",
+              color: lang === l ? activePage.color : C.subtle,
               fontSize: 11, fontWeight: 700, letterSpacing: 2,
               fontFamily: "'Orbitron',sans-serif", padding: "0 6px",
               textTransform: "uppercase", transition: "color 0.3s",
@@ -75,7 +88,8 @@ export const TopNav: FC = () => {
       {mobile && open && (
         <div style={{
           position: "fixed", top: 48, left: 0, right: 0, bottom: 0, zIndex: 199,
-          background: "rgba(8,8,12,0.98)", backdropFilter: "blur(16px)",
+          background: theme === "dark" ? "rgba(8,8,12,0.98)" : "rgba(244,244,246,0.98)",
+          backdropFilter: "blur(16px)",
           display: "flex", flexDirection: "column", padding: "24px 20px",
         }}>
           {PAGES.map((p) => (
@@ -83,8 +97,8 @@ export const TopNav: FC = () => {
               textDecoration: "none", padding: "18px 0",
               fontSize: 14, fontWeight: 700, letterSpacing: 3, textTransform: "uppercase",
               fontFamily: "'Orbitron',sans-serif",
-              color: isActive(pathname, p.path) ? p.color : "#666",
-              borderBottom: "1px solid #1a1a1a",
+              color: isActive(pathname, p.path) ? p.color : C.secondary,
+              borderBottom: `1px solid ${C.border}`,
               transition: "all 0.3s",
             }}>{p.label}</Link>
           ))}

@@ -1,16 +1,64 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
-body { background: #08080c; color: #e0e0e0; font-family: "Orbitron", "Courier New", monospace; overflow-x: hidden; }
-::selection { background: rgba(255, 62, 62, 0.3); color: #fff; }
+
+/* ── Theme variables ── */
+:root,
+[data-theme="dark"] {
+  --bg: #08080c;
+  --bg-card: rgba(255,255,255,0.02);
+  --bg-nav: rgba(8,8,12,0.95);
+  --bg-nav-sub: rgba(8,8,12,0.92);
+  --text: #e0e0e0;
+  --text-heading: #fff;
+  --text-body: #888;
+  --text-muted: #555;
+  --text-subtle: #444;
+  --text-footer: #555;
+  --text-secondary: #666;
+  --text-link: #aaa;
+  --border: #1a1a1a;
+  --border-light: rgba(255,255,255,0.03);
+  --input-bg: rgba(255,255,255,0.03);
+  --input-border: #333;
+  --scanline: rgba(0,0,0,0.03);
+  --grid-line: 0.03;
+  --selection-bg: rgba(255, 62, 62, 0.3);
+  --scrollbar-track: #08080c;
+}
+
+[data-theme="light"] {
+  --bg: #f4f4f6;
+  --bg-card: rgba(0,0,0,0.03);
+  --bg-nav: rgba(244,244,246,0.95);
+  --bg-nav-sub: rgba(244,244,246,0.92);
+  --text: #1a1a1a;
+  --text-heading: #111;
+  --text-body: #555;
+  --text-muted: #888;
+  --text-subtle: #aaa;
+  --text-footer: #999;
+  --text-secondary: #666;
+  --text-link: #444;
+  --border: #ddd;
+  --border-light: rgba(0,0,0,0.06);
+  --input-bg: rgba(0,0,0,0.04);
+  --input-border: #ccc;
+  --scanline: rgba(0,0,0,0.015);
+  --grid-line: 0.015;
+  --selection-bg: rgba(255, 62, 62, 0.2);
+  --scrollbar-track: #f4f4f6;
+}
+
+body { background: var(--bg); color: var(--text); font-family: "Orbitron", "Courier New", monospace; overflow-x: hidden; transition: background 0.3s, color 0.3s; }
+::selection { background: var(--selection-bg); color: var(--text-heading); }
 ::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: #08080c; }
+::-webkit-scrollbar-track { background: var(--scrollbar-track); }
 ::-webkit-scrollbar-thumb { background: #ff3e3e; border-radius: 3px; }
 
 @media (max-width: 768px) {
   html, body { overflow-x: hidden; }
   h1, h2, h3, p { max-width: 100%; overflow-wrap: break-word; }
   section { max-width: 100vw; overflow-x: hidden; }
-  /* Hide sub-nav scrollbar */
   nav::-webkit-scrollbar { display: none; }
   nav { -ms-overflow-style: none; scrollbar-width: none; }
 }

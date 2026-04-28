@@ -1,7 +1,9 @@
 import { type FC } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LangProvider } from "./hooks/useLang";
+import { ThemeProvider } from "./hooks/useTheme";
 import { TopNav } from "./components/TopNav";
+import { C } from "./theme";
 import Championship from "./pages/Championship";
 import Verified from "./pages/Verified";
 import Trainer from "./pages/Trainer";
@@ -10,23 +12,25 @@ import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 
 const App: FC = () => (
-  <LangProvider>
-    <BrowserRouter>
-      <div style={{ background: "#08080c", color: "#e0e0e0", minHeight: "100vh", fontFamily: "'Orbitron','Courier New',monospace" }}>
-        <TopNav />
-        <div style={{ paddingTop: 0 }}>
-          <Routes>
-            <Route path="/" element={<Championship />} />
-            <Route path="/elocup" element={<EloCup />} />
-            <Route path="/verified" element={<Verified />} />
-            <Route path="/trainer" element={<Trainer />} />
-            <Route path="/blog" element={<Blog />} />
-            <Route path="/blog/:slug" element={<BlogPost />} />
-          </Routes>
+  <ThemeProvider>
+    <LangProvider>
+      <BrowserRouter>
+        <div style={{ background: C.bg, color: C.text, minHeight: "100vh", fontFamily: "'Orbitron','Courier New',monospace", transition: "background 0.3s, color 0.3s" }}>
+          <TopNav />
+          <div style={{ paddingTop: 0 }}>
+            <Routes>
+              <Route path="/" element={<Championship />} />
+              <Route path="/elocup" element={<EloCup />} />
+              <Route path="/verified" element={<Verified />} />
+              <Route path="/trainer" element={<Trainer />} />
+              <Route path="/blog" element={<Blog />} />
+              <Route path="/blog/:slug" element={<BlogPost />} />
+            </Routes>
+          </div>
         </div>
-      </div>
-    </BrowserRouter>
-  </LangProvider>
+      </BrowserRouter>
+    </LangProvider>
+  </ThemeProvider>
 );
 
 export default App;
