@@ -58,7 +58,7 @@ export const TopNav: FC = () => {
           {/* Theme toggle */}
           <button onClick={toggle} style={{
             background: "none", border: "none", cursor: "pointer",
-            color: C.muted, fontSize: 16, padding: "0 6px",
+            color: "#888", fontSize: 16, padding: "0 6px",
             transition: "color 0.3s", lineHeight: 1,
           }} title={theme === "dark" ? "Light mode" : "Dark mode"}>
             {theme === "dark" ? "☀" : "☾"}
