@@ -9,7 +9,8 @@ const WHO_C = ["#ff3e3e", "#ffd700", "#00f0ff"];
 const WHO_I = ["users", "steps", "eye"] as const;
 const WHY_I = ["trophy", "globe", "eye", "lock"] as const;
 const WHY_C = ["#ff3e3e", "#00f0ff", "#ffd700", "#ff3e3e"];
-const NAV_IDS = ["hero", "problem", "how", "who", "why", "cta"];
+const RANK_C: Record<number, string> = { 1: "#fbbf24", 2: "#94a3b8", 3: "#cd7f32" };
+const NAV_IDS = ["hero", "problem", "how", "who", "why", "players", "cta"];
 
 const Verified: FC = () => {
   const { lang } = useLang();
@@ -110,6 +111,34 @@ const Verified: FC = () => {
               <div style={{ fontFamily: BODY_FONT, fontSize: 12, color: "#888", lineHeight: 1.7 }}>{item.desc}</div>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* Players */}
+      <section ref={setRef("players")} data-section="players" style={{ padding: "120px 20px", maxWidth: 860, margin: "0 auto" }}>
+        <SL num={t.players.num} text={t.players.label} color="#00f0ff" />
+        <ST>{t.players.t1}<br /><span style={{ color: "#00f0ff" }}>{t.players.t2}</span></ST>
+
+        <div style={{ border: "1px solid #1a1a1a", overflow: "hidden" }}>
+          {/* Table header */}
+          <div style={{ display: "grid", gridTemplateColumns: "56px 1fr 100px 1fr", padding: "14px 24px", background: "rgba(0,240,255,0.04)", borderBottom: "1px solid #1a1a1a" }}>
+            {[t.players.cols.rank, t.players.cols.player, t.players.cols.elo, t.players.cols.date].map((col) => (
+              <div key={col} style={{ fontSize: 9, letterSpacing: 3, color: "#555", textTransform: "uppercase", fontWeight: 700 }}>{col}</div>
+            ))}
+          </div>
+          {/* Rows */}
+          {t.players.list.map((p) => {
+            const rc = RANK_C[p.rank];
+            const isTop3 = p.rank <= 3;
+            return (
+              <div key={p.rank} style={{ display: "grid", gridTemplateColumns: "56px 1fr 100px 1fr", padding: "16px 24px", background: isTop3 ? `${rc}08` : "rgba(255,255,255,0.02)", borderTop: "1px solid rgba(255,255,255,0.03)", alignItems: "center" }}>
+                <div style={{ fontFamily: "'Orbitron',monospace", fontSize: isTop3 ? 16 : 13, fontWeight: isTop3 ? 900 : 600, color: rc ?? "#666" }}>{p.rank}</div>
+                <div style={{ fontFamily: BODY_FONT, fontSize: 14, fontWeight: isTop3 ? 700 : 400, color: isTop3 ? "#fff" : "#aaa", letterSpacing: 0.5 }}>{p.player}</div>
+                <div style={{ fontFamily: BODY_FONT, fontSize: 14, fontWeight: 700, color: "#4ade80" }}>{p.elo}</div>
+                <div style={{ fontFamily: BODY_FONT, fontSize: 12, color: "#555" }}>{p.date}</div>
+              </div>
+            );
+          })}
         </div>
       </section>
 

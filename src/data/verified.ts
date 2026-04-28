@@ -1,6 +1,6 @@
 export const VER = {
   ru: {
-    nav: ["Verified", "Проблема", "Как работает", "Кому нужно", "Почему мы", "Заявка"],
+    nav: ["Verified", "Проблема", "Как работает", "Кому нужно", "Почему мы", "Игроки", "Заявка"],
     hero: { badge: "A R E N A  1  V E R I F I E D", t1: "Единственный рейтинг,", t2: "которому можно доверять.", text: "Серверный ELO врёт. Arena 1 Verified — независимая система подтверждения реального уровня игроков Arena FPS. Живой анализ перформанса в контролируемых условиях." },
     problem: {
       num: "01", label: "ПРОБЛЕМА", t1: "Почему серверный ELO", t2: "не работает",
@@ -38,12 +38,24 @@ export const VER = {
         { title: "Прозрачность", desc: "Методология открыта, результаты публичны." },
       ],
     },
-    cta: { num: "05", label: "РЕГИСТРАЦИЯ", t1: "Докажи", t2: "свой уровень", desc: "Arena 1 Verified — открытая регистрация на квалификационные сессии.", btn1: "Подать заявку", btn1sub: "для игроков", btn2: "Использовать рейтинг", btn2sub: "для организаторов" },
+    players: {
+      num: "05", label: "ВЕРИФИЦИРОВАННЫЕ ИГРОКИ", t1: "Верифицированные", t2: "игроки",
+      cols: { rank: "#", player: "Игрок", elo: "ELO", date: "Дата верификации" },
+      list: [
+        { rank: 1, player: "Rapha", elo: 2500, date: "15.04.2026" },
+        { rank: 2, player: "Cypher", elo: 2450, date: "12.04.2026" },
+        { rank: 3, player: "Agent", elo: 2400, date: "10.04.2026" },
+        { rank: 4, player: "Killsen", elo: 2350, date: "14.04.2026" },
+        { rank: 5, player: "Ash", elo: 2250, date: "11.04.2026" },
+        { rank: 6, player: "Pavel", elo: 2250, date: "08.04.2026" },
+      ],
+    },
+    cta: { num: "06", label: "РЕГИСТРАЦИЯ", t1: "Докажи", t2: "свой уровень", desc: "Arena 1 Verified — открытая регистрация на квалификационные сессии.", btn1: "Подать заявку", btn1sub: "для игроков", btn2: "Использовать рейтинг", btn2sub: "для организаторов" },
     fq1: "Серверный ELO — это мнение алгоритма.", fq2: "Arena 1 Verified — это факт.",
     footer: "ARENA 1 VERIFIED · THE STANDARD OF SKILL · 2026",
   },
   en: {
-    nav: ["Verified", "Problem", "How it works", "Who needs it", "Why us", "Apply"],
+    nav: ["Verified", "Problem", "How it works", "Who needs it", "Why us", "Players", "Apply"],
     hero: { badge: "A R E N A  1  V E R I F I E D", t1: "The only rating", t2: "you can trust.", text: "Server ELO lies. Arena 1 Verified is an independent system for confirming the real skill level of Arena FPS players. Live performance analysis under controlled conditions." },
     problem: {
       num: "01", label: "THE PROBLEM", t1: "Why server ELO", t2: "doesn't work",
@@ -81,7 +93,19 @@ export const VER = {
         { title: "Transparency", desc: "Methodology is open, results are public." },
       ],
     },
-    cta: { num: "05", label: "REGISTRATION", t1: "Prove", t2: "your level", desc: "Arena 1 Verified — open registration for qualification sessions.", btn1: "Apply now", btn1sub: "for players", btn2: "Use the rating", btn2sub: "for organizers" },
+    players: {
+      num: "05", label: "VERIFIED PLAYERS", t1: "Verified", t2: "players",
+      cols: { rank: "#", player: "Player", elo: "ELO", date: "Verification date" },
+      list: [
+        { rank: 1, player: "Rapha", elo: 2500, date: "Apr 15, 2026" },
+        { rank: 2, player: "Cypher", elo: 2450, date: "Apr 12, 2026" },
+        { rank: 3, player: "Agent", elo: 2400, date: "Apr 10, 2026" },
+        { rank: 4, player: "Killsen", elo: 2350, date: "Apr 14, 2026" },
+        { rank: 5, player: "Ash", elo: 2250, date: "Apr 11, 2026" },
+        { rank: 6, player: "Pavel", elo: 2250, date: "Apr 8, 2026" },
+      ],
+    },
+    cta: { num: "06", label: "REGISTRATION", t1: "Prove", t2: "your level", desc: "Arena 1 Verified — open registration for qualification sessions.", btn1: "Apply now", btn1sub: "for players", btn2: "Use the rating", btn2sub: "for organizers" },
     fq1: "Server ELO is an algorithm's opinion.", fq2: "Arena 1 Verified is a fact.",
     footer: "ARENA 1 VERIFIED · THE STANDARD OF SKILL · 2026",
   },
