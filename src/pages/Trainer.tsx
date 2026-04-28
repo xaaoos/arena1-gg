@@ -7,7 +7,7 @@ interface Err { pickup: number; correct: number; yours: number | null; type: str
 
 const T = {
   ru: {
-    title: "TIMING TRAINER", subtitle: "Тренажёр таймингов Arena FPS",
+    title: "TIMING TRAINER", subtitle: "Тренажёр таймингов Arena FPS", tgBtn: "Тренироваться в Telegram",
     modeRA: "RA / YA", modeMH: "Mega Health", modeMix: "Mix",
     modeRASub: "+25 сек", modeMHSub: "+35 сек", modeMixSub: "случайно",
     start: "Начать тренировку", startDesc: "60 карточек · все секунды от :00 до :59",
@@ -26,7 +26,7 @@ const T = {
     },
   },
   en: {
-    title: "TIMING TRAINER", subtitle: "Arena FPS timing trainer",
+    title: "TIMING TRAINER", subtitle: "Arena FPS timing trainer", tgBtn: "Train in Telegram",
     modeRA: "RA / YA", modeMH: "Mega Health", modeMix: "Mix",
     modeRASub: "+25 sec", modeMHSub: "+35 sec", modeMixSub: "random",
     start: "Start training", startDesc: "60 cards · all seconds from :00 to :59",
@@ -137,7 +137,8 @@ const Trainer: FC = () => {
           <div style={{ textAlign: "center" }}>
             <div style={{ fontSize: 11, letterSpacing: 6, color: "#ff3e3e", marginBottom: 8, fontWeight: 600 }}>A R E N A  1</div>
             <h1 style={{ fontSize: "clamp(28px,6vw,42px)", fontWeight: 900, color: "#fff", margin: "0 0 8px", letterSpacing: 2 }}>{t.title}</h1>
-            <div style={{ fontFamily: BODY_FONT, fontSize: 13, color: "#555", marginBottom: 40 }}>{t.subtitle}</div>
+            <div style={{ fontFamily: BODY_FONT, fontSize: 13, color: "#555", marginBottom: 20 }}>{t.subtitle}</div>
+            <a href="https://t.me/quaketimingbot" target="_blank" rel="noopener noreferrer" style={{ display: "inline-block", padding: "12px 32px", background: "#fbbf24", border: "none", color: "#08080c", fontSize: 11, fontWeight: 700, letterSpacing: 3, textTransform: "uppercase", cursor: "pointer", fontFamily: "'Orbitron',monospace", textDecoration: "none", marginBottom: 40 }}>{t.tgBtn}</a>
             <div style={{ display: "flex", gap: 2, marginBottom: 32 }}>
               {([{ m: 25, l: t.modeRA, s: t.modeRASub }, { m: 35, l: t.modeMH, s: t.modeMHSub }, { m: "mix", l: t.modeMix, s: t.modeMixSub }] as const).map((o) => (
                 <button key={String(o.m)} onClick={() => setMode(o.m)} style={{ flex: 1, padding: "20px 12px", background: mode === o.m ? "rgba(255,62,62,0.08)" : "rgba(255,255,255,0.02)", border: "none", borderTop: mode === o.m ? "3px solid #ff3e3e" : "3px solid #333", cursor: "pointer", textAlign: "center" }}>
