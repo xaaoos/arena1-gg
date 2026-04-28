@@ -1,9 +1,9 @@
-export const LAUNCH_DATE = new Date("2026-05-01T18:00:00Z");
+export const LAUNCH_DATE: Date | null = null;
 
 export const CHAMP = {
   ru: {
     nav: ["A1", "Почему мы", "Формат", "Трансляции", "Участвовать"],
-    hero: { tag: "F P S   C H A M P I O N S H I P", slogan: "The Premier League of Aim", sub: "Лучшие геймеры мира. Один победитель. Миллионы зрителей.", date: "ПИЛОТНЫЙ ТУРНИР · 01 МАЯ 2026", cta1: "Участвовать", cta2: "Трансляции" },
+    hero: { tag: "F P S   C H A M P I O N S H I P", slogan: "The Premier League of Aim", sub: "Лучшие геймеры мира. Один победитель. Миллионы зрителей.", date: "ПИЛОТНЫЙ ТУРНИР · ДАТА УТОЧНЯЕТСЯ", cta1: "Участвовать", cta2: "Трансляции" },
     cd: { d: "дней", h: "часов", m: "минут", s: "секунд" },
     why: {
       num: "01", label: "ПОЧЕМУ ARENA 1", t1: "Киберспорт, каким он", t2: "должен быть",
@@ -53,7 +53,7 @@ export const CHAMP = {
   },
   en: {
     nav: ["A1", "Why us", "Format", "Broadcasts", "Compete"],
-    hero: { tag: "F P S   C H A M P I O N S H I P", slogan: "The Premier League of Aim", sub: "The world's best gamers. One winner. Millions watching.", date: "PILOT TOURNAMENT · MAY 1, 2026", cta1: "Compete", cta2: "Broadcasts" },
+    hero: { tag: "F P S   C H A M P I O N S H I P", slogan: "The Premier League of Aim", sub: "The world's best gamers. One winner. Millions watching.", date: "PILOT TOURNAMENT · DATE TBA", cta1: "Compete", cta2: "Broadcasts" },
     cd: { d: "days", h: "hours", m: "minutes", s: "seconds" },
     why: {
       num: "01", label: "WHY ARENA 1", t1: "Esports the way it", t2: "should be",
