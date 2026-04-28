@@ -6,6 +6,8 @@ import Championship from "./pages/Championship";
 import Verified from "./pages/Verified";
 import Trainer from "./pages/Trainer";
 import EloCup from "./pages/EloCup";
+import Blog from "./pages/Blog";
+import BlogPost from "./pages/BlogPost";
 
 const App: FC = () => (
   <LangProvider>
@@ -18,6 +20,8 @@ const App: FC = () => (
             <Route path="/elocup" element={<EloCup />} />
             <Route path="/verified" element={<Verified />} />
             <Route path="/trainer" element={<Trainer />} />
+            <Route path="/blog" element={<Blog />} />
+            <Route path="/blog/:slug" element={<BlogPost />} />
           </Routes>
         </div>
       </div>

@@ -7,12 +7,13 @@ const PAGES = [
   { path: "/elocup", label: "EloCup", color: "#4ade80" },
   { path: "/verified", label: "Verified", color: "#00f0ff" },
   { path: "/trainer", label: "Trainer", color: "#fbbf24" },
+  { path: "/blog", label: "Blog", color: "#c084fc" },
 ] as const;
 
 export const TopNav: FC = () => {
   const { pathname } = useLocation();
   const { lang, setLang } = useLang();
-  const activePage = PAGES.find((p) => p.path === pathname) ?? PAGES[0];
+  const activePage = PAGES.find((p) => p.path === pathname || (p.path !== "/" && pathname.startsWith(p.path))) ?? PAGES[0];
 
   return (
     <div style={{
@@ -33,8 +34,8 @@ export const TopNav: FC = () => {
             textDecoration: "none", padding: "14px 12px",
             fontSize: 10, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase",
             fontFamily: "'Orbitron',sans-serif",
-            color: pathname === p.path ? p.color : "#555",
-            borderBottom: pathname === p.path ? `2px solid ${p.color}` : "2px solid transparent",
+            color: (pathname === p.path || (p.path !== "/" && pathname.startsWith(p.path))) ? p.color : "#555",
+            borderBottom: (pathname === p.path || (p.path !== "/" && pathname.startsWith(p.path))) ? `2px solid ${p.color}` : "2px solid transparent",
             transition: "all 0.3s",
           }}>{p.label}</Link>
         ))}
