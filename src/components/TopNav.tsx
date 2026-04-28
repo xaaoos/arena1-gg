@@ -61,7 +61,7 @@ export const TopNav: FC = () => {
             color: "#888", fontSize: 16, padding: "0 6px",
             transition: "color 0.3s", lineHeight: 1,
           }} title={theme === "dark" ? "Light mode" : "Dark mode"}>
-            {theme === "dark" ? "☀" : "☾"}
+            {theme === "dark" ? "◐" : "◑"}
           </button>
 
           {(["ru", "en"] as const).map((l) => (
