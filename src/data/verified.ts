@@ -39,7 +39,7 @@ export const VER = {
       ],
     },
     players: {
-      num: "05", label: "ВЕРИФИЦИРОВАННЫЕ ИГРОКИ", t1: "Верифицированные", t2: "игроки",
+      num: "05", label: "ВЕРИФИЦИРОВАННЫЕ ИГРОКИ", t1: "Верифицированные игроки —", t2: "Дуэль",
       cols: { rank: "#", player: "Игрок", elo: "ELO", date: "Дата верификации" },
       list: [
         { rank: 1, player: "Rapha", elo: 2500, date: "15.04.2026" },
@@ -94,7 +94,7 @@ export const VER = {
       ],
     },
     players: {
-      num: "05", label: "VERIFIED PLAYERS", t1: "Verified", t2: "players",
+      num: "05", label: "VERIFIED PLAYERS", t1: "Verified Players —", t2: "Duel",
       cols: { rank: "#", player: "Player", elo: "ELO", date: "Verification date" },
       list: [
         { rank: 1, player: "Rapha", elo: 2500, date: "Apr 15, 2026" },
