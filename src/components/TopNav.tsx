@@ -4,6 +4,7 @@ import { useLang } from "../hooks/useLang";
 
 const PAGES = [
   { path: "/", label: "Championship", color: "#ff3e3e" },
+  { path: "/elocup", label: "EloCup", color: "#4ade80" },
   { path: "/verified", label: "Verified", color: "#00f0ff" },
   { path: "/trainer", label: "Trainer", color: "#fbbf24" },
 ] as const;

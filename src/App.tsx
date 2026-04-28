@@ -5,6 +5,7 @@ import { TopNav } from "./components/TopNav";
 import Championship from "./pages/Championship";
 import Verified from "./pages/Verified";
 import Trainer from "./pages/Trainer";
+import EloCup from "./pages/EloCup";
 
 const App: FC = () => (
   <LangProvider>
@@ -14,6 +15,7 @@ const App: FC = () => (
         <div style={{ paddingTop: 0 }}>
           <Routes>
             <Route path="/" element={<Championship />} />
+            <Route path="/elocup" element={<EloCup />} />
             <Route path="/verified" element={<Verified />} />
             <Route path="/trainer" element={<Trainer />} />
           </Routes>
