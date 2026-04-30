@@ -36,6 +36,7 @@ const Blog: FC = () => {
       <footer style={{ padding: mob ? "40px 16px" : "60px 20px", textAlign: "center", borderTop: `1px solid ${C.borderLight}` }}>
         <div style={{ fontSize: 16, fontWeight: 900, color: C.footer, letterSpacing: 4 }}>ARENA <span style={{ color: "#ff3e3e" }}>1</span></div>
         <div style={{ fontSize: 10, color: C.footer, letterSpacing: 3, marginTop: 8 }}>ARENA 1 BLOG · 2026</div>
+        <div style={{ fontSize: 10, color: C.footer, letterSpacing: 2, marginTop: 16, opacity: 0.5 }}>developed by <a href="https://selzio.com" target="_blank" rel="noopener noreferrer" style={{ color: "inherit", textDecoration: "underline" }}>selzio.com</a></div>
       </footer>
     </div>
   );

@@ -157,6 +157,7 @@ const Verified: FC = () => {
         <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 13 : 14, color: C.secondary, fontStyle: "italic", lineHeight: 1.8, marginBottom: 24 }}>{t.fq1}<br /><span style={{ color: "#00f0ff", fontWeight: 500 }}>{t.fq2}</span></div>
         <div style={{ fontSize: 16, fontWeight: 900, color: C.footer, letterSpacing: 4 }}>ARENA <span style={{ color: "#00f0ff" }}>1</span></div>
         <div style={{ fontSize: 10, color: C.footer, letterSpacing: 3, marginTop: 8 }}>{t.footer}</div>
+        <div style={{ fontSize: 10, color: C.footer, letterSpacing: 2, marginTop: 16, opacity: 0.5 }}>developed by <a href="https://selzio.com" target="_blank" rel="noopener noreferrer" style={{ color: "inherit", textDecoration: "underline" }}>selzio.com</a></div>
       </footer>
     </div>
   );
