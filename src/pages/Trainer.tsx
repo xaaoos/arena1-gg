@@ -231,6 +231,7 @@ const Trainer: FC = () => {
           </div>
         )}
       </div>
+      <div style={{ fontSize: 10, color: C.muted, letterSpacing: 2, marginTop: 40, opacity: 0.5, textAlign: "center" }}>developed by <a href="https://selzio.com" target="_blank" rel="noopener noreferrer" style={{ color: "inherit", textDecoration: "underline" }}>selzio.com</a></div>
     </div>
   );
 };
