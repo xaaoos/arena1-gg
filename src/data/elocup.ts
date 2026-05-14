@@ -48,6 +48,21 @@ export const ELOCUP: Record<"ru" | "en", EloCupData> = {
     standings: { place: "место" },
     past: [
       {
+        name: "600–1200 ELO Cup",
+        date: "10 мая 2026",
+        bracketUrl: "https://shambler.site/id/brackets.php?cup=237",
+        standings: [
+          { place: "1", players: ["d0n_kih0t"] },
+          { place: "2", players: ["trist_woods"] },
+          { place: "3", players: ["gadzillaa."] },
+          { place: "4", players: ["mplusmrx_16948"] },
+          { place: "5–6", players: ["maxwinsman", "narayanasupramati"] },
+          { place: "7–8", players: ["_ivvi_", "hoopieble"] },
+          { place: "9–12", players: ["dude", "alekseyjuzefovich", "fey5334", "niewi_jr"] },
+          { place: "13", players: ["razor101010"] },
+        ],
+      },
+      {
         name: "1000–2000 ELO Cup",
         date: "26 апреля 2026",
         bracketUrl: "https://shambler.site/id/brackets.php?cup=232",
@@ -86,6 +101,21 @@ export const ELOCUP: Record<"ru" | "en", EloCupData> = {
     footer: "ARENA 1 ELO CUP · WEEKLY DUEL TOURNAMENT · 2026",
     standings: { place: "place" },
     past: [
+      {
+        name: "600–1200 ELO Cup",
+        date: "May 10, 2026",
+        bracketUrl: "https://shambler.site/id/brackets.php?cup=237",
+        standings: [
+          { place: "1", players: ["d0n_kih0t"] },
+          { place: "2", players: ["trist_woods"] },
+          { place: "3", players: ["gadzillaa."] },
+          { place: "4", players: ["mplusmrx_16948"] },
+          { place: "5–6", players: ["maxwinsman", "narayanasupramati"] },
+          { place: "7–8", players: ["_ivvi_", "hoopieble"] },
+          { place: "9–12", players: ["dude", "alekseyjuzefovich", "fey5334", "niewi_jr"] },
+          { place: "13", players: ["razor101010"] },
+        ],
+      },
       {
         name: "1000–2000 ELO Cup",
         date: "April 26, 2026",
