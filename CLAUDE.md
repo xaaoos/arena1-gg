@@ -7,20 +7,20 @@ Arena 1 — медиабренд и чемпионат по Arena FPS (Quake Liv
 
 ## Стек
 - Vite + React 18 + TypeScript + React Router
-- Деплой: Vercel (SPA rewrites через vercel.json)
+- Деплой: VPS 159.194.228.38 (юзер easyte), rsync в /var/www/easysite/arena1/
 - Стили: inline styles, без CSS-фреймворков
 - Шрифты: Orbitron (заголовки), JetBrains Mono (тело)
 
 ## Команды
 - npm run dev — локальный сервер
 - npm run build — продакшн сборка
-- git push — триггерит деплой на Vercel автоматически
+- Деплой: `npm run build && rsync -avz --checksum dist/ easyte@159.194.228.38:/var/www/easysite/arena1/`
 
 ## Страницы
 - / → pages/Championship.tsx — лендинг чемпионата
 - /verified → pages/Verified.tsx — система рейтинга
 - /trainer → pages/Trainer.tsx — тренажёр таймингов
-- /championships → ПЛАНИРУЕТСЯ — результаты турниров и сетки
+- /elocup → pages/EloCup.tsx — ELO Cup турниры и результаты
 
 ## Компоненты
 - TopNav.tsx — хедер с навигацией и переключателем RU/EN
@@ -30,9 +30,9 @@ Arena 1 — медиабренд и чемпионат по Arena FPS (Quake Liv
 ## Данные
 - src/data/championship.ts — тексты Championship (RU/EN) + LAUNCH_DATE
 - src/data/verified.ts — тексты Verified (RU/EN)
+- src/data/elocup.ts — данные ELO Cup (RU/EN): турниры, standings, маппул
 
 ## Правила
 - Все новые тексты добавлять в src/data/ с поддержкой RU/EN
 - Стили — inline, без Tailwind и CSS-модулей
-- Не трогать vercel.json
 - Язык общения: русский
