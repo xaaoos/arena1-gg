@@ -17,4 +17,7 @@ export const C = {
   inputBg: "var(--input-bg)",
   inputBorder: "var(--input-border)",
   scanline: "var(--scanline)",
+  accent: "var(--accent)",
+  accentSubtle: "var(--accent-subtle)",
+  accentBorder: "var(--accent-border)",
 } as const;
