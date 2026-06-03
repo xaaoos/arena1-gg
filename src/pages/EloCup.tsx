@@ -29,7 +29,7 @@ const EloCup: FC = () => {
         <div style={{ position: "relative", zIndex: 1, maxWidth: 700, width: "100%" }}>
           <div style={{ marginBottom: mob ? 24 : 40, display: "flex", justifyContent: "center" }}><Icon type="trophy" color={AC} size={mob ? 36 : 48} /></div>
           <div style={{ fontSize: mob ? 9 : 11, letterSpacing: mob ? 3 : 6, color: AC, marginBottom: 20, fontWeight: 600 }}>{t.hero.tag}</div>
-          <h1 style={{ fontSize: "clamp(48px,11vw,110px)", fontWeight: 900, margin: 0, lineHeight: 0.85, letterSpacing: -2, color: C.heading }}>
+          <h1 style={{ fontSize: "clamp(28px,6vw,64px)", fontWeight: 900, margin: 0, lineHeight: 1, letterSpacing: -1, color: C.heading, whiteSpace: "nowrap" }}>
             {t.hero.t1}{t.hero.t1 && " "}<span style={{ color: AC }}>{t.hero.t2}</span>
           </h1>
           <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 13 : 15, color: C.body, lineHeight: 1.8, maxWidth: 560, margin: "28px auto 0" }}>{t.hero.sub}</div>
