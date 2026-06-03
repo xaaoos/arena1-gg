@@ -52,7 +52,6 @@ const EloCup: FC = () => {
           <div style={{ marginTop: mob ? 32 : 44, display: "flex", flexWrap: "wrap", gap: 12, justifyContent: "center" }}>
             <a href="https://discord.gg/dgPwNAph2j" target="_blank" rel="noopener noreferrer" style={{ padding: mob ? "12px 28px" : "14px 40px", background: AC, color: "#08080c", fontSize: mob ? 11 : 12, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", fontFamily: "'Orbitron',monospace", textDecoration: "none", display: "inline-block", whiteSpace: "nowrap" }}>{t.next.cta}</a>
             <Link to="/divisions" style={{ padding: mob ? "12px 28px" : "14px 40px", background: "transparent", border: `1px solid ${AC}`, color: AC, fontSize: mob ? 11 : 12, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", fontFamily: "'Orbitron',monospace", textDecoration: "none", display: "inline-block", whiteSpace: "nowrap" }}>{t.next.ctaDivisions}</Link>
-            <Link to="/verified" style={{ padding: mob ? "12px 28px" : "14px 40px", background: "transparent", border: `1px solid ${AC}44`, color: C.muted, fontSize: mob ? 11 : 12, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", fontFamily: "'Orbitron',monospace", textDecoration: "none", display: "inline-block", whiteSpace: "nowrap" }}>{t.next.ctaVerified}</Link>
           </div>
         </div>
       </section>

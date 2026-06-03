@@ -9,20 +9,22 @@ const AC = "#4ade80";
 
 const T = {
   ru: {
-    tag: "A R E N A  1  D I V I S I O N S",
-    h1a: "ДИВИЗИОНЫ",
-    h1b: "Non-Pro",
+    tag: "N O N - P R O",
+    h1: "ДИВИЗИОНЫ",
+    h2: "& ИГРОКИ",
     loading: "Загрузка...",
     error: "Не удалось загрузить данные. Попробуй позже.",
-    players: "игроков",
+    cols: { rank: "#", player: "Игрок", elo: "ELO", division: "Дивизион" },
+    footer: "ARENA 1 DIVISIONS · NON-PRO DUEL CUPS · 2026",
   },
   en: {
-    tag: "A R E N A  1  D I V I S I O N S",
-    h1a: "DIVISIONS",
-    h1b: "Non-Pro",
+    tag: "N O N - P R O",
+    h1: "DIVISIONS",
+    h2: "& PLAYERS",
     loading: "Loading...",
     error: "Failed to load data. Please try again later.",
-    players: "players",
+    cols: { rank: "#", player: "Player", elo: "ELO", division: "Division" },
+    footer: "ARENA 1 DIVISIONS · NON-PRO DUEL CUPS · 2026",
   },
 };
 
@@ -31,6 +33,10 @@ const Divisions: FC = () => {
   const mob = useIsMobile();
   const t = T[lang];
   const { divisions, loading, error } = useSheetData();
+
+  const allPlayers = divisions.flatMap((d) =>
+    d.players.map((p) => ({ ...p, division: d.label }))
+  );
 
   return (
     <div style={{ overflowX: "hidden" }}>
@@ -73,7 +79,7 @@ const Divisions: FC = () => {
           </div>
           <h1
             style={{
-              fontSize: "clamp(40px,9vw,90px)",
+              fontSize: "clamp(36px,8vw,80px)",
               fontWeight: 900,
               margin: 0,
               lineHeight: 0.9,
@@ -81,16 +87,16 @@ const Divisions: FC = () => {
               color: C.heading,
             }}
           >
-            {t.h1a} <span style={{ color: AC }}>{t.h1b}</span>
+            {t.h1} <span style={{ color: AC }}>{t.h2}</span>
           </h1>
         </div>
       </section>
 
-      {/* Content */}
+      {/* Table */}
       <section
         style={{
-          padding: mob ? "0 16px 80px" : "0 20px 120px",
-          maxWidth: 860,
+          padding: mob ? "0 0 80px" : "0 20px 120px",
+          maxWidth: 900,
           margin: "0 auto",
         }}
       >
@@ -123,97 +129,121 @@ const Divisions: FC = () => {
           </div>
         )}
 
-        {!loading &&
-          !error &&
-          divisions.map((div, di) => {
-            const minElo = div.players[div.players.length - 1]?.elo ?? 0;
-            const maxElo = div.players[0]?.elo ?? 0;
-            return (
-              <div key={di} style={{ marginBottom: 16 }}>
-                {/* Division header */}
+        {!loading && !error && (
+          <div style={{ overflowX: "auto" }}>
+            {/* Header */}
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: mob ? "40px 1fr 64px 90px" : "52px 1fr 80px 140px",
+                padding: mob ? "10px 16px" : "12px 24px",
+                borderBottom: `1px solid ${AC}33`,
+                background: `${AC}08`,
+              }}
+            >
+              {Object.values(t.cols).map((col, i) => (
                 <div
+                  key={i}
                   style={{
-                    padding: mob ? "12px 16px" : "14px 24px",
-                    background: `${AC}10`,
-                    border: `1px solid ${AC}30`,
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
+                    fontSize: 9,
+                    letterSpacing: 3,
+                    color: C.muted,
+                    fontWeight: 700,
+                    textTransform: "uppercase",
+                    textAlign: i === 2 ? "right" : "left",
                   }}
                 >
-                  <span
-                    style={{
-                      fontSize: mob ? 10 : 11,
-                      fontWeight: 700,
-                      letterSpacing: 3,
-                      color: AC,
-                      textTransform: "uppercase",
-                    }}
-                  >
-                    {div.label}
-                  </span>
-                  <span
-                    style={{
-                      fontSize: 10,
-                      color: C.muted,
-                      fontFamily: BODY_FONT,
-                    }}
-                  >
-                    {div.players.length} {t.players} · {minElo}–{maxElo}
-                  </span>
+                  {col}
                 </div>
+              ))}
+            </div>
 
-                {/* Players */}
-                <div
-                  style={{
-                    background: C.bgCard,
-                    border: `1px solid ${C.border}`,
-                    borderTop: "none",
-                  }}
-                >
-                  {div.players.map((p, pi) => (
+            {/* Rows */}
+            <div>
+              {allPlayers.map((p, i) => {
+                const rank = i + 1;
+                const isTop3 = rank <= 3;
+                const rankColor =
+                  rank === 1 ? "#ffd700" : rank === 2 ? "#c0c0c0" : rank === 3 ? "#cd7f32" : C.muted;
+
+                return (
+                  <div
+                    key={i}
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns: mob ? "40px 1fr 64px 90px" : "52px 1fr 80px 140px",
+                      padding: mob ? "10px 16px" : "12px 24px",
+                      borderBottom: `1px solid ${C.borderLight}`,
+                      background: isTop3 ? `${rankColor}06` : "transparent",
+                      alignItems: "center",
+                    }}
+                  >
+                    {/* Rank */}
                     <div
-                      key={pi}
                       style={{
-                        display: "grid",
-                        gridTemplateColumns: "1fr auto",
-                        padding: mob ? "9px 16px" : "11px 24px",
-                        borderBottom:
-                          pi < div.players.length - 1
-                            ? `1px solid ${C.borderLight}`
-                            : "none",
-                        alignItems: "center",
+                        fontFamily: "'Orbitron',monospace",
+                        fontSize: isTop3 ? (mob ? 14 : 16) : mob ? 11 : 12,
+                        fontWeight: isTop3 ? 900 : 500,
+                        color: isTop3 ? rankColor : C.muted,
                       }}
                     >
-                      <div
-                        style={{
-                          fontFamily: BODY_FONT,
-                          fontSize: mob ? 12 : 13,
-                          color: p.uncertain ? C.muted : C.body,
-                        }}
-                      >
-                        {p.name}
-                        {p.uncertain && (
-                          <span style={{ color: C.muted, marginLeft: 6, fontSize: 10 }}>?</span>
-                        )}
-                      </div>
-                      <div
-                        style={{
-                          fontFamily: BODY_FONT,
-                          fontSize: mob ? 12 : 13,
-                          color: AC,
-                          fontWeight: 600,
-                          letterSpacing: 1,
-                        }}
-                      >
-                        {p.elo}
-                      </div>
+                      {rank === 1 ? "🥇" : rank === 2 ? "🥈" : rank === 3 ? "🥉" : rank}
                     </div>
-                  ))}
-                </div>
-              </div>
-            );
-          })}
+
+                    {/* Player */}
+                    <div
+                      style={{
+                        fontFamily: BODY_FONT,
+                        fontSize: mob ? 12 : 13,
+                        color: p.uncertain ? C.muted : isTop3 ? C.heading : C.body,
+                        fontWeight: isTop3 ? 700 : 400,
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      {p.name}
+                      {p.uncertain && (
+                        <span style={{ color: C.muted, marginLeft: 4, fontSize: 10 }}>?</span>
+                      )}
+                    </div>
+
+                    {/* ELO */}
+                    <div
+                      style={{
+                        fontFamily: BODY_FONT,
+                        fontSize: mob ? 12 : 13,
+                        color: AC,
+                        fontWeight: 600,
+                        letterSpacing: 1,
+                        textAlign: "right",
+                      }}
+                    >
+                      {p.elo}
+                    </div>
+
+                    {/* Division */}
+                    <div
+                      style={{
+                        fontFamily: BODY_FONT,
+                        fontSize: mob ? 9 : 10,
+                        color: C.muted,
+                        letterSpacing: 1,
+                        textTransform: "uppercase",
+                        paddingLeft: mob ? 8 : 12,
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      {p.division}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
       </section>
 
       <footer
@@ -227,7 +257,7 @@ const Divisions: FC = () => {
           ARENA <span style={{ color: AC }}>1</span>
         </div>
         <div style={{ fontSize: 10, color: C.footer, letterSpacing: 3, marginTop: 8 }}>
-          ARENA 1 DIVISIONS · NON-PRO DUEL CUPS · 2026
+          {t.footer}
         </div>
       </footer>
     </div>

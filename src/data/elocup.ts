@@ -29,8 +29,8 @@ export const ELOCUP: Record<"ru" | "en", EloCupData> = {
   ru: {
     nav: ["Non-Pro Duel Cups", "Следующий", "Архив"],
     hero: {
-      tag: "A R E N A  1  N O N - P R O  D U E L  C U P S",
-      t1: "NON-PRO", t2: "DUEL CUPS",
+      tag: "N O N - P R O",
+      t1: "", t2: "DUEL CUPS",
       sub: "Еженедельные дуэльные турниры с ELO-ограничениями для верифицированных игроков. Докажи свой уровень в честном брекете.",
     },
     next: {
@@ -84,8 +84,8 @@ export const ELOCUP: Record<"ru" | "en", EloCupData> = {
   en: {
     nav: ["Non-Pro Duel Cups", "Next", "Archive"],
     hero: {
-      tag: "A R E N A  1  N O N - P R O  D U E L  C U P S",
-      t1: "NON-PRO", t2: "DUEL CUPS",
+      tag: "N O N - P R O",
+      t1: "", t2: "DUEL CUPS",
       sub: "Weekly duel tournaments with ELO restrictions for verified players. Prove your level in a fair bracket.",
     },
     next: {
