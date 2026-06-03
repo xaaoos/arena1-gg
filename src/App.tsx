@@ -4,6 +4,7 @@ import { LangProvider } from "./hooks/useLang";
 import { ThemeProvider } from "./hooks/useTheme";
 import { TopNav } from "./components/TopNav";
 import { C } from "./theme";
+import { Navigate } from "react-router-dom";
 import Championship from "./pages/Championship";
 import Verified from "./pages/Verified";
 import Trainer from "./pages/Trainer";
@@ -20,7 +21,8 @@ const App: FC = () => (
           <TopNav />
           <div style={{ paddingTop: 0 }}>
             <Routes>
-              <Route path="/" element={<Championship />} />
+              <Route path="/" element={<Navigate to="/non-pro-duel-cups" replace />} />
+              <Route path="/championship" element={<Championship />} />
               <Route path="/non-pro-duel-cups" element={<EloCup />} />
               <Route path="/divisions" element={<Divisions />} />
               <Route path="/verified" element={<Verified />} />

@@ -6,7 +6,6 @@ import { useTheme } from "../hooks/useTheme";
 import { C } from "../theme";
 
 const PAGES = [
-  { path: "/", label: "Championship", color: "#ff3e3e" },
   { path: "/non-pro-duel-cups", label: "Non-Pro Duel Cups", color: "#4ade80" },
   { path: "/trainer", label: "Trainer", color: "#fbbf24" },
   { path: "/blog", label: "Blog", color: "#c084fc" },
@@ -32,7 +31,7 @@ export const TopNav: FC = () => {
         display: "flex", alignItems: "center", padding: "0 16px", height: 48,
         transition: "background 0.3s",
       }}>
-        <Link to="/" style={{ textDecoration: "none", display: "flex", alignItems: "center", flexShrink: 0 }}>
+        <Link to="/non-pro-duel-cups" style={{ textDecoration: "none", display: "flex", alignItems: "center", flexShrink: 0 }}>
           <span style={{ fontSize: 15, fontWeight: 900, color: C.heading, letterSpacing: 2, fontFamily: "'Orbitron',monospace", whiteSpace: "nowrap" }}>
             ARENA <span style={{ color: "#ff3e3e" }}>1</span>
           </span>
