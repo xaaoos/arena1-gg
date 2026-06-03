@@ -98,8 +98,8 @@ export const TopNav: FC = () => {
         </div>
       </div>
 
-      {/* Sub-nav — only on non-pro-duel-cups */}
-      {pathname.startsWith("/non-pro-duel-cups") && (
+      {/* Sub-nav — non-pro-duel-cups and divisions */}
+      {(pathname.startsWith("/non-pro-duel-cups") || pathname.startsWith("/divisions")) && (
         <div style={{
           position: "fixed", top: 48, left: 0, right: 0, zIndex: 199,
           background: C.bgNavSub, backdropFilter: "blur(12px)",
