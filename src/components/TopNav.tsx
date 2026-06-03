@@ -16,14 +16,14 @@ const PAGES = [
 
 const SUB_NAV = {
   ru: [
-    { label: "Регистрация", href: "https://discord.gg/dgPwNAph2j", external: true },
-    { label: "Дивизионы и игроки", href: "/divisions", external: false },
     { label: "Результаты", href: "/non-pro-duel-cups", external: false },
+    { label: "Дивизионы и игроки", href: "/divisions", external: false },
+    { label: "Регистрация", href: "https://discord.gg/dgPwNAph2j", external: true },
   ],
   en: [
-    { label: "Register", href: "https://discord.gg/dgPwNAph2j", external: true },
-    { label: "Divisions & Players", href: "/divisions", external: false },
     { label: "Results", href: "/non-pro-duel-cups", external: false },
+    { label: "Divisions & Players", href: "/divisions", external: false },
+    { label: "Register", href: "https://discord.gg/dgPwNAph2j", external: true },
   ],
 };
 
