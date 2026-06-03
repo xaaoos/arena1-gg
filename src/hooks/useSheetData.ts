@@ -14,12 +14,12 @@ export interface SheetDivision {
   players: SheetPlayer[];
 }
 
-function parseRow(row: string): string[] {
+function parseRow(line: string): string[] {
   const cols: string[] = [];
   let cur = "";
   let inQuote = false;
-  for (let i = 0; i < row.length; i++) {
-    const ch = row[i];
+  for (let i = 0; i < line.length; i++) {
+    const ch = line[i];
     if (ch === '"') {
       inQuote = !inQuote;
     } else if (ch === "," && !inQuote) {
@@ -34,46 +34,32 @@ function parseRow(row: string): string[] {
 }
 
 const isNum = (s: string | undefined) =>
-  s !== undefined && s.trim() !== "" && !isNaN(Number(s.trim())) && Number(s.trim()) > 0;
+  !!s && s.trim() !== "" && !isNaN(Number(s.trim())) && Number(s.trim()) > 0;
 
 function parseSheetData(csv: string): SheetDivision[] {
   const lines = csv.split("\n");
   const divisions: SheetDivision[] = [];
+  // CSV structure: col[0]=empty, col[1]=div_label, col[2]=player_name, col[3]=elo, col[4]=?
   let current: SheetDivision = { label: "Pro", players: [] };
   divisions.push(current);
 
   for (const line of lines) {
     const cols = parseRow(line);
-    const nonEmpty = cols.filter((c) => c !== "");
-    if (nonEmpty.length === 0) continue;
+    const divLabel = cols[1]?.trim() ?? "";
+    const name = cols[2]?.trim() ?? "";
+    const eloStr = cols[3]?.trim() ?? "";
+    const uncertain = cols[4]?.trim() === "?";
 
-    const c0 = (cols[0] ?? "").toLowerCase();
-    const isDivLabel = c0.startsWith("div") || c0.includes("non-pro");
+    if (!name || !isNum(eloStr)) continue;
+    // skip header/meta rows
+    if (name.toLowerCase().includes("рейтинг")) continue;
 
-    if (isDivLabel) {
-      current = { label: cols[0].trim(), players: [] };
+    if (divLabel) {
+      current = { label: divLabel, players: [] };
       divisions.push(current);
     }
 
-    let name = "";
-    let elo = 0;
-    let uncertain = false;
-
-    // Format 1 (first table): col[0]=name, col[1]=elo
-    if (cols[0]?.trim() && !isDivLabel && isNum(cols[1])) {
-      name = cols[0].trim();
-      elo = Number(cols[1].trim());
-    }
-    // Format 2 (second table): col[0]=div_or_empty, col[1]=name, col[2]=elo
-    else if (cols[1]?.trim() && isNum(cols[2])) {
-      name = cols[1].trim();
-      elo = Number(cols[2].trim());
-      uncertain = cols[3]?.trim() === "?";
-    }
-
-    if (name && elo > 0) {
-      current.players.push({ name, elo, uncertain });
-    }
+    current.players.push({ name, elo: Number(eloStr), uncertain });
   }
 
   return divisions.filter((d) => d.players.length > 0);

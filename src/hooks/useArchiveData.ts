@@ -35,42 +35,64 @@ export function formatArchiveDate(rawDate: string, lang: "ru" | "en"): string {
     : `${EN_MONTHS[month]} ${day}, ${year}`;
 }
 
-function parseRow(row: string): string[] {
-  const cols: string[] = [];
-  let cur = "";
-  let inQuote = false;
-  for (let i = 0; i < row.length; i++) {
-    const ch = row[i];
-    if (ch === '"') {
-      inQuote = !inQuote;
-    } else if (ch === "," && !inQuote) {
-      cols.push(cur.trim());
-      cur = "";
+// Full CSV parser that handles multi-line quoted cells
+function parseCSVFull(csv: string): string[][] {
+  const rows: string[][] = [];
+  let row: string[] = [];
+  let field = "";
+  let inQuotes = false;
+
+  for (let i = 0; i < csv.length; i++) {
+    const ch = csv[i];
+
+    if (inQuotes) {
+      if (ch === '"' && csv[i + 1] === '"') {
+        field += '"';
+        i++;
+      } else if (ch === '"') {
+        inQuotes = false;
+      } else {
+        field += ch;
+      }
     } else {
-      cur += ch;
+      if (ch === '"') {
+        inQuotes = true;
+      } else if (ch === ',') {
+        row.push(field.trim());
+        field = "";
+      } else if (ch === '\n') {
+        row.push(field.trim());
+        if (row.some((c) => c !== "")) rows.push(row);
+        row = [];
+        field = "";
+      } else if (ch === '\r') {
+        // skip
+      } else {
+        field += ch;
+      }
     }
   }
-  cols.push(cur.trim());
-  return cols;
+
+  if (field.trim() || row.length > 0) {
+    row.push(field.trim());
+    if (row.some((c) => c !== "")) rows.push(row);
+  }
+
+  return rows;
 }
 
+// Standings text is multi-line: "CupName\nStandings:\n1. P1\n2. P2..."
 function parseStandingsText(text: string): { name: string; standings: ArchiveStanding[] } {
-  const idx = text.indexOf(" Standings:");
-  const name = idx > -1 ? text.slice(0, idx).trim() : text;
-  const body = idx > -1 ? text.slice(idx + 11).trim() : "";
+  const lines = text.split("\n").map((l) => l.trim()).filter(Boolean);
+  const name = lines[0] ?? "";
+  const bodyStart = lines.findIndex((l) => l.toLowerCase() === "standings:");
+  const placementLines = bodyStart > -1 ? lines.slice(bodyStart + 1) : lines.slice(1);
 
-  // Split on whitespace before a placement pattern like "5-6. " or "13. "
-  const tokens = body.split(/\s+(?=\d+(?:-\d+)?\. )/);
   const standings: ArchiveStanding[] = [];
-
-  for (const token of tokens) {
-    const m = token.match(/^(\d+(?:-\d+)?)\.[ ]+([\s\S]*)/);
+  for (const line of placementLines) {
+    const m = line.match(/^(\d+(?:-\d+)?)\.[ ]+(.*)/);
     if (m) {
-      const players = m[2]
-        .trim()
-        .split(/,\s*/)
-        .map((p) => p.trim())
-        .filter(Boolean);
+      const players = m[2].split(/,\s*/).map((p) => p.trim()).filter(Boolean);
       standings.push({ place: m[1], players });
     }
   }
@@ -79,23 +101,21 @@ function parseStandingsText(text: string): { name: string; standings: ArchiveSta
 }
 
 function parseArchiveCSV(csv: string): ArchiveCup[] {
-  const lines = csv.split("\n");
+  const rows = parseCSVFull(csv);
   const cups: ArchiveCup[] = [];
 
-  for (const line of lines) {
-    const cols = parseRow(line);
-    const rawDate = cols[0]?.trim() ?? "";
-    const bracketUrl = cols[1]?.trim() ?? "";
-    const standingsText = cols[2]?.trim() ?? "";
+  for (const cols of rows) {
+    // CSV structure: col[0]=empty, col[1]=date, col[2]=bracketUrl, col[3]=standings, col[4]=discord
+    const rawDate = cols[1]?.trim() ?? "";
+    const bracketUrl = cols[2]?.trim() ?? "";
+    const standingsText = cols[3]?.trim() ?? "";
 
-    // Skip header row or empty rows
     if (!rawDate.match(/^\d{2}\.\d{2}\.\d{4}/) || !bracketUrl.startsWith("http")) continue;
 
     const { name, standings } = parseStandingsText(standingsText);
     cups.push({ name, rawDate, bracketUrl, standings });
   }
 
-  // Newest first
   return cups.reverse();
 }
 
