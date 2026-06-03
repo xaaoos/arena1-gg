@@ -154,23 +154,25 @@ export const TopNav: FC = () => {
               transition: "all 0.3s",
             }}>{p.label}</Link>
           ))}
-          <div style={{ marginTop: 24, borderTop: `1px solid ${C.border}`, paddingTop: 24, display: "flex", flexDirection: "column", gap: 4 }}>
-            {subItems.map((item) =>
-              item.external ? (
-                <a key={item.href} href={item.href} target="_blank" rel="noopener noreferrer" onClick={() => setOpen(false)} style={{
-                  textDecoration: "none", padding: "14px 0",
-                  fontSize: 12, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase",
-                  fontFamily: "'Tektur',sans-serif", color: ACS,
-                }}>{item.label}</a>
-              ) : (
-                <Link key={item.href} to={item.href} onClick={() => setOpen(false)} style={{
-                  textDecoration: "none", padding: "14px 0",
-                  fontSize: 12, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase",
-                  fontFamily: "'Tektur',sans-serif", color: C.secondary,
-                }}>{item.label}</Link>
-              )
-            )}
-          </div>
+          {(pathname.startsWith("/non-pro-duel-cups") || pathname.startsWith("/divisions")) && (
+            <div style={{ marginTop: 24, borderTop: `1px solid ${C.border}`, paddingTop: 24, display: "flex", flexDirection: "column", gap: 4 }}>
+              {subItems.map((item) =>
+                item.external ? (
+                  <a key={item.href} href={item.href} target="_blank" rel="noopener noreferrer" onClick={() => setOpen(false)} style={{
+                    textDecoration: "none", padding: "14px 0",
+                    fontSize: 12, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase",
+                    fontFamily: "'Tektur',sans-serif", color: ACS,
+                  }}>{item.label}</a>
+                ) : (
+                  <Link key={item.href} to={item.href} onClick={() => setOpen(false)} style={{
+                    textDecoration: "none", padding: "14px 0",
+                    fontSize: 12, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase",
+                    fontFamily: "'Tektur',sans-serif", color: C.secondary,
+                  }}>{item.label}</Link>
+                )
+              )}
+            </div>
+          )}
         </div>
       )}
     </>
