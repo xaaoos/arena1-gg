@@ -23,21 +23,8 @@ const EloCup: FC = () => {
     <div style={{ overflowX: "hidden" }}>
       <ScanLine />
 
-      {/* Sub-nav */}
-      <nav style={{ position: "sticky", top: 48, zIndex: 99, background: C.bgNavSub, backdropFilter: "blur(12px)", borderBottom: `1px solid ${AC}18`, display: "flex", justifyContent: "center", overflowX: "auto", WebkitOverflowScrolling: "touch", transition: "background 0.3s" }}>
-        <a href="https://discord.gg/dgPwNAph2j" target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none", color: AC, fontSize: mob ? 10 : 11, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", padding: mob ? "10px 12px" : "12px 16px", borderBottom: `2px solid ${AC}`, fontFamily: "'Orbitron',sans-serif", whiteSpace: "nowrap" }}>
-          {t.next.cta}
-        </a>
-        <Link to="/divisions" style={{ textDecoration: "none", color: C.muted, fontSize: mob ? 10 : 11, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", padding: mob ? "10px 12px" : "12px 16px", borderBottom: "2px solid transparent", fontFamily: "'Orbitron',sans-serif", whiteSpace: "nowrap" }}>
-          {t.next.ctaDivisions}
-        </Link>
-        <button onClick={() => archiveRef.current?.scrollIntoView({ behavior: "smooth" })} style={{ background: "none", border: "none", cursor: "pointer", color: C.muted, fontSize: mob ? 10 : 11, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", padding: mob ? "10px 12px" : "12px 16px", borderBottom: "2px solid transparent", fontFamily: "'Orbitron',sans-serif", whiteSpace: "nowrap" }}>
-          {lang === "ru" ? "Результаты" : "Results"}
-        </button>
-      </nav>
-
       {/* Hero */}
-      <section style={{ minHeight: "100vh", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", position: "relative", padding: mob ? "100px 16px 40px" : "120px 20px 40px", textAlign: "center", background: `radial-gradient(ellipse at 50% 20%,rgba(74,222,128,0.06) 0%,transparent 60%)` }}>
+      <section style={{ minHeight: "100vh", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", position: "relative", padding: mob ? "120px 16px 40px" : "140px 20px 40px", textAlign: "center", background: `radial-gradient(ellipse at 50% 20%,rgba(74,222,128,0.06) 0%,transparent 60%)` }}>
         <div style={{ position: "absolute", inset: 0, pointerEvents: "none", backgroundImage: `linear-gradient(rgba(74,222,128,var(--grid-line)) 1px,transparent 1px),linear-gradient(90deg,rgba(74,222,128,var(--grid-line)) 1px,transparent 1px)`, backgroundSize: "60px 60px" }} />
         <div style={{ position: "relative", zIndex: 1, maxWidth: 700, width: "100%" }}>
           <div style={{ marginBottom: mob ? 24 : 40, display: "flex", justifyContent: "center" }}><Icon type="trophy" color={AC} size={mob ? 36 : 48} /></div>

@@ -5,11 +5,26 @@ import { useIsMobile } from "../hooks/useIsMobile";
 import { useTheme } from "../hooks/useTheme";
 import { C } from "../theme";
 
+const AC = "#4ade80";
+
 const PAGES = [
-  { path: "/non-pro-duel-cups", label: "Non-Pro Duel Cups", color: "#4ade80" },
+  { path: "/non-pro-duel-cups", label: "Non-Pro Duel Cups", color: AC },
   { path: "/trainer", label: "Trainer", color: "#fbbf24" },
   { path: "/blog", label: "Blog", color: "#c084fc" },
 ] as const;
+
+const SUB_NAV = {
+  ru: [
+    { label: "Регистрация — Discord", href: "https://discord.gg/dgPwNAph2j", external: true },
+    { label: "Дивизионы и игроки", href: "/divisions", external: false },
+    { label: "Результаты", href: "/non-pro-duel-cups", external: false },
+  ],
+  en: [
+    { label: "Register — Discord", href: "https://discord.gg/dgPwNAph2j", external: true },
+    { label: "Divisions & Players", href: "/divisions", external: false },
+    { label: "Results", href: "/non-pro-duel-cups", external: false },
+  ],
+};
 
 const isActive = (pathname: string, path: string) =>
   path === "/" ? pathname === "/" : pathname.startsWith(path);
@@ -21,9 +36,11 @@ export const TopNav: FC = () => {
   const mobile = useIsMobile();
   const [open, setOpen] = useState(false);
   const activePage = PAGES.find((p) => isActive(pathname, p.path)) ?? PAGES[0];
+  const subItems = SUB_NAV[lang];
 
   return (
     <>
+      {/* Main nav */}
       <div style={{
         position: "fixed", top: 0, left: 0, right: 0, zIndex: 200,
         background: C.bgNav, backdropFilter: "blur(12px)",
@@ -53,7 +70,6 @@ export const TopNav: FC = () => {
         )}
 
         <div style={{ marginLeft: "auto", display: "flex", gap: 4, alignItems: "center" }}>
-          {/* Theme toggle */}
           <button onClick={toggle} style={{
             background: "none", border: "none", cursor: "pointer",
             color: "#888", fontSize: 16, padding: "0 6px",
@@ -82,10 +98,45 @@ export const TopNav: FC = () => {
         </div>
       </div>
 
+      {/* Sub-nav */}
+      <div style={{
+        position: "fixed", top: 48, left: 0, right: 0, zIndex: 199,
+        background: C.bgNavSub, backdropFilter: "blur(12px)",
+        borderBottom: `1px solid ${AC}18`,
+        display: "flex", justifyContent: "center",
+        overflowX: "auto", WebkitOverflowScrolling: "touch",
+        transition: "background 0.3s",
+      }}>
+        {subItems.map((item) =>
+          item.external ? (
+            <a key={item.href} href={item.href} target="_blank" rel="noopener noreferrer" style={{
+              textDecoration: "none",
+              color: AC,
+              fontSize: mobile ? 9 : 10, fontWeight: 700, letterSpacing: 2,
+              textTransform: "uppercase",
+              padding: mobile ? "9px 10px" : "10px 14px",
+              borderBottom: `2px solid ${AC}`,
+              fontFamily: "'Orbitron',sans-serif", whiteSpace: "nowrap", flexShrink: 0,
+            }}>{item.label}</a>
+          ) : (
+            <Link key={item.href} to={item.href} style={{
+              textDecoration: "none",
+              color: isActive(pathname, item.href) ? AC : C.muted,
+              fontSize: mobile ? 9 : 10, fontWeight: 700, letterSpacing: 2,
+              textTransform: "uppercase",
+              padding: mobile ? "9px 10px" : "10px 14px",
+              borderBottom: isActive(pathname, item.href) ? `2px solid ${AC}` : "2px solid transparent",
+              fontFamily: "'Orbitron',sans-serif", whiteSpace: "nowrap", flexShrink: 0,
+              transition: "all 0.2s",
+            }}>{item.label}</Link>
+          )
+        )}
+      </div>
+
       {/* Mobile drawer */}
       {mobile && open && (
         <div style={{
-          position: "fixed", top: 48, left: 0, right: 0, bottom: 0, zIndex: 199,
+          position: "fixed", top: 48, left: 0, right: 0, bottom: 0, zIndex: 198,
           background: theme === "dark" ? "rgba(8,8,12,0.98)" : "rgba(244,244,246,0.98)",
           backdropFilter: "blur(16px)",
           display: "flex", flexDirection: "column", padding: "24px 20px",
@@ -100,6 +151,23 @@ export const TopNav: FC = () => {
               transition: "all 0.3s",
             }}>{p.label}</Link>
           ))}
+          <div style={{ marginTop: 24, borderTop: `1px solid ${C.border}`, paddingTop: 24, display: "flex", flexDirection: "column", gap: 4 }}>
+            {subItems.map((item) =>
+              item.external ? (
+                <a key={item.href} href={item.href} target="_blank" rel="noopener noreferrer" onClick={() => setOpen(false)} style={{
+                  textDecoration: "none", padding: "14px 0",
+                  fontSize: 12, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase",
+                  fontFamily: "'Orbitron',sans-serif", color: AC,
+                }}>{item.label}</a>
+              ) : (
+                <Link key={item.href} to={item.href} onClick={() => setOpen(false)} style={{
+                  textDecoration: "none", padding: "14px 0",
+                  fontSize: 12, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase",
+                  fontFamily: "'Orbitron',sans-serif", color: C.secondary,
+                }}>{item.label}</Link>
+              )
+            )}
+          </div>
         </div>
       )}
     </>
