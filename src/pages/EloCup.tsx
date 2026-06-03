@@ -23,6 +23,13 @@ const EloCup: FC = () => {
     <div style={{ overflowX: "hidden" }}>
       <ScanLine />
 
+      {/* Sub-nav */}
+      <nav style={{ position: "sticky", top: 48, zIndex: 99, background: C.bgNavSub, backdropFilter: "blur(12px)", borderBottom: `1px solid ${AC}18`, display: "flex", justifyContent: "center", transition: "background 0.3s" }}>
+        <button onClick={() => archiveRef.current?.scrollIntoView({ behavior: "smooth" })} style={{ background: "none", border: "none", cursor: "pointer", color: AC, fontSize: mob ? 10 : 11, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", padding: mob ? "10px 16px" : "12px 20px", borderBottom: `2px solid ${AC}`, fontFamily: "'Orbitron',sans-serif" }}>
+          {lang === "ru" ? "Результаты" : "Results"}
+        </button>
+      </nav>
+
       {/* Hero */}
       <section style={{ minHeight: "100vh", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", position: "relative", padding: mob ? "100px 16px 40px" : "120px 20px 40px", textAlign: "center", background: `radial-gradient(ellipse at 50% 20%,rgba(74,222,128,0.06) 0%,transparent 60%)` }}>
         <div style={{ position: "absolute", inset: 0, pointerEvents: "none", backgroundImage: `linear-gradient(rgba(74,222,128,var(--grid-line)) 1px,transparent 1px),linear-gradient(90deg,rgba(74,222,128,var(--grid-line)) 1px,transparent 1px)`, backgroundSize: "60px 60px" }} />
@@ -39,13 +46,6 @@ const EloCup: FC = () => {
           </div>
         </div>
       </section>
-
-      {/* Sub-nav */}
-      <nav style={{ position: "sticky", top: 48, zIndex: 99, background: C.bgNavSub, backdropFilter: "blur(12px)", borderBottom: `1px solid ${AC}18`, display: "flex", justifyContent: "center", transition: "background 0.3s" }}>
-        <button onClick={() => archiveRef.current?.scrollIntoView({ behavior: "smooth" })} style={{ background: "none", border: "none", cursor: "pointer", color: AC, fontSize: mob ? 10 : 11, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", padding: mob ? "10px 16px" : "12px 20px", borderBottom: `2px solid ${AC}`, fontFamily: "'Orbitron',sans-serif" }}>
-          {lang === "ru" ? "Результаты" : "Results"}
-        </button>
-      </nav>
 
       {/* Archive */}
       <section ref={archiveRef} style={{ padding: mob ? "60px 16px 80px" : "120px 20px 120px", maxWidth: 900, margin: "0 auto" }}>
