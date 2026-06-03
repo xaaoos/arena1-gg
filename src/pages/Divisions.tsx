@@ -88,7 +88,7 @@ const Divisions: FC = () => {
         <div style={{ position: "absolute", inset: 0, pointerEvents: "none", backgroundImage: `linear-gradient(rgba(74,222,128,var(--grid-line)) 1px,transparent 1px),linear-gradient(90deg,rgba(74,222,128,var(--grid-line)) 1px,transparent 1px)`, backgroundSize: "60px 60px" }} />
         <div style={{ position: "relative", zIndex: 1 }}>
           <div style={{ fontSize: mob ? 9 : 11, letterSpacing: mob ? 3 : 6, color: ACS, marginBottom: 20, fontWeight: 600 }}>{t.tag}</div>
-          <h1 style={{ fontSize: "clamp(20px,4vw,44px)", fontWeight: 900, margin: 0, lineHeight: 1.1, letterSpacing: mob ? 3 : 5, color: C.heading }}>
+          <h1 style={{ fontSize: "clamp(20px,4vw,44px)", fontWeight: 400, margin: 0, lineHeight: 1.1, letterSpacing: mob ? 3 : 5, color: C.heading, fontFamily: "'Russo One', sans-serif" }}>
             {t.h1} <span style={{ color: ACS }}>{t.h2}</span>
           </h1>
           {!loading && !error && divisions.length > 0 && (

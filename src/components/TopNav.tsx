@@ -104,7 +104,7 @@ export const TopNav: FC = () => {
         <div style={{
           position: "fixed", top: 48, left: 0, right: 0, zIndex: 199,
           background: C.bgNavSub, backdropFilter: "blur(12px)",
-          borderBottom: `1px solid ${AC}18`,
+          borderBottom: "none",
           display: "flex", justifyContent: "center",
           overflowX: "auto", WebkitOverflowScrolling: "touch",
           transition: "background 0.3s",
