@@ -45,7 +45,7 @@ const Divisions: FC = () => {
     setActiveDiv(label);
   };
 
-  const COLS = mob ? "100px 1fr 56px" : "140px 1fr 80px";
+  const COLS = mob ? "120px 1fr 52px" : "140px 1fr 80px";
 
   return (
     <div style={{ overflowX: "hidden" }}>
@@ -125,7 +125,7 @@ const Divisions: FC = () => {
               padding: mob ? "10px 16px" : "12px 24px",
               borderBottom: `1px solid ${AC}33`,
               background: `${AC}08`,
-              position: "sticky", top: mob ? 88 : 92, zIndex: 98,
+              position: "sticky", top: mob ? 80 : 84, zIndex: 98,
             }}>
               {[t.cols.div, t.cols.player, t.cols.elo].map((col, i) => (
                 <div key={i} style={{
@@ -140,7 +140,7 @@ const Divisions: FC = () => {
 
             {/* Rows grouped by division */}
             {divisions.map((div) => (
-              <div key={div.label} ref={(el) => { divRefs.current[div.label] = el; }}>
+              <div key={div.label} ref={(el) => { divRefs.current[div.label] = el; }} style={{ scrollMarginTop: mob ? 112 : 120 }}>
                 {div.players.map((p, pi) => {
                   const isFirst = pi === 0;
                   const isTop3Overall =
