@@ -6,9 +6,10 @@ import { useTheme } from "../hooks/useTheme";
 import { C } from "../theme";
 
 const AC = "#4ade80";
+const ACS = C.accent;
 
 const PAGES = [
-  { path: "/non-pro-duel-cups", label: "Non-Pro Duel Cups", color: AC },
+  { path: "/non-pro-duel-cups", label: "Non-Pro Duel Cups", color: ACS },
   { path: "/trainer", label: "Trainer", color: "#fbbf24" },
   { path: "/blog", label: "Blog", color: "#c084fc" },
 ] as const;
@@ -112,7 +113,7 @@ export const TopNav: FC = () => {
             item.external ? (
               <a key={item.href} href={item.href} target="_blank" rel="noopener noreferrer" style={{
                 textDecoration: "none",
-                color: AC,
+                color: ACS,
                 fontSize: mobile ? 9 : 10, fontWeight: 700, letterSpacing: 2,
                 textTransform: "uppercase",
                 padding: mobile ? "9px 10px" : "10px 14px",
@@ -122,11 +123,11 @@ export const TopNav: FC = () => {
             ) : (
               <Link key={item.href} to={item.href} style={{
                 textDecoration: "none",
-                color: isActive(pathname, item.href) ? AC : C.muted,
+                color: isActive(pathname, item.href) ? ACS : C.muted,
                 fontSize: mobile ? 9 : 10, fontWeight: 700, letterSpacing: 2,
                 textTransform: "uppercase",
                 padding: mobile ? "9px 10px" : "10px 14px",
-                borderBottom: isActive(pathname, item.href) ? `2px solid ${AC}` : "2px solid transparent",
+                borderBottom: isActive(pathname, item.href) ? `2px solid ${ACS}` : "2px solid transparent",
                 fontFamily: "'Orbitron',sans-serif", whiteSpace: "nowrap", flexShrink: 0,
                 transition: "all 0.2s",
               }}>{item.label}</Link>
@@ -159,7 +160,7 @@ export const TopNav: FC = () => {
                 <a key={item.href} href={item.href} target="_blank" rel="noopener noreferrer" onClick={() => setOpen(false)} style={{
                   textDecoration: "none", padding: "14px 0",
                   fontSize: 12, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase",
-                  fontFamily: "'Orbitron',sans-serif", color: AC,
+                  fontFamily: "'Orbitron',sans-serif", color: ACS,
                 }}>{item.label}</a>
               ) : (
                 <Link key={item.href} to={item.href} onClick={() => setOpen(false)} style={{

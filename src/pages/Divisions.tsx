@@ -6,6 +6,7 @@ import { ScanLine, BODY_FONT } from "../components/UI";
 import { C } from "../theme";
 
 const AC = "#4ade80";
+const ACS = C.accent; // solid accent — uses CSS var, dark in light mode
 
 const T = {
   ru: {
@@ -87,9 +88,9 @@ const Divisions: FC = () => {
       >
         <div style={{ position: "absolute", inset: 0, pointerEvents: "none", backgroundImage: `linear-gradient(rgba(74,222,128,var(--grid-line)) 1px,transparent 1px),linear-gradient(90deg,rgba(74,222,128,var(--grid-line)) 1px,transparent 1px)`, backgroundSize: "60px 60px" }} />
         <div style={{ position: "relative", zIndex: 1 }}>
-          <div style={{ fontSize: mob ? 9 : 11, letterSpacing: mob ? 3 : 6, color: AC, marginBottom: 20, fontWeight: 600 }}>{t.tag}</div>
+          <div style={{ fontSize: mob ? 9 : 11, letterSpacing: mob ? 3 : 6, color: ACS, marginBottom: 20, fontWeight: 600 }}>{t.tag}</div>
           <h1 style={{ fontSize: "clamp(36px,8vw,80px)", fontWeight: 900, margin: 0, lineHeight: 0.9, letterSpacing: -2, color: C.heading }}>
-            {t.h1} <span style={{ color: AC }}>{t.h2}</span>
+            {t.h1} <span style={{ color: ACS }}>{t.h2}</span>
           </h1>
           {!loading && !error && divisions.length > 0 && (
             <div style={{ marginTop: mob ? 28 : 36, display: "flex", flexDirection: "column", gap: 12, alignItems: "center" }}>
@@ -177,13 +178,13 @@ const Divisions: FC = () => {
                 ? <div style={{ textAlign: "center", color: C.muted, padding: "40px 0", fontFamily: BODY_FONT, fontSize: 13 }}>{t.notFound}</div>
                 : filtered.map((p, i) => (
                   <div key={i} style={{ display: "grid", gridTemplateColumns: COLS, padding: mob ? "9px 16px" : "11px 24px", borderBottom: `1px solid ${C.borderLight}`, alignItems: "center" }}>
-                    <div style={{ fontSize: mob ? 9 : 10, fontWeight: 700, letterSpacing: mob ? 1 : 2, color: AC, textTransform: "uppercase", fontFamily: "'Orbitron',sans-serif", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", paddingRight: 8 }}>
+                    <div style={{ fontSize: mob ? 9 : 10, fontWeight: 700, letterSpacing: mob ? 1 : 2, color: ACS, textTransform: "uppercase", fontFamily: "'Orbitron',sans-serif", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", paddingRight: 8 }}>
                       {p.division}
                     </div>
                     <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 12 : 13, color: C.heading, fontWeight: 600, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                       {p.name}
                     </div>
-                    <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 12 : 13, color: AC, fontWeight: 600, letterSpacing: 1, textAlign: "right" }}>
+                    <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 12 : 13, color: ACS, fontWeight: 600, letterSpacing: 1, textAlign: "right" }}>
                       {p.elo}
                     </div>
                   </div>
@@ -202,7 +203,7 @@ const Divisions: FC = () => {
                   borderBottom: `1px solid ${C.border}`,
                   marginTop: di > 0 ? 8 : 0,
                 }}>
-                  <span style={{ fontSize: mob ? 9 : 10, fontWeight: 700, letterSpacing: 3, color: AC, textTransform: "uppercase", fontFamily: "'Orbitron',sans-serif" }}>
+                  <span style={{ fontSize: mob ? 9 : 10, fontWeight: 700, letterSpacing: 3, color: ACS, textTransform: "uppercase", fontFamily: "'Orbitron',sans-serif" }}>
                     {div.label}
                   </span>
                   <span style={{ fontSize: 10, color: C.muted, fontFamily: BODY_FONT }}>
@@ -222,7 +223,7 @@ const Divisions: FC = () => {
                         <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 12 : 13, color: isTop3 ? C.heading : C.body, fontWeight: isTop3 ? 700 : 400, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                           {p.name}
                         </div>
-                        <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 12 : 13, color: AC, fontWeight: 600, letterSpacing: 1, flexShrink: 0 }}>
+                        <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 12 : 13, color: ACS, fontWeight: 600, letterSpacing: 1, flexShrink: 0 }}>
                           {p.elo}
                         </div>
                       </div>
@@ -236,7 +237,7 @@ const Divisions: FC = () => {
       </section>
 
       <footer style={{ padding: mob ? "40px 16px" : "60px 20px", textAlign: "center", borderTop: `1px solid ${C.borderLight}` }}>
-        <div style={{ fontSize: 16, fontWeight: 900, color: C.footer, letterSpacing: 4 }}>ARENA <span style={{ color: AC }}>1</span></div>
+        <div style={{ fontSize: 16, fontWeight: 900, color: C.footer, letterSpacing: 4 }}>ARENA <span style={{ color: ACS }}>1</span></div>
         <div style={{ fontSize: 10, color: C.footer, letterSpacing: 3, marginTop: 8 }}>{t.footer}</div>
       </footer>
     </div>

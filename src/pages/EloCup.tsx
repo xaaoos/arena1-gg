@@ -9,6 +9,7 @@ import { Icon } from "../components/Icons";
 import { C } from "../theme";
 
 const AC = "#4ade80";
+const ACS = C.accent;
 const PLACE_C: Record<string, string> = { "1": C.place1, "2": C.place2, "3": C.place3 };
 
 const EloCup: FC = () => {
@@ -27,9 +28,9 @@ const EloCup: FC = () => {
       <section style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", position: "relative", padding: mob ? "140px 16px 32px" : "160px 20px 36px", textAlign: "center", background: `radial-gradient(ellipse at 50% 20%,rgba(74,222,128,0.06) 0%,transparent 60%)` }}>
         <div style={{ position: "absolute", inset: 0, pointerEvents: "none", backgroundImage: `linear-gradient(rgba(74,222,128,var(--grid-line)) 1px,transparent 1px),linear-gradient(90deg,rgba(74,222,128,var(--grid-line)) 1px,transparent 1px)`, backgroundSize: "60px 60px" }} />
         <div style={{ position: "relative", zIndex: 1, maxWidth: 700, width: "100%" }}>
-          <div style={{ fontSize: mob ? 9 : 11, letterSpacing: mob ? 3 : 6, color: AC, marginBottom: 12, fontWeight: 600 }}>{t.hero.tag}</div>
+          <div style={{ fontSize: mob ? 9 : 11, letterSpacing: mob ? 3 : 6, color: ACS, marginBottom: 12, fontWeight: 600 }}>{t.hero.tag}</div>
           <h1 style={{ fontSize: "clamp(28px,6vw,64px)", fontWeight: 900, margin: 0, lineHeight: 1, letterSpacing: -1, color: C.heading, whiteSpace: "nowrap" }}>
-            {t.hero.t1}{t.hero.t1 && " "}<span style={{ color: AC }}>{t.hero.t2}</span>
+            {t.hero.t1}{t.hero.t1 && " "}<span style={{ color: ACS }}>{t.hero.t2}</span>
           </h1>
           <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 12 : 14, color: C.body, lineHeight: 1.7, maxWidth: 520, margin: "16px auto 0" }}>{t.hero.sub}</div>
         </div>
@@ -38,7 +39,7 @@ const EloCup: FC = () => {
       {/* Archive */}
       <section ref={archiveRef} style={{ padding: mob ? "60px 16px 80px" : "120px 20px 120px", maxWidth: 900, margin: "0 auto" }}>
         <SL num={t.archive.num} text={t.archive.label} color={AC} />
-        <ST>{t.archive.t1}<br /><span style={{ color: AC }}>{t.archive.t2}</span></ST>
+        <ST>{t.archive.t1}<br /><span style={{ color: ACS }}>{t.archive.t2}</span></ST>
 
         {archiveLoading && (
           <div style={{ textAlign: "center", color: C.muted, padding: "40px 0", fontFamily: BODY_FONT, fontSize: 13, letterSpacing: 2 }}>
@@ -81,7 +82,7 @@ const EloCup: FC = () => {
       </section>
 
       <footer style={{ padding: mob ? "40px 16px" : "60px 20px", textAlign: "center", borderTop: `1px solid ${C.borderLight}` }}>
-        <div style={{ fontSize: 16, fontWeight: 900, color: C.footer, letterSpacing: 4 }}>ARENA <span style={{ color: AC }}>1</span></div>
+        <div style={{ fontSize: 16, fontWeight: 900, color: C.footer, letterSpacing: 4 }}>ARENA <span style={{ color: ACS }}>1</span></div>
         <div style={{ fontSize: 10, color: C.footer, letterSpacing: 3, marginTop: 8 }}>{t.footer}</div>
         <div style={{ fontSize: 10, color: C.footer, letterSpacing: 2, marginTop: 16, opacity: 0.5 }}>developed by <a href="https://selzio.com" target="_blank" rel="noopener noreferrer" style={{ color: "inherit", textDecoration: "underline" }}>selzio.com</a></div>
       </footer>
@@ -103,7 +104,7 @@ const EloCup: FC = () => {
                 <div style={{ fontFamily: BODY_FONT, fontSize: 11, color: C.muted, marginTop: 4 }}>{formatArchiveDate(selected.rawDate, lang)}</div>
               </div>
               <div style={{ display: "flex", gap: 8, alignItems: "center", flexShrink: 0 }}>
-                <a href={selected.bracketUrl} target="_blank" rel="noopener noreferrer" style={{ fontFamily: BODY_FONT, fontSize: 10, color: AC, letterSpacing: 1, textDecoration: "none", padding: "6px 12px", border: `1px solid ${AC}33`, whiteSpace: "nowrap" }}>
+                <a href={selected.bracketUrl} target="_blank" rel="noopener noreferrer" style={{ fontFamily: BODY_FONT, fontSize: 10, color: ACS, letterSpacing: 1, textDecoration: "none", padding: "6px 12px", border: `1px solid ${AC}33`, whiteSpace: "nowrap" }}>
                   {t.archive.bracket} ↗
                 </a>
                 <button onClick={() => setSelected(null)} style={{ background: "none", border: "none", cursor: "pointer", color: C.muted, fontSize: 18, lineHeight: 1, padding: "4px 6px" }}>✕</button>
