@@ -162,7 +162,7 @@ const Divisions: FC = () => {
               padding: mob ? "10px 16px" : "12px 24px",
               borderBottom: `1px solid ${AC}33`,
               background: `${AC}08`,
-              position: "sticky", top: 80, zIndex: 98,
+              position: "sticky", top: mob ? 84 : 80, zIndex: 98,
             }}>
               <div style={{ display: "flex", justifyContent: "space-between" }}>
                 <span style={{ fontSize: 9, letterSpacing: 3, color: C.muted, fontWeight: 700, textTransform: "uppercase" }}>{t.cols.player}</span>
