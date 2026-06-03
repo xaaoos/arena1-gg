@@ -10,7 +10,7 @@ import { C } from "../theme";
 
 const AC = "#4ade80";
 const PLACE_C: Record<string, string> = { "1": "#ffd700", "2": "#c0c0c0", "3": "#cd7f32" };
-const NAV_IDS = ["hero", "next", "archive"];
+const NAV_IDS = ["next", "archive"];
 
 const EloCup: FC = () => {
   const { lang } = useLang();

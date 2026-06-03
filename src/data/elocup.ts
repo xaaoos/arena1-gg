@@ -27,7 +27,7 @@ export interface EloCupData {
 
 export const ELOCUP: Record<"ru" | "en", EloCupData> = {
   ru: {
-    nav: ["Non-Pro Duel Cups", "Следующий", "Архив"],
+    nav: ["Анонс", "Результаты"],
     hero: {
       tag: "N O N - P R O",
       t1: "", t2: "DUEL CUPS",
@@ -43,7 +43,7 @@ export const ELOCUP: Record<"ru" | "en", EloCupData> = {
       maps: ["Aerowalk", "Battleforged", "Blood Run", "Campgrounds", "Cure", "Dismemberment", "Furious Heights", "Lost World", "Hektik", "Silence", "Sinister", "Toxicity", "Vertical Vengeance"],
       prize: "1 000 RUB + donations",
       cta: "Регистрация — Discord",
-      ctaDivisions: "Дивизионы",
+      ctaDivisions: "Дивизионы и игроки",
       ctaVerified: "Верифицированные игроки",
     },
     archive: { num: "02", label: "АРХИВ РЕЗУЛЬТАТОВ", t1: "Прошедшие", t2: "турниры", bracket: "Сетка турнира" },
@@ -82,7 +82,7 @@ export const ELOCUP: Record<"ru" | "en", EloCupData> = {
     ],
   },
   en: {
-    nav: ["Non-Pro Duel Cups", "Next", "Archive"],
+    nav: ["Announce", "Results"],
     hero: {
       tag: "N O N - P R O",
       t1: "", t2: "DUEL CUPS",
@@ -98,7 +98,7 @@ export const ELOCUP: Record<"ru" | "en", EloCupData> = {
       maps: ["Aerowalk", "Battleforged", "Blood Run", "Campgrounds", "Cure", "Dismemberment", "Furious Heights", "Lost World", "Hektik", "Silence", "Sinister", "Toxicity", "Vertical Vengeance"],
       prize: "1 000 RUB + donations",
       cta: "Register — Discord",
-      ctaDivisions: "Divisions",
+      ctaDivisions: "Divisions & Players",
       ctaVerified: "Verified Players",
     },
     archive: { num: "02", label: "RESULTS ARCHIVE", t1: "Past", t2: "tournaments", bracket: "Tournament bracket" },
