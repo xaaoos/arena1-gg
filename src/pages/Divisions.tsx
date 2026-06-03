@@ -151,17 +151,17 @@ const Divisions: FC = () => {
           <div>
             {/* Header */}
             <div style={{
-              display: "grid", gridTemplateColumns: COLS,
+              display: "grid", gridTemplateColumns: mob ? "1fr 52px" : "1fr 80px",
               padding: mob ? "10px 16px" : "12px 24px",
               borderBottom: `1px solid ${AC}33`,
               background: `${AC}08`,
               position: "sticky", top: 48, zIndex: 98,
             }}>
-              {[t.cols.div, t.cols.player, t.cols.elo].map((col, i) => (
+              {[t.cols.player, t.cols.elo].map((col, i) => (
                 <div key={i} style={{
                   fontSize: 9, letterSpacing: 3, color: C.muted,
                   fontWeight: 700, textTransform: "uppercase",
-                  textAlign: i === 2 ? "right" : "left",
+                  textAlign: i === 1 ? "right" : "left",
                 }}>
                   {col}
                 </div>
@@ -188,16 +188,28 @@ const Divisions: FC = () => {
             )}
 
             {/* Grouped by division */}
-            {filtered === null && divisions.map((div) => (
+            {filtered === null && divisions.map((div, di) => (
               <div key={div.label} ref={(el) => { divRefs.current[div.label] = el; }} style={{ scrollMarginTop: mob ? 80 : 84 }}>
+                {/* Division header row */}
+                <div style={{
+                  display: "flex", alignItems: "center", gap: 12,
+                  padding: mob ? "10px 16px" : "12px 24px",
+                  background: C.bgCard,
+                  borderTop: di > 0 ? `2px solid ${C.border}` : "none",
+                  borderBottom: `1px solid ${C.border}`,
+                  marginTop: di > 0 ? 8 : 0,
+                }}>
+                  <span style={{ fontSize: mob ? 9 : 10, fontWeight: 700, letterSpacing: 3, color: AC, textTransform: "uppercase", fontFamily: "'Orbitron',sans-serif" }}>
+                    {div.label}
+                  </span>
+                  <span style={{ fontSize: 10, color: C.muted, fontFamily: BODY_FONT }}>
+                    {div.players[div.players.length - 1]?.elo}–{div.players[0]?.elo} ELO · {div.players.length} игроков
+                  </span>
+                </div>
                 {div.players.map((p, pi) => {
-                  const isFirst = pi === 0;
-                  const isTop3Overall = pi < 3 && divisions[0].label === div.label;
+                  const isTop3Overall = pi < 3 && di === 0;
                   return (
-                    <div key={pi} style={{ display: "grid", gridTemplateColumns: COLS, padding: mob ? "9px 16px" : "11px 24px", borderBottom: `1px solid ${C.borderLight}`, alignItems: "center", background: isTop3Overall ? C.accentSubtle : "transparent" }}>
-                      <div style={{ fontSize: mob ? 9 : 10, fontWeight: 700, letterSpacing: mob ? 1 : 2, color: isFirst ? AC : "transparent", textTransform: "uppercase", fontFamily: "'Orbitron',sans-serif", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", paddingRight: 8 }}>
-                        {isFirst ? div.label : ""}
-                      </div>
+                    <div key={pi} style={{ display: "grid", gridTemplateColumns: mob ? "1fr 52px" : "1fr 80px", padding: mob ? "9px 16px" : "11px 24px", borderBottom: `1px solid ${C.borderLight}`, alignItems: "center", background: isTop3Overall ? C.accentSubtle : "transparent" }}>
                       <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 12 : 13, color: isTop3Overall ? C.heading : C.body, fontWeight: isTop3Overall ? 700 : 400, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                         {p.name}
                       </div>
