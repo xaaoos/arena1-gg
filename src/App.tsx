@@ -8,6 +8,7 @@ import Championship from "./pages/Championship";
 import Verified from "./pages/Verified";
 import Trainer from "./pages/Trainer";
 import EloCup from "./pages/EloCup";
+import Divisions from "./pages/Divisions";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 
@@ -20,7 +21,8 @@ const App: FC = () => (
           <div style={{ paddingTop: 0 }}>
             <Routes>
               <Route path="/" element={<Championship />} />
-              <Route path="/elocup" element={<EloCup />} />
+              <Route path="/non-pro-duel-cups" element={<EloCup />} />
+              <Route path="/divisions" element={<Divisions />} />
               <Route path="/verified" element={<Verified />} />
               <Route path="/trainer" element={<Trainer />} />
               <Route path="/blog" element={<Blog />} />

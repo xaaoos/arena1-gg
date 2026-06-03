@@ -1,7 +1,9 @@
 import { useState, useEffect, useRef, type FC } from "react";
+import { Link } from "react-router-dom";
 import { useLang } from "../hooks/useLang";
 import { useIsMobile } from "../hooks/useIsMobile";
 import { ELOCUP } from "../data/elocup";
+import { useArchiveData, formatArchiveDate } from "../hooks/useArchiveData";
 import { ScanLine, SL, ST, BODY_FONT } from "../components/UI";
 import { Icon } from "../components/Icons";
 import { C } from "../theme";
@@ -17,6 +19,7 @@ const EloCup: FC = () => {
   const [active, setActive] = useState("hero");
   const refs = useRef<Record<string, HTMLElement | null>>({});
   const setRef = (id: string) => (el: HTMLElement | null) => { refs.current[id] = el; };
+  const { cups, loading: archiveLoading, error: archiveError } = useArchiveData();
 
   useEffect(() => {
     const obs = new IntersectionObserver((entries) => {
@@ -46,7 +49,11 @@ const EloCup: FC = () => {
           <div style={{ fontSize: mob ? 9 : 11, letterSpacing: mob ? 3 : 6, color: AC, marginBottom: 20, fontWeight: 600 }}>{t.hero.tag}</div>
           <h1 style={{ fontSize: "clamp(48px,11vw,110px)", fontWeight: 900, margin: 0, lineHeight: 0.85, letterSpacing: -2, color: C.heading }}>{t.hero.t1} <span style={{ color: AC }}>{t.hero.t2}</span></h1>
           <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 13 : 15, color: C.body, marginTop: 28, lineHeight: 1.8, maxWidth: 560, margin: "28px auto 0" }}>{t.hero.sub}</div>
-          <a href="https://discord.gg/dgPwNAph2j" target="_blank" rel="noopener noreferrer" style={{ marginTop: mob ? 32 : 44, padding: mob ? "12px 28px" : "14px 40px", background: AC, border: "none", color: "#08080c", fontSize: mob ? 11 : 12, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", cursor: "pointer", fontFamily: "'Orbitron',monospace", textDecoration: "none", display: "inline-block", whiteSpace: "nowrap" }}>{t.next.cta}</a>
+          <div style={{ marginTop: mob ? 32 : 44, display: "flex", flexWrap: "wrap", gap: 12, justifyContent: "center" }}>
+            <a href="https://discord.gg/dgPwNAph2j" target="_blank" rel="noopener noreferrer" style={{ padding: mob ? "12px 28px" : "14px 40px", background: AC, color: "#08080c", fontSize: mob ? 11 : 12, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", fontFamily: "'Orbitron',monospace", textDecoration: "none", display: "inline-block", whiteSpace: "nowrap" }}>{t.next.cta}</a>
+            <Link to="/divisions" style={{ padding: mob ? "12px 28px" : "14px 40px", background: "transparent", border: `1px solid ${AC}`, color: AC, fontSize: mob ? 11 : 12, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", fontFamily: "'Orbitron',monospace", textDecoration: "none", display: "inline-block", whiteSpace: "nowrap" }}>{t.next.ctaDivisions}</Link>
+            <Link to="/verified" style={{ padding: mob ? "12px 28px" : "14px 40px", background: "transparent", border: `1px solid ${AC}44`, color: C.muted, fontSize: mob ? 11 : 12, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", fontFamily: "'Orbitron',monospace", textDecoration: "none", display: "inline-block", whiteSpace: "nowrap" }}>{t.next.ctaVerified}</Link>
+          </div>
         </div>
       </section>
 
@@ -93,36 +100,50 @@ const EloCup: FC = () => {
         <SL num={t.archive.num} text={t.archive.label} color={AC} />
         <ST>{t.archive.t1}<br /><span style={{ color: AC }}>{t.archive.t2}</span></ST>
 
-        <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
-          {t.past.map((cup, ci) => (
-            <div key={ci} style={{ background: C.bgCard, border: `1px solid ${C.border}`, overflow: "hidden" }}>
-              <div style={{ padding: mob ? "16px 16px" : "24px 28px", borderBottom: `1px solid ${C.border}`, display: "flex", flexDirection: mob ? "column" : "row", justifyContent: "space-between", alignItems: mob ? "flex-start" : "center", gap: 12 }}>
-                <div>
-                  <div style={{ fontSize: mob ? 16 : 18, fontWeight: 800, color: C.heading, letterSpacing: 1 }}>{cup.name}</div>
-                  <div style={{ fontFamily: BODY_FONT, fontSize: 12, color: C.muted, marginTop: 4 }}>{cup.date}</div>
-                </div>
-                <a href={cup.bracketUrl} target="_blank" rel="noopener noreferrer" style={{ fontFamily: BODY_FONT, fontSize: 11, color: AC, letterSpacing: 1, textDecoration: "none", padding: "8px 16px", border: `1px solid ${AC}33` }}>{t.archive.bracket} &#8599;</a>
-              </div>
+        {archiveLoading && (
+          <div style={{ textAlign: "center", color: C.muted, padding: "40px 0", fontFamily: BODY_FONT, fontSize: 13, letterSpacing: 2 }}>
+            {lang === "ru" ? "Загрузка..." : "Loading..."}
+          </div>
+        )}
 
-              <div style={{ display: "flex", flexDirection: "column" }}>
-                {cup.standings.map((s, si) => {
-                  const pc = PLACE_C[s.place] ?? C.body;
-                  const isTop3 = ["1", "2", "3"].includes(s.place);
-                  return (
-                    <div key={si} style={{ display: "grid", gridTemplateColumns: mob ? "48px 1fr" : "64px 1fr", alignItems: "center", padding: mob ? "12px 16px" : "14px 28px", borderTop: si > 0 ? `1px solid ${C.borderLight}` : "none", background: isTop3 ? `${pc}08` : "transparent" }}>
-                      <div style={{ fontSize: isTop3 ? (mob ? 16 : 18) : 13, fontWeight: isTop3 ? 900 : 600, color: pc, fontFamily: "'Orbitron',monospace" }}>
-                        {s.place === "1" ? "🥇" : s.place === "2" ? "🥈" : s.place === "3" ? "🥉" : `#${s.place}`}
+        {archiveError && (
+          <div style={{ textAlign: "center", color: "#ff3e3e", padding: "40px 0", fontFamily: BODY_FONT, fontSize: 13 }}>
+            {lang === "ru" ? "Не удалось загрузить архив" : "Failed to load archive"}
+          </div>
+        )}
+
+        {!archiveLoading && !archiveError && (
+          <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+            {cups.map((cup, ci) => (
+              <div key={ci} style={{ background: C.bgCard, border: `1px solid ${C.border}`, overflow: "hidden" }}>
+                <div style={{ padding: mob ? "16px 16px" : "24px 28px", borderBottom: `1px solid ${C.border}`, display: "flex", flexDirection: mob ? "column" : "row", justifyContent: "space-between", alignItems: mob ? "flex-start" : "center", gap: 12 }}>
+                  <div>
+                    <div style={{ fontSize: mob ? 16 : 18, fontWeight: 800, color: C.heading, letterSpacing: 1 }}>{cup.name}</div>
+                    <div style={{ fontFamily: BODY_FONT, fontSize: 12, color: C.muted, marginTop: 4 }}>{formatArchiveDate(cup.rawDate, lang)}</div>
+                  </div>
+                  <a href={cup.bracketUrl} target="_blank" rel="noopener noreferrer" style={{ fontFamily: BODY_FONT, fontSize: 11, color: AC, letterSpacing: 1, textDecoration: "none", padding: "8px 16px", border: `1px solid ${AC}33` }}>{t.archive.bracket} &#8599;</a>
+                </div>
+
+                <div style={{ display: "flex", flexDirection: "column" }}>
+                  {cup.standings.map((s, si) => {
+                    const pc = PLACE_C[s.place] ?? C.body;
+                    const isTop3 = ["1", "2", "3"].includes(s.place);
+                    return (
+                      <div key={si} style={{ display: "grid", gridTemplateColumns: mob ? "48px 1fr" : "64px 1fr", alignItems: "center", padding: mob ? "12px 16px" : "14px 28px", borderTop: si > 0 ? `1px solid ${C.borderLight}` : "none", background: isTop3 ? `${pc}08` : "transparent" }}>
+                        <div style={{ fontSize: isTop3 ? (mob ? 16 : 18) : 13, fontWeight: isTop3 ? 900 : 600, color: pc, fontFamily: "'Orbitron',monospace" }}>
+                          {s.place === "1" ? "🥇" : s.place === "2" ? "🥈" : s.place === "3" ? "🥉" : `#${s.place}`}
+                        </div>
+                        <div style={{ fontFamily: BODY_FONT, fontSize: isTop3 ? (mob ? 13 : 15) : (mob ? 12 : 13), color: isTop3 ? C.heading : C.body, fontWeight: isTop3 ? 700 : 400, letterSpacing: 0.5, overflowWrap: "break-word" }}>
+                          {s.players.join(", ")}
+                        </div>
                       </div>
-                      <div style={{ fontFamily: BODY_FONT, fontSize: isTop3 ? (mob ? 13 : 15) : (mob ? 12 : 13), color: isTop3 ? C.heading : C.body, fontWeight: isTop3 ? 700 : 400, letterSpacing: 0.5, overflowWrap: "break-word" }}>
-                        {s.players.join(", ")}
-                      </div>
-                    </div>
-                  );
-                })}
+                    );
+                  })}
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </section>
 
       <footer style={{ padding: mob ? "40px 16px" : "60px 20px", textAlign: "center", borderTop: `1px solid ${C.borderLight}` }}>

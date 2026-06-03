@@ -17,6 +17,7 @@ export interface EloCupData {
     num: string; label: string; t1: string; t2: string;
     name: string; date: string; elo: string; format: string;
     mappool: string; maps: string[]; prize: string; cta: string;
+    ctaDivisions: string; ctaVerified: string;
   };
   archive: { num: string; label: string; t1: string; t2: string; bracket: string };
   footer: string;
@@ -26,10 +27,10 @@ export interface EloCupData {
 
 export const ELOCUP: Record<"ru" | "en", EloCupData> = {
   ru: {
-    nav: ["ELO Cup", "Следующий", "Архив"],
+    nav: ["Non-Pro Duel Cups", "Следующий", "Архив"],
     hero: {
-      tag: "A R E N A  1  E L O  C U P",
-      t1: "ELO", t2: "CUP",
+      tag: "A R E N A  1  N O N - P R O  D U E L  C U P S",
+      t1: "NON-PRO", t2: "DUEL CUPS",
       sub: "Еженедельные дуэльные турниры с ELO-ограничениями для верифицированных игроков. Докажи свой уровень в честном брекете.",
     },
     next: {
@@ -42,9 +43,11 @@ export const ELOCUP: Record<"ru" | "en", EloCupData> = {
       maps: ["Aerowalk", "Battleforged", "Blood Run", "Campgrounds", "Cure", "Dismemberment", "Furious Heights", "Lost World", "Hektik", "Silence", "Sinister", "Toxicity", "Vertical Vengeance"],
       prize: "1 000 RUB + donations",
       cta: "Регистрация — Discord",
+      ctaDivisions: "Дивизионы",
+      ctaVerified: "Верифицированные игроки",
     },
     archive: { num: "02", label: "АРХИВ РЕЗУЛЬТАТОВ", t1: "Прошедшие", t2: "турниры", bracket: "Сетка турнира" },
-    footer: "ARENA 1 ELO CUP · WEEKLY DUEL TOURNAMENT · 2026",
+    footer: "ARENA 1 NON-PRO DUEL CUPS · WEEKLY DUEL TOURNAMENT · 2026",
     standings: { place: "место" },
     past: [
       {
@@ -79,10 +82,10 @@ export const ELOCUP: Record<"ru" | "en", EloCupData> = {
     ],
   },
   en: {
-    nav: ["ELO Cup", "Next", "Archive"],
+    nav: ["Non-Pro Duel Cups", "Next", "Archive"],
     hero: {
-      tag: "A R E N A  1  E L O  C U P",
-      t1: "ELO", t2: "CUP",
+      tag: "A R E N A  1  N O N - P R O  D U E L  C U P S",
+      t1: "NON-PRO", t2: "DUEL CUPS",
       sub: "Weekly duel tournaments with ELO restrictions for verified players. Prove your level in a fair bracket.",
     },
     next: {
@@ -95,10 +98,11 @@ export const ELOCUP: Record<"ru" | "en", EloCupData> = {
       maps: ["Aerowalk", "Battleforged", "Blood Run", "Campgrounds", "Cure", "Dismemberment", "Furious Heights", "Lost World", "Hektik", "Silence", "Sinister", "Toxicity", "Vertical Vengeance"],
       prize: "1 000 RUB + donations",
       cta: "Register — Discord",
-
+      ctaDivisions: "Divisions",
+      ctaVerified: "Verified Players",
     },
     archive: { num: "02", label: "RESULTS ARCHIVE", t1: "Past", t2: "tournaments", bracket: "Tournament bracket" },
-    footer: "ARENA 1 ELO CUP · WEEKLY DUEL TOURNAMENT · 2026",
+    footer: "ARENA 1 NON-PRO DUEL CUPS · WEEKLY DUEL TOURNAMENT · 2026",
     standings: { place: "place" },
     past: [
       {

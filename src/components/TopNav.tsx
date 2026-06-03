@@ -7,7 +7,7 @@ import { C } from "../theme";
 
 const PAGES = [
   { path: "/", label: "Championship", color: "#ff3e3e" },
-  { path: "/elocup", label: "EloCup", color: "#4ade80" },
+  { path: "/non-pro-duel-cups", label: "Non-Pro Duel Cups", color: "#4ade80" },
   { path: "/verified", label: "Verified", color: "#00f0ff" },
   { path: "/trainer", label: "Trainer", color: "#fbbf24" },
   { path: "/blog", label: "Blog", color: "#c084fc" },
