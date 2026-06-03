@@ -80,7 +80,7 @@ const Divisions: FC = () => {
           justifyContent: "center",
           alignItems: "center",
           position: "relative",
-          padding: mob ? "120px 16px 60px" : "140px 20px 80px",
+          padding: mob ? "160px 16px 60px" : "180px 20px 80px",
           textAlign: "center",
           background: `radial-gradient(ellipse at 50% 20%,rgba(74,222,128,0.06) 0%,transparent 60%)`,
         }}
