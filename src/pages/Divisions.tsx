@@ -15,6 +15,8 @@ const T = {
     loading: "Загрузка...",
     error: "Не удалось загрузить данные. Попробуй позже.",
     cols: { div: "Дивизион", player: "Игрок", elo: "ELO" },
+    search: "Поиск по нику...",
+    notFound: "Никнейм не найден",
     footer: "ARENA 1 DIVISIONS · NON-PRO DUEL CUPS · 2026",
   },
   en: {
@@ -24,6 +26,8 @@ const T = {
     loading: "Loading...",
     error: "Failed to load data. Please try again later.",
     cols: { div: "Division", player: "Player", elo: "ELO" },
+    search: "Search by nickname...",
+    notFound: "Nickname not found",
     footer: "ARENA 1 DIVISIONS · NON-PRO DUEL CUPS · 2026",
   },
 };
@@ -34,7 +38,16 @@ const Divisions: FC = () => {
   const t = T[lang];
   const { divisions, loading, error } = useSheetData();
   const [activeDiv, setActiveDiv] = useState("");
+  const [search, setSearch] = useState("");
   const divRefs = useRef<Record<string, HTMLDivElement | null>>({});
+
+  const query = search.trim().toLowerCase();
+  const allPlayers = divisions.flatMap((d) =>
+    d.players.map((p) => ({ ...p, division: d.label }))
+  );
+  const filtered = query
+    ? allPlayers.filter((p) => p.name.toLowerCase().includes(query))
+    : null;
 
   useEffect(() => {
     if (divisions.length > 0 && !activeDiv) setActiveDiv(divisions[0].label);
@@ -72,32 +85,51 @@ const Divisions: FC = () => {
             {t.h1} <span style={{ color: AC }}>{t.h2}</span>
           </h1>
           {!loading && !error && divisions.length > 0 && (
-            <select
-              value={activeDiv}
-              onChange={(e) => scrollToDiv(e.target.value)}
-              style={{
-                marginTop: mob ? 28 : 36,
-                background: C.inputBg,
-                border: `1px solid ${C.border}`,
-                color: C.body,
-                fontFamily: "'Orbitron',monospace",
-                fontSize: mob ? 10 : 11,
-                fontWeight: 700,
-                letterSpacing: 2,
-                textTransform: "uppercase",
-                padding: mob ? "10px 14px" : "12px 18px",
-                cursor: "pointer",
-                outline: "none",
-                width: mob ? 200 : 240,
-                display: "block",
-                marginLeft: "auto",
-                marginRight: "auto",
-              }}
-            >
-              {divisions.map((d) => (
-                <option key={d.label} value={d.label}>{d.label}</option>
-              ))}
-            </select>
+            <div style={{ marginTop: mob ? 28 : 36, display: "flex", flexDirection: "column", gap: 12, alignItems: "center" }}>
+              {/* Search */}
+              <input
+                type="text"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder={t.search}
+                style={{
+                  background: C.inputBg,
+                  border: `1px solid ${C.border}`,
+                  color: C.heading,
+                  fontFamily: BODY_FONT,
+                  fontSize: mob ? 13 : 14,
+                  padding: mob ? "10px 14px" : "12px 18px",
+                  outline: "none",
+                  width: mob ? 220 : 280,
+                  caretColor: AC,
+                }}
+              />
+              {/* Jump to division — hidden while searching */}
+              {!query && (
+                <select
+                  value={activeDiv}
+                  onChange={(e) => scrollToDiv(e.target.value)}
+                  style={{
+                    background: C.inputBg,
+                    border: `1px solid ${C.border}`,
+                    color: C.muted,
+                    fontFamily: "'Orbitron',monospace",
+                    fontSize: mob ? 9 : 10,
+                    fontWeight: 700,
+                    letterSpacing: 2,
+                    textTransform: "uppercase",
+                    padding: mob ? "8px 12px" : "10px 16px",
+                    cursor: "pointer",
+                    outline: "none",
+                    width: mob ? 220 : 280,
+                  }}
+                >
+                  {divisions.map((d) => (
+                    <option key={d.label} value={d.label}>{d.label}</option>
+                  ))}
+                </select>
+              )}
+            </div>
           )}
         </div>
       </section>
@@ -136,57 +168,40 @@ const Divisions: FC = () => {
               ))}
             </div>
 
-            {/* Rows grouped by division */}
-            {divisions.map((div) => (
+            {/* Search results */}
+            {filtered !== null && (
+              filtered.length === 0
+                ? <div style={{ textAlign: "center", color: C.muted, padding: "40px 0", fontFamily: BODY_FONT, fontSize: 13 }}>{t.notFound}</div>
+                : filtered.map((p, i) => (
+                  <div key={i} style={{ display: "grid", gridTemplateColumns: COLS, padding: mob ? "9px 16px" : "11px 24px", borderBottom: `1px solid ${C.borderLight}`, alignItems: "center" }}>
+                    <div style={{ fontSize: mob ? 9 : 10, fontWeight: 700, letterSpacing: mob ? 1 : 2, color: AC, textTransform: "uppercase", fontFamily: "'Orbitron',sans-serif", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", paddingRight: 8 }}>
+                      {p.division}
+                    </div>
+                    <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 12 : 13, color: C.heading, fontWeight: 600, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                      {p.name}
+                    </div>
+                    <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 12 : 13, color: AC, fontWeight: 600, letterSpacing: 1, textAlign: "right" }}>
+                      {p.elo}
+                    </div>
+                  </div>
+                ))
+            )}
+
+            {/* Grouped by division */}
+            {filtered === null && divisions.map((div) => (
               <div key={div.label} ref={(el) => { divRefs.current[div.label] = el; }} style={{ scrollMarginTop: mob ? 80 : 84 }}>
                 {div.players.map((p, pi) => {
                   const isFirst = pi === 0;
-                  const isTop3Overall =
-                    pi < 3 && divisions[0].label === div.label;
-
+                  const isTop3Overall = pi < 3 && divisions[0].label === div.label;
                   return (
-                    <div
-                      key={pi}
-                      style={{
-                        display: "grid",
-                        gridTemplateColumns: COLS,
-                        padding: mob ? "9px 16px" : "11px 24px",
-                        borderBottom: `1px solid ${C.borderLight}`,
-                        alignItems: "center",
-                        background: isTop3Overall ? C.accentSubtle : "transparent",
-                      }}
-                    >
-                      {/* Division — only on first row of each division */}
-                      <div style={{
-                        fontSize: mob ? 9 : 10, fontWeight: 700,
-                        letterSpacing: mob ? 1 : 2,
-                        color: isFirst ? AC : "transparent",
-                        textTransform: "uppercase",
-                        fontFamily: "'Orbitron',sans-serif",
-                        overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
-                        paddingRight: 8,
-                      }}>
+                    <div key={pi} style={{ display: "grid", gridTemplateColumns: COLS, padding: mob ? "9px 16px" : "11px 24px", borderBottom: `1px solid ${C.borderLight}`, alignItems: "center", background: isTop3Overall ? C.accentSubtle : "transparent" }}>
+                      <div style={{ fontSize: mob ? 9 : 10, fontWeight: 700, letterSpacing: mob ? 1 : 2, color: isFirst ? AC : "transparent", textTransform: "uppercase", fontFamily: "'Orbitron',sans-serif", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", paddingRight: 8 }}>
                         {isFirst ? div.label : ""}
                       </div>
-
-                      {/* Player */}
-                      <div style={{
-                        fontFamily: BODY_FONT,
-                        fontSize: mob ? 12 : 13,
-                        color: isTop3Overall ? C.heading : C.body,
-                        fontWeight: isTop3Overall ? 700 : 400,
-                        overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
-                      }}>
+                      <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 12 : 13, color: isTop3Overall ? C.heading : C.body, fontWeight: isTop3Overall ? 700 : 400, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                         {p.name}
                       </div>
-
-                      {/* ELO */}
-                      <div style={{
-                        fontFamily: BODY_FONT,
-                        fontSize: mob ? 12 : 13,
-                        color: AC, fontWeight: 600,
-                        letterSpacing: 1, textAlign: "right",
-                      }}>
+                      <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 12 : 13, color: AC, fontWeight: 600, letterSpacing: 1, textAlign: "right" }}>
                         {p.elo}
                       </div>
                     </div>
