@@ -9,7 +9,7 @@ const AC = "#4ade80";
 const ACS = C.accent;
 
 const PAGES = [
-  { path: "/non-pro-duel-cups", label: "Non-Pro Duel Cups", color: ACS },
+  { path: "/non-pro-duel-cups", label: "Non-Pro Duel Cups", color: AC },
   { path: "/trainer", label: "Trainer", color: "#fbbf24" },
   { path: "/blog", label: "Blog", color: "#c084fc" },
 ] as const;
