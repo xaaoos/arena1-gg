@@ -61,7 +61,7 @@ html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
   --place-3: #78350f;
 }
 
-body { background: var(--bg); color: var(--text); font-family: "Orbitron", "Courier New", monospace; overflow-x: hidden; transition: background 0.3s, color 0.3s; }
+body { background: var(--bg); color: var(--text); font-family: "Russo One", "Courier New", monospace; overflow-x: hidden; transition: background 0.3s, color 0.3s; }
 ::selection { background: var(--selection-bg); color: var(--text-heading); }
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: var(--scrollbar-track); }

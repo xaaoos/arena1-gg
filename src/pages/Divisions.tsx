@@ -120,7 +120,7 @@ const Divisions: FC = () => {
                     background: C.inputBg,
                     border: `1px solid ${C.border}`,
                     color: C.muted,
-                    fontFamily: "'Orbitron',monospace",
+                    fontFamily: "'Russo One',monospace",
                     fontSize: mob ? 9 : 10,
                     fontWeight: 700,
                     letterSpacing: 2,
@@ -176,7 +176,7 @@ const Divisions: FC = () => {
                 ? <div style={{ textAlign: "center", color: C.muted, padding: "40px 0", fontFamily: BODY_FONT, fontSize: 13 }}>{t.notFound}</div>
                 : filtered.map((p, i) => (
                   <div key={i} style={{ display: "grid", gridTemplateColumns: COLS, padding: mob ? "9px 16px" : "11px 24px", borderBottom: `1px solid ${C.borderLight}`, alignItems: "center" }}>
-                    <div style={{ fontSize: mob ? 9 : 10, fontWeight: 700, letterSpacing: mob ? 1 : 2, color: ACS, textTransform: "uppercase", fontFamily: "'Orbitron',sans-serif", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", paddingRight: 8 }}>
+                    <div style={{ fontSize: mob ? 9 : 10, fontWeight: 700, letterSpacing: mob ? 1 : 2, color: ACS, textTransform: "uppercase", fontFamily: "'Russo One',sans-serif", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", paddingRight: 8 }}>
                       {p.division}
                     </div>
                     <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 12 : 13, color: C.heading, fontWeight: 600, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
@@ -201,7 +201,7 @@ const Divisions: FC = () => {
                   borderBottom: `1px solid ${C.border}`,
                   marginTop: di > 0 ? 8 : 0,
                 }}>
-                  <span style={{ fontSize: mob ? 9 : 10, fontWeight: 700, letterSpacing: 3, color: ACS, textTransform: "uppercase", fontFamily: "'Orbitron',sans-serif" }}>
+                  <span style={{ fontSize: mob ? 9 : 10, fontWeight: 700, letterSpacing: 3, color: ACS, textTransform: "uppercase", fontFamily: "'Russo One',sans-serif" }}>
                     {div.label}
                   </span>
                   <span style={{ fontSize: 10, color: C.muted, fontFamily: BODY_FONT }}>

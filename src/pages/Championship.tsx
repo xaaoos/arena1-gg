@@ -41,7 +41,7 @@ const Championship: FC = () => {
       <ScanLine />
       <nav style={{ position: "fixed", top: 48, left: 0, right: 0, zIndex: 99, background: C.bgNavSub, backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(255,62,62,0.12)", display: "flex", justifyContent: m ? "flex-start" : "center", overflowX: "auto", WebkitOverflowScrolling: "touch", transition: "background 0.3s" }}>
         {NAV_IDS.map((id, i) => (
-          <button key={id} onClick={() => scrollTo(id)} style={{ background: "none", border: "none", cursor: "pointer", color: active === id ? "#ff3e3e" : C.muted, fontSize: m ? 10 : 11, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", padding: m ? "10px 10px" : "12px 14px", whiteSpace: "nowrap", borderBottom: active === id ? "2px solid #ff3e3e" : "2px solid transparent", transition: "all 0.3s", fontFamily: "'Orbitron',sans-serif", flexShrink: 0 }}>{t.nav[i]}</button>
+          <button key={id} onClick={() => scrollTo(id)} style={{ background: "none", border: "none", cursor: "pointer", color: active === id ? "#ff3e3e" : C.muted, fontSize: m ? 10 : 11, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", padding: m ? "10px 10px" : "12px 14px", whiteSpace: "nowrap", borderBottom: active === id ? "2px solid #ff3e3e" : "2px solid transparent", transition: "all 0.3s", fontFamily: "'Russo One',sans-serif", flexShrink: 0 }}>{t.nav[i]}</button>
         ))}
       </nav>
 
@@ -58,8 +58,8 @@ const Championship: FC = () => {
           </div>
           <div style={{ marginTop: 14, fontSize: m ? 9 : 11, color: C.subtle, letterSpacing: m ? 1 : 3 }}>{t.hero.date}</div>
           <div style={{ display: "flex", gap: m ? 8 : 14, justifyContent: "center", marginTop: m ? 28 : 40, flexWrap: "wrap" }}>
-            <button onClick={() => scrollTo("verify")} style={{ padding: m ? "12px 24px" : "14px 36px", background: "#ff3e3e", border: "none", color: "#fff", fontSize: m ? 11 : 12, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", cursor: "pointer", fontFamily: "'Orbitron',monospace" }}>{t.hero.cta1}</button>
-            <button onClick={() => scrollTo("watch")} style={{ padding: m ? "12px 24px" : "14px 36px", background: "transparent", border: `1px solid ${C.subtle}`, color: C.body, fontSize: m ? 11 : 12, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", cursor: "pointer", fontFamily: "'Orbitron',monospace" }}>{t.hero.cta2}</button>
+            <button onClick={() => scrollTo("verify")} style={{ padding: m ? "12px 24px" : "14px 36px", background: "#ff3e3e", border: "none", color: "#fff", fontSize: m ? 11 : 12, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", cursor: "pointer", fontFamily: "'Russo One',monospace" }}>{t.hero.cta1}</button>
+            <button onClick={() => scrollTo("watch")} style={{ padding: m ? "12px 24px" : "14px 36px", background: "transparent", border: `1px solid ${C.subtle}`, color: C.body, fontSize: m ? 11 : 12, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", cursor: "pointer", fontFamily: "'Russo One',monospace" }}>{t.hero.cta2}</button>
           </div>
         </div>
       </section>
@@ -99,7 +99,7 @@ const Championship: FC = () => {
         <div style={{ display: "grid", gridTemplateColumns: m ? "repeat(2,1fr)" : "repeat(auto-fit,minmax(140px,1fr))", gap: 1, background: "rgba(255,62,62,0.1)" }}>
           {t.format.stats.map((s, i) => (
             <div key={i} style={{ background: C.bg, padding: m ? "20px 12px" : "28px 20px", textAlign: "center" }}>
-              <div style={{ fontSize: m ? 28 : 36, fontWeight: 900, color: "#ff3e3e", fontFamily: "'Orbitron',monospace" }}>{s.v}</div>
+              <div style={{ fontSize: m ? 28 : 36, fontWeight: 900, color: "#ff3e3e", fontFamily: "'Russo One',monospace" }}>{s.v}</div>
               <div style={{ fontSize: m ? 9 : 10, letterSpacing: 2, color: C.muted, marginTop: 8, textTransform: "uppercase" }}>{s.l}</div>
             </div>
           ))}
