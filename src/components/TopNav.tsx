@@ -45,7 +45,7 @@ export const TopNav: FC = () => {
       <div style={{
         position: "fixed", top: 0, left: 0, right: 0, zIndex: 200,
         background: C.bgNav, backdropFilter: "blur(12px)",
-        borderBottom: `1px solid ${activePage.color}22`,
+        borderBottom: `1px solid ${activePage.color}66`,
         display: "flex", alignItems: "center", padding: "0 16px", height: 48,
         transition: "background 0.3s",
       }}>
