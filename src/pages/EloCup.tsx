@@ -1,4 +1,4 @@
-import { useState, type FC } from "react";
+import { useState, useRef, type FC } from "react";
 import { Link } from "react-router-dom";
 import { useLang } from "../hooks/useLang";
 import { useIsMobile } from "../hooks/useIsMobile";
@@ -9,7 +9,7 @@ import { Icon } from "../components/Icons";
 import { C } from "../theme";
 
 const AC = "#4ade80";
-const PLACE_C: Record<string, string> = { "1": "#ffd700", "2": "#c0c0c0", "3": "#cd7f32" };
+const PLACE_C: Record<string, string> = { "1": C.place1, "2": C.place2, "3": C.place3 };
 
 const EloCup: FC = () => {
   const { lang } = useLang();
@@ -17,6 +17,7 @@ const EloCup: FC = () => {
   const mob = useIsMobile();
   const { cups, loading: archiveLoading, error: archiveError } = useArchiveData();
   const [selected, setSelected] = useState<ArchiveCup | null>(null);
+  const archiveRef = useRef<HTMLElement | null>(null);
 
   return (
     <div style={{ overflowX: "hidden" }}>
@@ -35,12 +36,13 @@ const EloCup: FC = () => {
           <div style={{ marginTop: mob ? 32 : 44, display: "flex", flexWrap: "wrap", gap: 12, justifyContent: "center" }}>
             <a href="https://discord.gg/dgPwNAph2j" target="_blank" rel="noopener noreferrer" style={{ padding: mob ? "12px 28px" : "14px 40px", background: AC, color: "#08080c", fontSize: mob ? 11 : 12, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", fontFamily: "'Orbitron',monospace", textDecoration: "none", display: "inline-block", whiteSpace: "nowrap" }}>{t.next.cta}</a>
             <Link to="/divisions" style={{ padding: mob ? "12px 28px" : "14px 40px", background: "transparent", border: `1px solid ${AC}`, color: AC, fontSize: mob ? 11 : 12, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", fontFamily: "'Orbitron',monospace", textDecoration: "none", display: "inline-block", whiteSpace: "nowrap" }}>{t.next.ctaDivisions}</Link>
+            <button onClick={() => archiveRef.current?.scrollIntoView({ behavior: "smooth" })} style={{ padding: mob ? "12px 28px" : "14px 40px", background: "transparent", border: `1px solid ${C.border}`, color: C.muted, fontSize: mob ? 11 : 12, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", fontFamily: "'Orbitron',monospace", cursor: "pointer", whiteSpace: "nowrap" }}>{lang === "ru" ? "Результаты" : "Results"}</button>
           </div>
         </div>
       </section>
 
       {/* Archive */}
-      <section style={{ padding: mob ? "60px 16px 80px" : "120px 20px 120px", maxWidth: 900, margin: "0 auto" }}>
+      <section ref={archiveRef} style={{ padding: mob ? "60px 16px 80px" : "120px 20px 120px", maxWidth: 900, margin: "0 auto" }}>
         <SL num={t.archive.num} text={t.archive.label} color={AC} />
         <ST>{t.archive.t1}<br /><span style={{ color: AC }}>{t.archive.t2}</span></ST>
 
@@ -76,7 +78,7 @@ const EloCup: FC = () => {
                 >
                   <div style={{ fontSize: mob ? 11 : 12, fontWeight: 800, color: C.heading, letterSpacing: 0.5, lineHeight: 1.3 }}>{cup.name}</div>
                   <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 10 : 11, color: C.muted }}>{formatArchiveDate(cup.rawDate, lang)}</div>
-                  <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 11 : 12, color: "#ffd700", marginTop: 4 }}>🥇 {winner}</div>
+                  <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 11 : 12, color: C.place1, marginTop: 4 }}>🥇 {winner}</div>
                 </div>
               );
             })}
@@ -120,7 +122,7 @@ const EloCup: FC = () => {
                 const pc = PLACE_C[s.place] ?? C.body;
                 const isTop3 = ["1", "2", "3"].includes(s.place);
                 return (
-                  <div key={si} style={{ display: "grid", gridTemplateColumns: mob ? "44px 1fr" : "56px 1fr", alignItems: "center", padding: mob ? "11px 16px" : "13px 24px", borderTop: si > 0 ? `1px solid ${C.borderLight}` : "none", background: isTop3 ? `${pc}08` : "transparent" }}>
+                  <div key={si} style={{ display: "grid", gridTemplateColumns: mob ? "44px 1fr" : "56px 1fr", alignItems: "center", padding: mob ? "11px 16px" : "13px 24px", borderTop: si > 0 ? `1px solid ${C.borderLight}` : "none", background: isTop3 ? C.accentSubtle : "transparent" }}>
                     <div style={{ fontSize: isTop3 ? (mob ? 15 : 17) : 12, fontWeight: isTop3 ? 900 : 600, color: pc, fontFamily: "'Orbitron',monospace" }}>
                       {s.place === "1" ? "🥇" : s.place === "2" ? "🥈" : s.place === "3" ? "🥉" : `#${s.place}`}
                     </div>

@@ -20,4 +20,7 @@ export const C = {
   accent: "var(--accent)",
   accentSubtle: "var(--accent-subtle)",
   accentBorder: "var(--accent-border)",
+  place1: "var(--place-1)",
+  place2: "var(--place-2)",
+  place3: "var(--place-3)",
 } as const;

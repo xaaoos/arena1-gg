@@ -155,7 +155,7 @@ const Divisions: FC = () => {
                         padding: mob ? "9px 16px" : "11px 24px",
                         borderBottom: `1px solid ${C.borderLight}`,
                         alignItems: "center",
-                        background: isTop3Overall ? `${["#ffd700","#c0c0c0","#cd7f32"][pi]}06` : "transparent",
+                        background: isTop3Overall ? C.accentSubtle : "transparent",
                       }}
                     >
                       {/* Division — only on first row of each division */}
