@@ -118,7 +118,7 @@ const EloCup: FC = () => {
                 const isTop3 = ["1", "2", "3"].includes(s.place);
                 return (
                   <div key={si} style={{ display: "grid", gridTemplateColumns: mob ? "44px 1fr" : "56px 1fr", alignItems: "center", padding: mob ? "11px 16px" : "13px 24px", borderTop: si > 0 ? `1px solid ${C.borderLight}` : "none", background: isTop3 ? C.accentSubtle : "transparent" }}>
-                    <div style={{ fontSize: isTop3 ? (mob ? 15 : 17) : 12, fontWeight: isTop3 ? 900 : 600, color: pc, fontFamily: "'Orbitron',monospace" }}>
+                    <div style={{ fontSize: isTop3 ? (mob ? 15 : 17) : 12, fontWeight: isTop3 ? 900 : 600, color: pc, fontFamily: "'Tektur',monospace" }}>
                       {s.place === "1" ? "🥇" : s.place === "2" ? "🥈" : s.place === "3" ? "🥉" : `#${s.place}`}
                     </div>
                     <div style={{ fontFamily: BODY_FONT, fontSize: isTop3 ? (mob ? 13 : 14) : (mob ? 12 : 13), color: isTop3 ? C.heading : C.body, fontWeight: isTop3 ? 700 : 400, overflowWrap: "break-word" }}>

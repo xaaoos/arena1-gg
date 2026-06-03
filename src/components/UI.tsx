@@ -23,7 +23,7 @@ export const GlitchText: FC<{ children: ReactNode }> = ({ children }) => {
 
 export const CUnit: FC<{ value: number; label: string }> = ({ value, label }) => (
   <div style={{ textAlign: "center", minWidth: 0, flex: "1 1 0" }}>
-    <div style={{ fontSize: "clamp(28px,7vw,56px)", fontWeight: 900, fontFamily: "'Orbitron',monospace", color: "#ff3e3e", lineHeight: 1,
+    <div style={{ fontSize: "clamp(28px,7vw,56px)", fontWeight: 900, fontFamily: "'Tektur',monospace", color: "#ff3e3e", lineHeight: 1,
       textShadow: "0 0 24px rgba(255,62,62,0.5),0 0 48px rgba(255,62,62,0.15)" }}>{String(value).padStart(2, "0")}</div>
     <div style={{ fontSize: "clamp(8px,1.5vw,10px)", letterSpacing: "clamp(1px,0.5vw,3px)", color: C.muted, marginTop: 6, textTransform: "uppercase", fontWeight: 600 }}>{label}</div>
   </div>

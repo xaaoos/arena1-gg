@@ -38,7 +38,7 @@ const Verified: FC = () => {
       <ScanLine />
       <nav style={{ position: "fixed", top: 48, left: 0, right: 0, zIndex: 99, background: C.bgNavSub, backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(0,240,255,0.12)", display: "flex", justifyContent: mob ? "flex-start" : "center", overflowX: "auto", WebkitOverflowScrolling: "touch", transition: "background 0.3s" }}>
         {NAV_IDS.map((id, i) => (
-          <button key={id} onClick={() => scrollTo(id)} style={{ background: "none", border: "none", cursor: "pointer", color: active === id ? "#00f0ff" : C.muted, fontSize: mob ? 10 : 11, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", padding: mob ? "10px 8px" : "12px 12px", whiteSpace: "nowrap", borderBottom: active === id ? "2px solid #00f0ff" : "2px solid transparent", transition: "all 0.3s", fontFamily: "'Orbitron',sans-serif", flexShrink: 0 }}>{t.nav[i]}</button>
+          <button key={id} onClick={() => scrollTo(id)} style={{ background: "none", border: "none", cursor: "pointer", color: active === id ? "#00f0ff" : C.muted, fontSize: mob ? 10 : 11, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", padding: mob ? "10px 8px" : "12px 12px", whiteSpace: "nowrap", borderBottom: active === id ? "2px solid #00f0ff" : "2px solid transparent", transition: "all 0.3s", fontFamily: "'Tektur',sans-serif", flexShrink: 0 }}>{t.nav[i]}</button>
         ))}
       </nav>
 
@@ -49,7 +49,7 @@ const Verified: FC = () => {
           <div style={{ fontSize: mob ? 9 : 11, letterSpacing: mob ? 3 : 6, color: "#00f0ff", marginBottom: 20, fontWeight: 600 }}>{t.hero.badge}</div>
           <h1 style={{ fontSize: "clamp(26px,6vw,64px)", fontWeight: 900, margin: 0, lineHeight: 1.1, color: C.heading }}>{t.hero.t1}<br /><span style={{ color: "#00f0ff" }}>{t.hero.t2}</span></h1>
           <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 13 : 15, color: C.body, marginTop: 28, lineHeight: 1.8, maxWidth: 560, margin: "28px auto 0" }}>{t.hero.text}</div>
-          <button onClick={() => scrollTo("cta")} style={{ marginTop: mob ? 32 : 44, padding: mob ? "12px 28px" : "14px 40px", background: "#00f0ff", border: "none", color: "#08080c", fontSize: mob ? 11 : 12, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", cursor: "pointer", fontFamily: "'Orbitron',monospace" }}>{t.cta.btn1}</button>
+          <button onClick={() => scrollTo("cta")} style={{ marginTop: mob ? 32 : 44, padding: mob ? "12px 28px" : "14px 40px", background: "#00f0ff", border: "none", color: "#08080c", fontSize: mob ? 11 : 12, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", cursor: "pointer", fontFamily: "'Tektur',monospace" }}>{t.cta.btn1}</button>
         </div>
       </section>
 
@@ -75,7 +75,7 @@ const Verified: FC = () => {
         <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
           {t.how.steps.map((step, i) => (
             <div key={i} style={{ display: "grid", gridTemplateColumns: mob ? "40px 1fr" : "56px 1fr", alignItems: "start", padding: mob ? "16px 12px" : "24px", background: C.bgCard, borderLeft: "3px solid #00f0ff" }}>
-              <div style={{ fontSize: mob ? 18 : 24, fontWeight: 900, color: "#00f0ff", fontFamily: "'Orbitron',monospace", opacity: 0.4 }}>{step.num}</div>
+              <div style={{ fontSize: mob ? 18 : 24, fontWeight: 900, color: "#00f0ff", fontFamily: "'Tektur',monospace", opacity: 0.4 }}>{step.num}</div>
               <div>
                 <div style={{ fontSize: mob ? 13 : 15, fontWeight: 700, color: C.heading, letterSpacing: 0.5, marginBottom: 8 }}>{step.title}</div>
                 <div style={{ fontFamily: BODY_FONT, fontSize: 13, color: C.body, lineHeight: 1.7 }}>{step.desc}</div>
@@ -127,7 +127,7 @@ const Verified: FC = () => {
             const isTop3 = p.rank <= 3;
             return (
               <div key={p.rank} style={{ display: "grid", gridTemplateColumns: mob ? "36px 1fr 60px" : "56px 1fr 100px 1fr", padding: mob ? "12px 12px" : "16px 24px", background: isTop3 ? `${rc}08` : C.bgCard, borderTop: `1px solid ${C.borderLight}`, alignItems: "center" }}>
-                <div style={{ fontFamily: "'Orbitron',monospace", fontSize: isTop3 ? (mob ? 14 : 16) : 13, fontWeight: isTop3 ? 900 : 600, color: rc ?? C.secondary }}>{p.rank}</div>
+                <div style={{ fontFamily: "'Tektur',monospace", fontSize: isTop3 ? (mob ? 14 : 16) : 13, fontWeight: isTop3 ? 900 : 600, color: rc ?? C.secondary }}>{p.rank}</div>
                 <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 13 : 14, fontWeight: isTop3 ? 700 : 400, color: isTop3 ? C.heading : C.link, letterSpacing: 0.5 }}>{p.player}</div>
                 <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 13 : 14, fontWeight: 700, color: "#4ade80" }}>{p.elo}</div>
                 {!mob && <div style={{ fontFamily: BODY_FONT, fontSize: 12, color: C.muted }}>{p.date}</div>}
@@ -143,11 +143,11 @@ const Verified: FC = () => {
         <p style={{ fontFamily: BODY_FONT, fontSize: 13, color: C.secondary, marginBottom: mob ? 32 : 48, lineHeight: 1.6 }}>{t.cta.desc}</p>
         <div style={{ display: "flex", gap: mob ? 12 : 16, justifyContent: "center", flexWrap: "wrap" }}>
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
-            <button style={{ padding: mob ? "12px 28px" : "14px 40px", background: "#00f0ff", border: "none", color: "#08080c", fontSize: mob ? 11 : 12, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", cursor: "pointer", fontFamily: "'Orbitron',monospace" }}>{t.cta.btn1}</button>
+            <button style={{ padding: mob ? "12px 28px" : "14px 40px", background: "#00f0ff", border: "none", color: "#08080c", fontSize: mob ? 11 : 12, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", cursor: "pointer", fontFamily: "'Tektur',monospace" }}>{t.cta.btn1}</button>
             <span style={{ fontFamily: BODY_FONT, fontSize: 10, color: C.muted, letterSpacing: 2 }}>{t.cta.btn1sub}</span>
           </div>
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
-            <button style={{ padding: mob ? "12px 28px" : "14px 40px", background: "transparent", border: `1px solid ${C.subtle}`, color: C.body, fontSize: mob ? 11 : 12, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", cursor: "pointer", fontFamily: "'Orbitron',monospace" }}>{t.cta.btn2}</button>
+            <button style={{ padding: mob ? "12px 28px" : "14px 40px", background: "transparent", border: `1px solid ${C.subtle}`, color: C.body, fontSize: mob ? 11 : 12, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", cursor: "pointer", fontFamily: "'Tektur',monospace" }}>{t.cta.btn2}</button>
             <span style={{ fontFamily: BODY_FONT, fontSize: 10, color: C.muted, letterSpacing: 2 }}>{t.cta.btn2sub}</span>
           </div>
         </div>

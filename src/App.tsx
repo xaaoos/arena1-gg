@@ -17,7 +17,7 @@ const App: FC = () => (
   <ThemeProvider>
     <LangProvider>
       <BrowserRouter>
-        <div style={{ background: C.bg, color: C.text, minHeight: "100vh", fontFamily: "'Orbitron','Courier New',monospace", transition: "background 0.3s, color 0.3s" }}>
+        <div style={{ background: C.bg, color: C.text, minHeight: "100vh", fontFamily: "'Tektur','Courier New',monospace", transition: "background 0.3s, color 0.3s" }}>
           <TopNav />
           <div style={{ paddingTop: 0 }}>
             <Routes>

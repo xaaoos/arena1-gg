@@ -88,7 +88,7 @@ const Divisions: FC = () => {
         <div style={{ position: "absolute", inset: 0, pointerEvents: "none", backgroundImage: `linear-gradient(rgba(74,222,128,var(--grid-line)) 1px,transparent 1px),linear-gradient(90deg,rgba(74,222,128,var(--grid-line)) 1px,transparent 1px)`, backgroundSize: "60px 60px" }} />
         <div style={{ position: "relative", zIndex: 1 }}>
           <div style={{ fontSize: mob ? 9 : 11, letterSpacing: mob ? 3 : 6, color: ACS, marginBottom: 20, fontWeight: 600 }}>{t.tag}</div>
-          <h1 style={{ fontSize: "clamp(20px,4vw,44px)", fontWeight: 900, margin: 0, lineHeight: 1.1, letterSpacing: mob ? 3 : 5, color: C.heading, fontFamily: "'Orbitron', sans-serif" }}>
+          <h1 style={{ fontSize: "clamp(20px,4vw,44px)", fontWeight: 900, margin: 0, lineHeight: 1.1, letterSpacing: mob ? 3 : 5, color: C.heading, fontFamily: "'Tektur', sans-serif" }}>
             {t.h1} <span style={{ color: ACS }}>{t.h2}</span>
           </h1>
           {!loading && !error && divisions.length > 0 && (
@@ -120,7 +120,7 @@ const Divisions: FC = () => {
                     background: C.inputBg,
                     border: `1px solid ${C.border}`,
                     color: C.muted,
-                    fontFamily: "'Orbitron',monospace",
+                    fontFamily: "'Tektur',monospace",
                     fontSize: mob ? 9 : 10,
                     fontWeight: 700,
                     letterSpacing: 2,
@@ -176,7 +176,7 @@ const Divisions: FC = () => {
                 ? <div style={{ textAlign: "center", color: C.muted, padding: "40px 0", fontFamily: BODY_FONT, fontSize: 13 }}>{t.notFound}</div>
                 : filtered.map((p, i) => (
                   <div key={i} style={{ display: "grid", gridTemplateColumns: COLS, padding: mob ? "9px 16px" : "11px 24px", borderBottom: `1px solid ${C.borderLight}`, alignItems: "center" }}>
-                    <div style={{ fontSize: mob ? 9 : 10, fontWeight: 700, letterSpacing: mob ? 1 : 2, color: ACS, textTransform: "uppercase", fontFamily: "'Orbitron',sans-serif", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", paddingRight: 8 }}>
+                    <div style={{ fontSize: mob ? 9 : 10, fontWeight: 700, letterSpacing: mob ? 1 : 2, color: ACS, textTransform: "uppercase", fontFamily: "'Tektur',sans-serif", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", paddingRight: 8 }}>
                       {p.division}
                     </div>
                     <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 12 : 13, color: C.heading, fontWeight: 600, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
@@ -201,7 +201,7 @@ const Divisions: FC = () => {
                   borderBottom: `1px solid ${C.border}`,
                   marginTop: di > 0 ? 8 : 0,
                 }}>
-                  <span style={{ fontSize: mob ? 9 : 10, fontWeight: 700, letterSpacing: 3, color: ACS, textTransform: "uppercase", fontFamily: "'Orbitron',sans-serif" }}>
+                  <span style={{ fontSize: mob ? 9 : 10, fontWeight: 700, letterSpacing: 3, color: ACS, textTransform: "uppercase", fontFamily: "'Tektur',sans-serif" }}>
                     {div.label}
                   </span>
                   <span style={{ fontSize: 10, color: C.muted, fontFamily: BODY_FONT }}>
