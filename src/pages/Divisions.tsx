@@ -68,7 +68,7 @@ const Divisions: FC = () => {
   const divStartRank = divisions.map(d => { const s = _r; _r += d.players.length; return s; });
 
   return (
-    <div style={{ overflowX: "hidden" }}>
+    <div>
       <ScanLine />
 
       {/* Hero */}
