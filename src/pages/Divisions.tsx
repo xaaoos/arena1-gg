@@ -125,7 +125,7 @@ const Divisions: FC = () => {
                     fontWeight: 700,
                     letterSpacing: 2,
                     textTransform: "uppercase",
-                    padding: mob ? "8px 12px" : "10px 16px",
+                    padding: mob ? "8px 32px 8px 12px" : "10px 36px 10px 16px",
                     cursor: "pointer",
                     outline: "none",
                     width: mob ? 220 : 280,
