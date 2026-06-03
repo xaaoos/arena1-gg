@@ -71,43 +71,36 @@ const Divisions: FC = () => {
           <h1 style={{ fontSize: "clamp(36px,8vw,80px)", fontWeight: 900, margin: 0, lineHeight: 0.9, letterSpacing: -2, color: C.heading }}>
             {t.h1} <span style={{ color: AC }}>{t.h2}</span>
           </h1>
+          {!loading && !error && divisions.length > 0 && (
+            <select
+              value={activeDiv}
+              onChange={(e) => scrollToDiv(e.target.value)}
+              style={{
+                marginTop: mob ? 28 : 36,
+                background: C.inputBg,
+                border: `1px solid ${C.border}`,
+                color: C.body,
+                fontFamily: "'Orbitron',monospace",
+                fontSize: mob ? 10 : 11,
+                fontWeight: 700,
+                letterSpacing: 2,
+                textTransform: "uppercase",
+                padding: mob ? "10px 14px" : "12px 18px",
+                cursor: "pointer",
+                outline: "none",
+                width: mob ? 200 : 240,
+                display: "block",
+                marginLeft: "auto",
+                marginRight: "auto",
+              }}
+            >
+              {divisions.map((d) => (
+                <option key={d.label} value={d.label}>{d.label}</option>
+              ))}
+            </select>
+          )}
         </div>
       </section>
-
-      {/* Division select */}
-      {!loading && !error && divisions.length > 0 && (
-        <div style={{
-          position: "sticky", top: 48, zIndex: 99,
-          background: C.bgNavSub, backdropFilter: "blur(12px)",
-          borderBottom: `1px solid ${C.border}`,
-          display: "flex", justifyContent: "flex-start", alignItems: "center",
-          padding: mob ? "8px 16px" : "8px 24px",
-          transition: "background 0.3s",
-        }}>
-          <select
-            value={activeDiv}
-            onChange={(e) => scrollToDiv(e.target.value)}
-            style={{
-              background: C.inputBg,
-              border: `1px solid ${C.inputBorder}`,
-              color: C.body,
-              fontFamily: "'Orbitron',monospace",
-              fontSize: mob ? 9 : 10,
-              fontWeight: 700,
-              letterSpacing: 2,
-              textTransform: "uppercase",
-              padding: "6px 10px",
-              cursor: "pointer",
-              outline: "none",
-              maxWidth: mob ? 200 : 260,
-            }}
-          >
-            {divisions.map((d) => (
-              <option key={d.label} value={d.label}>{d.label}</option>
-            ))}
-          </select>
-        </div>
-      )}
 
       {/* Table */}
       <section style={{ padding: mob ? "0 0 80px" : "0 20px 120px", maxWidth: 900, margin: "0 auto" }}>
@@ -130,7 +123,7 @@ const Divisions: FC = () => {
               padding: mob ? "10px 16px" : "12px 24px",
               borderBottom: `1px solid ${AC}33`,
               background: `${AC}08`,
-              position: "sticky", top: mob ? 80 : 84, zIndex: 98,
+              position: "sticky", top: 48, zIndex: 98,
             }}>
               {[t.cols.div, t.cols.player, t.cols.elo].map((col, i) => (
                 <div key={i} style={{
@@ -145,7 +138,7 @@ const Divisions: FC = () => {
 
             {/* Rows grouped by division */}
             {divisions.map((div) => (
-              <div key={div.label} ref={(el) => { divRefs.current[div.label] = el; }} style={{ scrollMarginTop: mob ? 112 : 120 }}>
+              <div key={div.label} ref={(el) => { divRefs.current[div.label] = el; }} style={{ scrollMarginTop: mob ? 80 : 84 }}>
                 {div.players.map((p, pi) => {
                   const isFirst = pi === 0;
                   const isTop3Overall =
