@@ -74,34 +74,39 @@ const Divisions: FC = () => {
         </div>
       </section>
 
-      {/* Division sub-nav */}
+      {/* Division select */}
       {!loading && !error && divisions.length > 0 && (
-        <nav style={{
+        <div style={{
           position: "sticky", top: 48, zIndex: 99,
           background: C.bgNavSub, backdropFilter: "blur(12px)",
-          borderBottom: `1px solid ${AC}18`,
-          display: "flex", overflowX: "auto", WebkitOverflowScrolling: "touch",
+          borderBottom: `1px solid ${C.border}`,
+          display: "flex", justifyContent: "flex-start", alignItems: "center",
+          padding: mob ? "8px 16px" : "8px 24px",
           transition: "background 0.3s",
         }}>
-          {divisions.map((d) => (
-            <button
-              key={d.label}
-              onClick={() => scrollToDiv(d.label)}
-              style={{
-                background: "none", border: "none", cursor: "pointer",
-                color: activeDiv === d.label ? AC : C.muted,
-                fontSize: mob ? 9 : 10, fontWeight: 700, letterSpacing: 2,
-                textTransform: "uppercase",
-                padding: mob ? "10px 10px" : "12px 14px",
-                whiteSpace: "nowrap",
-                borderBottom: activeDiv === d.label ? `2px solid ${AC}` : "2px solid transparent",
-                transition: "all 0.3s", fontFamily: "'Orbitron',sans-serif", flexShrink: 0,
-              }}
-            >
-              {d.label}
-            </button>
-          ))}
-        </nav>
+          <select
+            value={activeDiv}
+            onChange={(e) => scrollToDiv(e.target.value)}
+            style={{
+              background: C.inputBg,
+              border: `1px solid ${C.inputBorder}`,
+              color: C.body,
+              fontFamily: "'Orbitron',monospace",
+              fontSize: mob ? 9 : 10,
+              fontWeight: 700,
+              letterSpacing: 2,
+              textTransform: "uppercase",
+              padding: "6px 10px",
+              cursor: "pointer",
+              outline: "none",
+              maxWidth: mob ? 200 : 260,
+            }}
+          >
+            {divisions.map((d) => (
+              <option key={d.label} value={d.label}>{d.label}</option>
+            ))}
+          </select>
+        </div>
       )}
 
       {/* Table */}
