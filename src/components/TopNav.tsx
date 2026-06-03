@@ -98,40 +98,42 @@ export const TopNav: FC = () => {
         </div>
       </div>
 
-      {/* Sub-nav */}
-      <div style={{
-        position: "fixed", top: 48, left: 0, right: 0, zIndex: 199,
-        background: C.bgNavSub, backdropFilter: "blur(12px)",
-        borderBottom: `1px solid ${AC}18`,
-        display: "flex", justifyContent: "center",
-        overflowX: "auto", WebkitOverflowScrolling: "touch",
-        transition: "background 0.3s",
-      }}>
-        {subItems.map((item) =>
-          item.external ? (
-            <a key={item.href} href={item.href} target="_blank" rel="noopener noreferrer" style={{
-              textDecoration: "none",
-              color: AC,
-              fontSize: mobile ? 9 : 10, fontWeight: 700, letterSpacing: 2,
-              textTransform: "uppercase",
-              padding: mobile ? "9px 10px" : "10px 14px",
-              borderBottom: `2px solid ${AC}`,
-              fontFamily: "'Orbitron',sans-serif", whiteSpace: "nowrap", flexShrink: 0,
-            }}>{item.label}</a>
-          ) : (
-            <Link key={item.href} to={item.href} style={{
-              textDecoration: "none",
-              color: isActive(pathname, item.href) ? AC : C.muted,
-              fontSize: mobile ? 9 : 10, fontWeight: 700, letterSpacing: 2,
-              textTransform: "uppercase",
-              padding: mobile ? "9px 10px" : "10px 14px",
-              borderBottom: isActive(pathname, item.href) ? `2px solid ${AC}` : "2px solid transparent",
-              fontFamily: "'Orbitron',sans-serif", whiteSpace: "nowrap", flexShrink: 0,
-              transition: "all 0.2s",
-            }}>{item.label}</Link>
-          )
-        )}
-      </div>
+      {/* Sub-nav — only on non-pro-duel-cups */}
+      {pathname.startsWith("/non-pro-duel-cups") && (
+        <div style={{
+          position: "fixed", top: 48, left: 0, right: 0, zIndex: 199,
+          background: C.bgNavSub, backdropFilter: "blur(12px)",
+          borderBottom: `1px solid ${AC}18`,
+          display: "flex", justifyContent: "center",
+          overflowX: "auto", WebkitOverflowScrolling: "touch",
+          transition: "background 0.3s",
+        }}>
+          {subItems.map((item) =>
+            item.external ? (
+              <a key={item.href} href={item.href} target="_blank" rel="noopener noreferrer" style={{
+                textDecoration: "none",
+                color: AC,
+                fontSize: mobile ? 9 : 10, fontWeight: 700, letterSpacing: 2,
+                textTransform: "uppercase",
+                padding: mobile ? "9px 10px" : "10px 14px",
+                borderBottom: "2px solid transparent",
+                fontFamily: "'Orbitron',sans-serif", whiteSpace: "nowrap", flexShrink: 0,
+              }}>{item.label}</a>
+            ) : (
+              <Link key={item.href} to={item.href} style={{
+                textDecoration: "none",
+                color: isActive(pathname, item.href) ? AC : C.muted,
+                fontSize: mobile ? 9 : 10, fontWeight: 700, letterSpacing: 2,
+                textTransform: "uppercase",
+                padding: mobile ? "9px 10px" : "10px 14px",
+                borderBottom: isActive(pathname, item.href) ? `2px solid ${AC}` : "2px solid transparent",
+                fontFamily: "'Orbitron',sans-serif", whiteSpace: "nowrap", flexShrink: 0,
+                transition: "all 0.2s",
+              }}>{item.label}</Link>
+            )
+          )}
+        </div>
+      )}
 
       {/* Mobile drawer */}
       {mobile && open && (
