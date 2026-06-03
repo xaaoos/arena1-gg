@@ -58,7 +58,15 @@ const Divisions: FC = () => {
     setActiveDiv(label);
   };
 
+  const RANK_COL = mob ? "32px" : "40px";
+  const ELO_COL = mob ? "52px" : "60px";
+  const ROW_COLS = `${RANK_COL} 1fr ${ELO_COL}`;
+  // kept for search results (div | player | elo)
   const COLS = mob ? "120px 1fr 52px" : "140px 1fr 80px";
+
+  // Compute overall start rank per division
+  let _r = 0;
+  const divStartRank = divisions.map(d => { const s = _r; _r += d.players.length; return s; });
 
   return (
     <div style={{ overflowX: "hidden" }}>
@@ -151,17 +159,17 @@ const Divisions: FC = () => {
           <div>
             {/* Header */}
             <div style={{
-              display: "grid", gridTemplateColumns: mob ? "1fr 52px" : "1fr 80px",
+              display: "grid", gridTemplateColumns: ROW_COLS,
               padding: mob ? "10px 16px" : "12px 24px",
               borderBottom: `1px solid ${AC}33`,
               background: `${AC}08`,
-              position: "sticky", top: 48, zIndex: 98,
+              position: "sticky", top: 80, zIndex: 98,
             }}>
-              {[t.cols.player, t.cols.elo].map((col, i) => (
+              {["#", t.cols.player, t.cols.elo].map((col, i) => (
                 <div key={i} style={{
                   fontSize: 9, letterSpacing: 3, color: C.muted,
                   fontWeight: 700, textTransform: "uppercase",
-                  textAlign: i === 1 ? "right" : "left",
+                  textAlign: i === 2 ? "right" : "left",
                 }}>
                   {col}
                 </div>
@@ -207,10 +215,15 @@ const Divisions: FC = () => {
                   </span>
                 </div>
                 {div.players.map((p, pi) => {
-                  const isTop3Overall = pi < 3 && di === 0;
+                  const rank = divStartRank[di] + pi + 1;
+                  const isTop3 = rank <= 3;
+                  const medal = rank === 1 ? "🥇" : rank === 2 ? "🥈" : rank === 3 ? "🥉" : null;
                   return (
-                    <div key={pi} style={{ display: "grid", gridTemplateColumns: mob ? "1fr 52px" : "1fr 80px", padding: mob ? "9px 16px" : "11px 24px", borderBottom: `1px solid ${C.borderLight}`, alignItems: "center", background: isTop3Overall ? C.accentSubtle : "transparent" }}>
-                      <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 12 : 13, color: isTop3Overall ? C.heading : C.body, fontWeight: isTop3Overall ? 700 : 400, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                    <div key={pi} style={{ display: "grid", gridTemplateColumns: ROW_COLS, padding: mob ? "8px 16px" : "10px 24px", borderBottom: `1px solid ${C.borderLight}`, alignItems: "center", background: isTop3 ? C.accentSubtle : "transparent" }}>
+                      <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 11 : 12, color: isTop3 ? C.heading : C.muted, fontWeight: isTop3 ? 700 : 400, textAlign: "left" }}>
+                        {medal ?? `#${rank}`}
+                      </div>
+                      <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 12 : 13, color: isTop3 ? C.heading : C.body, fontWeight: isTop3 ? 700 : 400, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", paddingRight: 8 }}>
                         {p.name}
                       </div>
                       <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 12 : 13, color: AC, fontWeight: 600, letterSpacing: 1, textAlign: "right" }}>
