@@ -36,10 +36,16 @@ const EloCup: FC = () => {
           <div style={{ marginTop: mob ? 32 : 44, display: "flex", flexWrap: "wrap", gap: 12, justifyContent: "center" }}>
             <a href="https://discord.gg/dgPwNAph2j" target="_blank" rel="noopener noreferrer" style={{ padding: mob ? "12px 28px" : "14px 40px", background: AC, color: "#08080c", fontSize: mob ? 11 : 12, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", fontFamily: "'Orbitron',monospace", textDecoration: "none", display: "inline-block", whiteSpace: "nowrap" }}>{t.next.cta}</a>
             <Link to="/divisions" style={{ padding: mob ? "12px 28px" : "14px 40px", background: "transparent", border: `1px solid ${AC}`, color: AC, fontSize: mob ? 11 : 12, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", fontFamily: "'Orbitron',monospace", textDecoration: "none", display: "inline-block", whiteSpace: "nowrap" }}>{t.next.ctaDivisions}</Link>
-            <button onClick={() => archiveRef.current?.scrollIntoView({ behavior: "smooth" })} style={{ padding: mob ? "12px 28px" : "14px 40px", background: "transparent", border: `1px solid ${C.border}`, color: C.muted, fontSize: mob ? 11 : 12, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", fontFamily: "'Orbitron',monospace", cursor: "pointer", whiteSpace: "nowrap" }}>{lang === "ru" ? "Результаты" : "Results"}</button>
           </div>
         </div>
       </section>
+
+      {/* Sub-nav */}
+      <nav style={{ position: "sticky", top: 48, zIndex: 99, background: C.bgNavSub, backdropFilter: "blur(12px)", borderBottom: `1px solid ${AC}18`, display: "flex", justifyContent: "center", transition: "background 0.3s" }}>
+        <button onClick={() => archiveRef.current?.scrollIntoView({ behavior: "smooth" })} style={{ background: "none", border: "none", cursor: "pointer", color: AC, fontSize: mob ? 10 : 11, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", padding: mob ? "10px 16px" : "12px 20px", borderBottom: `2px solid ${AC}`, fontFamily: "'Orbitron',sans-serif" }}>
+          {lang === "ru" ? "Результаты" : "Results"}
+        </button>
+      </nav>
 
       {/* Archive */}
       <section ref={archiveRef} style={{ padding: mob ? "60px 16px 80px" : "120px 20px 120px", maxWidth: 900, margin: "0 auto" }}>
