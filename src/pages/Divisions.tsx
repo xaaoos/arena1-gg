@@ -104,7 +104,7 @@ const Divisions: FC = () => {
                   border: `1px solid ${C.border}`,
                   color: C.heading,
                   fontFamily: BODY_FONT,
-                  fontSize: mob ? 13 : 14,
+                  fontSize: 16,
                   padding: mob ? "10px 14px" : "12px 18px",
                   outline: "none",
                   width: mob ? 220 : 280,
