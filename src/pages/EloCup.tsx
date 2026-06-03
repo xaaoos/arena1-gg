@@ -24,15 +24,14 @@ const EloCup: FC = () => {
       <ScanLine />
 
       {/* Hero */}
-      <section style={{ minHeight: "100vh", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", position: "relative", padding: mob ? "120px 16px 40px" : "140px 20px 40px", textAlign: "center", background: `radial-gradient(ellipse at 50% 20%,rgba(74,222,128,0.06) 0%,transparent 60%)` }}>
+      <section style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", position: "relative", padding: mob ? "100px 16px 32px" : "110px 20px 36px", textAlign: "center", background: `radial-gradient(ellipse at 50% 20%,rgba(74,222,128,0.06) 0%,transparent 60%)` }}>
         <div style={{ position: "absolute", inset: 0, pointerEvents: "none", backgroundImage: `linear-gradient(rgba(74,222,128,var(--grid-line)) 1px,transparent 1px),linear-gradient(90deg,rgba(74,222,128,var(--grid-line)) 1px,transparent 1px)`, backgroundSize: "60px 60px" }} />
         <div style={{ position: "relative", zIndex: 1, maxWidth: 700, width: "100%" }}>
-          <div style={{ marginBottom: mob ? 24 : 40, display: "flex", justifyContent: "center" }}><Icon type="trophy" color={AC} size={mob ? 36 : 48} /></div>
-          <div style={{ fontSize: mob ? 9 : 11, letterSpacing: mob ? 3 : 6, color: AC, marginBottom: 20, fontWeight: 600 }}>{t.hero.tag}</div>
+          <div style={{ fontSize: mob ? 9 : 11, letterSpacing: mob ? 3 : 6, color: AC, marginBottom: 12, fontWeight: 600 }}>{t.hero.tag}</div>
           <h1 style={{ fontSize: "clamp(28px,6vw,64px)", fontWeight: 900, margin: 0, lineHeight: 1, letterSpacing: -1, color: C.heading, whiteSpace: "nowrap" }}>
             {t.hero.t1}{t.hero.t1 && " "}<span style={{ color: AC }}>{t.hero.t2}</span>
           </h1>
-          <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 13 : 15, color: C.body, lineHeight: 1.8, maxWidth: 560, margin: "28px auto 0" }}>{t.hero.sub}</div>
+          <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 12 : 14, color: C.body, lineHeight: 1.7, maxWidth: 520, margin: "16px auto 0" }}>{t.hero.sub}</div>
         </div>
       </section>
 
