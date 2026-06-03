@@ -59,8 +59,7 @@ const Divisions: FC = () => {
     setActiveDiv(label);
   };
 
-  const RANK_COL = mob ? "32px" : "40px";
-  const ROW_COLS = `${RANK_COL} 1fr`;
+  const ROW_COLS = "1fr";
   // kept for search results (div | player | elo)
   const COLS = mob ? "120px 1fr 52px" : "140px 1fr 80px";
 
@@ -165,7 +164,6 @@ const Divisions: FC = () => {
               background: `${AC}08`,
               position: "sticky", top: 80, zIndex: 98,
             }}>
-              <div style={{ fontSize: 9, letterSpacing: 3, color: C.muted, fontWeight: 700, textTransform: "uppercase" }}>#</div>
               <div style={{ display: "flex", justifyContent: "space-between" }}>
                 <span style={{ fontSize: 9, letterSpacing: 3, color: C.muted, fontWeight: 700, textTransform: "uppercase" }}>{t.cols.player}</span>
                 <span style={{ fontSize: 9, letterSpacing: 3, color: C.muted, fontWeight: 700, textTransform: "uppercase" }}>{t.cols.elo}</span>
@@ -215,10 +213,7 @@ const Divisions: FC = () => {
                   const isTop3 = rank <= 3;
                   const medal = rank === 1 ? "🥇" : rank === 2 ? "🥈" : rank === 3 ? "🥉" : null;
                   return (
-                    <div key={pi} style={{ display: "grid", gridTemplateColumns: ROW_COLS, padding: mob ? "8px 16px" : "10px 24px", borderBottom: `1px solid ${C.borderLight}`, alignItems: "center", background: isTop3 ? C.accentSubtle : "transparent" }}>
-                      <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 11 : 12, color: isTop3 ? C.heading : C.muted, fontWeight: isTop3 ? 700 : 400 }}>
-                        {medal ?? `#${rank}`}
-                      </div>
+                    <div key={pi} style={{ padding: mob ? "8px 16px" : "10px 24px", borderBottom: `1px solid ${C.borderLight}`, background: isTop3 ? C.accentSubtle : "transparent" }}>
                       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, overflow: "hidden" }}>
                         <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 12 : 13, color: isTop3 ? C.heading : C.body, fontWeight: isTop3 ? 700 : 400, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                           {p.name}
