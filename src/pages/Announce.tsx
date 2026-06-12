@@ -3,6 +3,7 @@ import { useLang } from "../hooks/useLang";
 import { useIsMobile } from "../hooks/useIsMobile";
 import { ELOCUP } from "../data/elocup";
 import { useAnnounceData } from "../hooks/useAnnounceData";
+import { useParallax } from "../hooks/useParallax";
 import { BODY_FONT } from "../components/UI";
 import { C } from "../theme";
 
@@ -48,6 +49,7 @@ const Announce: FC = () => {
   const t = ELOCUP[lang];
   const mob = useIsMobile();
   const { announces, loading } = useAnnounceData();
+  const heroRef = useParallax<HTMLDivElement>(0.3);
   const main = announces[0];
   const rest = announces.slice(1);
   const mainDate = main?.date ?? null;
@@ -57,7 +59,7 @@ const Announce: FC = () => {
 
       {/* Hero */}
       <section style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", position: "relative", padding: mob ? "140px 16px 32px" : "160px 20px 36px", textAlign: "center", background: `radial-gradient(ellipse at 50% 20%,rgba(var(--glow-rgb),0.06) 0%,transparent 60%)` }}>
-        <div style={{ position: "relative", zIndex: 1, maxWidth: 700, width: "100%" }}>
+        <div ref={heroRef} style={{ position: "relative", zIndex: 1, maxWidth: 700, width: "100%" }}>
           <div style={{ fontSize: mob ? 10 : 12, letterSpacing: mob ? 3 : 5, color: ACS, marginBottom: 12, fontWeight: 600 }}>{t.hero.tag}</div>
           <h1 style={{ fontSize: "clamp(28px,6vw,64px)", fontWeight: 900, margin: 0, lineHeight: 1, letterSpacing: -1, color: C.heading, whiteSpace: "nowrap" }}>
             {t.hero.t1}{t.hero.t1 && " "}<span style={{ color: ACS }}>{t.hero.t2}</span>

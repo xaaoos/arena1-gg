@@ -3,6 +3,7 @@ import { useLang } from "../hooks/useLang";
 import { useIsMobile } from "../hooks/useIsMobile";
 import { ELOCUP } from "../data/elocup";
 import { useArchiveData, formatArchiveDate, type ArchiveCup, type ArchiveStanding } from "../hooks/useArchiveData";
+import { useParallax } from "../hooks/useParallax";
 import { BODY_FONT } from "../components/UI";
 import { C } from "../theme";
 
@@ -37,6 +38,7 @@ const EloCup: FC = () => {
   const t = ELOCUP[lang];
   const mob = useIsMobile();
   const { cups, loading: archiveLoading, error: archiveError } = useArchiveData();
+  const heroRef = useParallax<HTMLDivElement>(0.3);
   const [selected, setSelected] = useState<ArchiveCup | null>(null);
   const [search, setSearch] = useState("");
   const query = search.trim().toLowerCase();
@@ -58,7 +60,7 @@ const EloCup: FC = () => {
 
       {/* Hero */}
       <section style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", position: "relative", padding: mob ? "120px 16px 32px" : "150px 20px 40px", textAlign: "center", background: `radial-gradient(ellipse at 50% 20%,rgba(var(--glow-rgb),0.06) 0%,transparent 60%)` }}>
-        <div style={{ position: "relative", zIndex: 1, maxWidth: 700, width: "100%" }}>
+        <div ref={heroRef} style={{ position: "relative", zIndex: 1, maxWidth: 700, width: "100%" }}>
           <div style={{ fontSize: mob ? 10 : 12, letterSpacing: mob ? 3 : 5, color: ACS, marginBottom: 12, fontWeight: 600 }}>{t.hero.tag}</div>
           <h1 style={{ fontSize: "clamp(26px,5vw,52px)", fontWeight: 900, margin: 0, lineHeight: 1.1, color: C.heading }}>
             {t.archive.t1} <span style={{ color: ACS }}>{t.archive.t2}</span>

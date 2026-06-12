@@ -2,6 +2,7 @@ import { useRef, useState, useEffect, type FC } from "react";
 import { useLang } from "../hooks/useLang";
 import { useIsMobile } from "../hooks/useIsMobile";
 import { useSheetData } from "../hooks/useSheetData";
+import { useParallax } from "../hooks/useParallax";
 import { BODY_FONT } from "../components/UI";
 import { C } from "../theme";
 
@@ -38,6 +39,7 @@ const Divisions: FC = () => {
   const mob = useIsMobile();
   const t = T[lang];
   const { divisions, loading, error } = useSheetData();
+  const heroRef = useParallax<HTMLDivElement>(0.3);
   const [activeDiv, setActiveDiv] = useState("");
   const [search, setSearch] = useState("");
   const divRefs = useRef<Record<string, HTMLDivElement | null>>({});
@@ -46,9 +48,22 @@ const Divisions: FC = () => {
   const allPlayers = divisions.flatMap((d) =>
     d.players.map((p) => ({ ...p, division: d.label }))
   );
-  const filtered = query
-    ? allPlayers.filter((p) => p.name.toLowerCase().includes(query))
-    : null;
+  // поиск не фильтрует таблицу — скроллит к первому совпадению и подсвечивает строку
+  const found = query ? allPlayers.find((p) => p.name.toLowerCase().includes(query)) ?? null : null;
+  const rowRefs = useRef<Record<string, HTMLDivElement | null>>({});
+  const [match, setMatch] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!query || !found) {
+      setMatch(null);
+      return;
+    }
+    const id = setTimeout(() => {
+      setMatch(found.name);
+      rowRefs.current[found.name.toLowerCase()]?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 250);
+    return () => clearTimeout(id);
+  }, [query, found?.name, divisions.length]);
 
   useEffect(() => {
     if (divisions.length > 0 && !activeDiv) setActiveDiv(divisions[0].label);
@@ -59,9 +74,9 @@ const Divisions: FC = () => {
     setActiveDiv(label);
   };
 
-  const ROW_COLS = "1fr";
-  // kept for search results (div | player | elo)
-  const COLS = mob ? "120px 1fr 52px" : "140px 1fr 80px";
+  // колонки таблицы: # | игрок | ELO | ± (границы колонок сквозные, поэтому grid)
+  const TCOLS = mob ? "44px 1fr 84px 48px" : "54px 1fr 100px 60px";
+  const padV = mob ? 8 : 10;
 
   // Compute overall start rank per division
   let _r = 0;
@@ -84,7 +99,7 @@ const Divisions: FC = () => {
           background: `radial-gradient(ellipse at 50% 20%,rgba(var(--glow-rgb),0.06) 0%,transparent 60%)`,
         }}
       >
-        <div style={{ position: "relative", zIndex: 1 }}>
+        <div ref={heroRef} style={{ position: "relative", zIndex: 1 }}>
           <div style={{ fontSize: mob ? 10 : 12, letterSpacing: mob ? 3 : 5, color: ACS, marginBottom: 20, fontWeight: 600 }}>{t.tag}</div>
           <h1 style={{ fontSize: "clamp(20px,4vw,44px)", fontWeight: 900, margin: 0, lineHeight: 1.1, letterSpacing: mob ? 3 : 5, color: C.heading, fontFamily: "'Xolonium','Tektur',sans-serif" }}>
             {t.h1} <span style={{ color: ACS }}>{t.h2}</span>
@@ -109,40 +124,38 @@ const Divisions: FC = () => {
                   caretColor: ACS,
                 }}
               />
-              {/* Jump to division — hidden while searching */}
+              {query && !found && (
+                <div style={{ fontFamily: BODY_FONT, fontSize: 11, color: C.muted }}>{t.notFound}</div>
+              )}
+              {/* Прыжок к дивизиону — кнопки; Pro и Semi-Pro не нужны (видны сразу), "non-pro" в подписи опускаем */}
               {!query && (
-                <div style={{ position: "relative", width: mob ? 220 : 280 }}>
-                  <select
-                    value={activeDiv}
-                    onChange={(e) => scrollToDiv(e.target.value)}
-                    style={{
-                      background: C.inputBg,
-                      border: `1px solid ${C.border}`,
-                      color: C.muted,
-                      fontFamily: "'Xolonium','Tektur',monospace",
-                      fontSize: 11,
-                      fontWeight: 700,
-                      letterSpacing: 1.5,
-                      textTransform: "uppercase",
-                      padding: mob ? "8px 36px 8px 12px" : "10px 40px 10px 16px",
-                      cursor: "pointer",
-                      outline: "none",
-                      width: "100%",
-                      // нативная стрелка select не стилизуется — рисуем свою
-                      appearance: "none",
-                      WebkitAppearance: "none",
-                      MozAppearance: "none",
-                    }}
-                  >
-                    {divisions.map((d) => (
-                      <option key={d.label} value={d.label}>{d.label}</option>
-                    ))}
-                  </select>
-                  <span style={{
-                    position: "absolute", right: mob ? 12 : 16, top: "50%",
-                    transform: "translateY(-50%)", pointerEvents: "none",
-                    color: ACS, fontSize: 10, lineHeight: 1,
-                  }}>▼</span>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: mob ? 8 : 10, justifyContent: "center", maxWidth: mob ? 300 : 420 }}>
+                  {divisions
+                    .filter((d) => !/^(pro|semi[- ]?pro)$/i.test(d.label.trim()))
+                    .map((d) => {
+                      const active = activeDiv === d.label;
+                      return (
+                        <button
+                          key={d.label}
+                          onClick={() => scrollToDiv(d.label)}
+                          style={{
+                            background: active ? ACS : C.inputBg,
+                            color: active ? C.accentContrast : C.muted,
+                            border: `1px solid ${active ? ACS : C.border}`,
+                            fontFamily: "'Xolonium','Tektur',monospace",
+                            fontSize: mob ? 10 : 11,
+                            fontWeight: 700,
+                            letterSpacing: 1.5,
+                            textTransform: "uppercase",
+                            padding: mob ? "8px 14px" : "9px 18px",
+                            cursor: "pointer",
+                            transition: "all 0.2s",
+                          }}
+                        >
+                          {d.label.replace(/non-?pro\s*/i, "").trim()}
+                        </button>
+                      );
+                    })}
                 </div>
               )}
             </div>
@@ -151,7 +164,7 @@ const Divisions: FC = () => {
       </section>
 
       {/* Table */}
-      <section style={{ padding: mob ? "0 0 80px" : "0 20px 120px", maxWidth: 520, margin: "0 auto" }}>
+      <section style={{ padding: mob ? "0 10px 80px" : "0 20px 120px", maxWidth: 520, margin: "0 auto" }}>
         {loading && (
           <div style={{ textAlign: "center", color: C.muted, padding: "80px 0", fontFamily: BODY_FONT, fontSize: 13, letterSpacing: 2 }}>
             {t.loading}
@@ -164,56 +177,28 @@ const Divisions: FC = () => {
         )}
 
         {!loading && !error && (
-          <div style={{ background: C.bg }}>
+          <div style={{ position: "relative", background: C.bg, border: `1px solid ${C.accentBorder}` }}>
+            {/* углы рамки — в стиле блока анонса */}
+            {[{ top: -1, left: -1, borderWidth: "2px 0 0 2px" }, { top: -1, right: -1, borderWidth: "2px 2px 0 0" }, { bottom: -1, left: -1, borderWidth: "0 0 2px 2px" }, { bottom: -1, right: -1, borderWidth: "0 2px 2px 0" }].map((p, i) => (
+              <div key={i} style={{ position: "absolute", width: 14, height: 14, borderStyle: "solid", borderColor: ACS, zIndex: 99, pointerEvents: "none", ...p }} />
+            ))}
+
             {/* Header */}
             <div style={{
-              display: "grid", gridTemplateColumns: ROW_COLS,
-              padding: mob ? "10px 16px" : "12px 24px",
+              display: "grid", gridTemplateColumns: TCOLS,
               borderBottom: `1px solid ${C.accentBorder}`,
               // непрозрачный фон: sticky-плашка, строки не должны просвечивать
               background: `linear-gradient(rgba(var(--glow-rgb),0.03),rgba(var(--glow-rgb),0.03)) ${C.bg}`,
               position: "sticky", top: 80, zIndex: 98,
             }}>
-              <div style={{ display: "flex", alignItems: "center", gap: mob ? 16 : 24 }}>
-                {/* колонки # и ± — квадратные, отступы вокруг # и ± симметричны (gap = боковому паддингу строки) */}
-                <span style={{ width: mob ? 32 : 38, flexShrink: 0, textAlign: "center", fontSize: 10, letterSpacing: 1.5, color: C.muted, fontWeight: 700 }}>#</span>
-                <span style={{ flex: 1, fontSize: 10, letterSpacing: 1.5, color: C.muted, fontWeight: 700, textTransform: "uppercase" }}>{t.cols.player}</span>
-                <div style={{ display: "flex", gap: mob ? 16 : 24, flexShrink: 0 }}>
-                  <span style={{ minWidth: mob ? 38 : 44, textAlign: "right", fontSize: 10, letterSpacing: 1.5, color: C.muted, fontWeight: 700, textTransform: "uppercase" }}>{t.cols.elo}</span>
-                  <span style={{ width: mob ? 32 : 38, flexShrink: 0, textAlign: "center", fontSize: 10, letterSpacing: 1.5, color: C.muted, fontWeight: 700 }}>±</span>
-                </div>
-              </div>
+              <span style={{ padding: `${padV + 2}px 0`, textAlign: "center", borderRight: `1px solid ${C.borderLight}`, fontSize: 10, letterSpacing: 1.5, color: C.muted, fontWeight: 700 }}>#</span>
+              <span style={{ padding: `${padV + 2}px 12px`, borderRight: `1px solid ${C.borderLight}`, fontSize: 10, letterSpacing: 1.5, color: C.muted, fontWeight: 700, textTransform: "uppercase" }}>{t.cols.player}</span>
+              <span style={{ padding: `${padV + 2}px 12px ${padV + 2}px 0`, textAlign: "right", borderRight: `1px solid ${C.borderLight}`, fontSize: 10, letterSpacing: 1.5, color: C.muted, fontWeight: 700, textTransform: "uppercase" }}>{t.cols.elo}</span>
+              <span style={{ padding: `${padV + 2}px 0`, textAlign: "center", fontSize: 10, letterSpacing: 1.5, color: C.muted, fontWeight: 700 }}>±</span>
             </div>
 
-            {/* Search results */}
-            {filtered !== null && (
-              filtered.length === 0
-                ? <div style={{ textAlign: "center", color: C.muted, padding: "40px 0", fontFamily: BODY_FONT, fontSize: 13 }}>{t.notFound}</div>
-                : filtered.map((p, i) => (
-                  <div key={i} style={{ display: "grid", gridTemplateColumns: COLS, padding: mob ? "9px 16px" : "11px 24px", borderBottom: `1px solid ${C.borderLight}`, alignItems: "center" }}>
-                    <div style={{ fontSize: mob ? 10 : 11, fontWeight: 700, letterSpacing: 1, color: p.uncertain ? C.muted : ACS, textTransform: "uppercase", fontFamily: "'Xolonium','Tektur',sans-serif", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", paddingRight: 8 }}>
-                      {p.division}
-                    </div>
-                    <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 12 : 13, color: p.uncertain ? C.muted : C.heading, fontWeight: 600, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                      {p.rank != null && <span style={{ color: C.muted, fontWeight: 400, fontSize: mob ? 10 : 11 }}>{p.rank} </span>}
-                      {p.name}
-                    </div>
-                    <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 12 : 13, color: p.uncertain ? C.muted : ACS, fontWeight: 600, letterSpacing: 1, textAlign: "right" }}>
-                      {p.elo}
-                      {p.delta != null && p.delta !== 0 ? (
-                        <span style={{ fontSize: mob ? 10 : 11, fontWeight: 700, color: p.uncertain ? C.muted : p.delta > 0 ? ACS : "#ff3e3e", marginLeft: 10 }}>
-                          {p.delta > 0 ? `▲${p.delta}` : `▼${-p.delta}`}
-                        </span>
-                      ) : p.uncertain ? (
-                        <span style={{ fontSize: mob ? 10 : 11, fontWeight: 700, color: C.muted, marginLeft: 10 }}>?</span>
-                      ) : null}
-                    </div>
-                  </div>
-                ))
-            )}
-
             {/* Grouped by division */}
-            {filtered === null && divisions.map((div, di) => (
+            {divisions.map((div, di) => (
               <div key={div.label} ref={(el) => { divRefs.current[div.label] = el; }} style={{ scrollMarginTop: mob ? 112 : 116 }}>
                 {/* Division header row */}
                 <div style={{
@@ -222,7 +207,6 @@ const Divisions: FC = () => {
                   background: C.bgCard,
                   borderTop: di > 0 ? `2px solid ${C.border}` : "none",
                   borderBottom: `1px solid ${C.border}`,
-                  marginTop: di > 0 ? 8 : 0,
                 }}>
                   <span style={{ fontSize: mob ? 10 : 11, fontWeight: 700, letterSpacing: 2, color: ACS, textTransform: "uppercase", fontFamily: "'Xolonium','Tektur',sans-serif" }}>
                     {div.label}
@@ -235,24 +219,31 @@ const Divisions: FC = () => {
                   const rank = p.rank ?? divStartRank[di] + pi + 1;
                   // "?" в таблице = неуверенный рейтинг: вся строка серая
                   const isTop3 = rank <= 3 && !p.uncertain;
+                  const isMatch = match != null && p.name === match;
                   return (
-                    <div key={pi} style={{ padding: mob ? "8px 16px" : "10px 24px", borderBottom: `1px solid ${C.borderLight}`, background: isTop3 ? C.accentSubtle : "transparent" }}>
-                      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: mob ? 16 : 24, overflow: "hidden" }}>
-                        <span style={{ fontFamily: BODY_FONT, fontSize: mob ? 10 : 11, color: isTop3 ? ACS : C.muted, fontWeight: isTop3 ? 700 : 400, width: mob ? 32 : 38, textAlign: "center", flexShrink: 0 }}>
-                          {rank}
-                        </span>
-                        <div style={{ flex: 1, fontFamily: BODY_FONT, fontSize: mob ? 12 : 13, color: p.uncertain ? C.muted : isTop3 ? C.heading : C.body, fontWeight: isTop3 ? 700 : 400, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                          {p.name}
-                        </div>
-                        <div style={{ display: "flex", alignItems: "baseline", gap: mob ? 16 : 24, flexShrink: 0 }}>
-                          <span style={{ minWidth: mob ? 38 : 44, textAlign: "right", fontFamily: BODY_FONT, fontSize: mob ? 12 : 13, color: p.uncertain ? C.muted : ACS, fontWeight: 600, letterSpacing: 1 }}>
-                            {p.elo}
-                          </span>
-                          <span style={{ width: mob ? 32 : 38, textAlign: "center", flexShrink: 0, fontFamily: BODY_FONT, fontSize: mob ? 10 : 11, fontWeight: 700, color: p.uncertain ? C.muted : p.delta != null && p.delta < 0 ? "#ff3e3e" : ACS }}>
-                            {p.delta != null && p.delta !== 0 ? (p.delta > 0 ? `▲${p.delta}` : `▼${-p.delta}`) : p.uncertain ? "?" : ""}
-                          </span>
-                        </div>
+                    <div
+                      key={pi}
+                      ref={(el) => { rowRefs.current[p.name.toLowerCase()] = el; }}
+                      style={{
+                        display: "grid", gridTemplateColumns: TCOLS, alignItems: "stretch",
+                        borderBottom: `1px solid ${C.borderLight}`,
+                        background: isMatch || isTop3 ? C.accentSubtle : "transparent",
+                        boxShadow: isMatch ? `inset 0 0 0 1px ${ACS}` : "none",
+                        scrollMarginTop: mob ? 150 : 160,
+                      }}
+                    >
+                      <span style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: `${padV}px 0`, borderRight: `1px solid ${C.borderLight}`, fontFamily: BODY_FONT, fontSize: mob ? 10 : 11, color: isTop3 ? ACS : C.muted, fontWeight: isTop3 ? 700 : 400 }}>
+                        {rank}
+                      </span>
+                      <div style={{ padding: `${padV}px 12px`, borderRight: `1px solid ${C.borderLight}`, fontFamily: BODY_FONT, fontSize: mob ? 12 : 13, color: p.uncertain ? C.muted : isTop3 ? C.heading : C.body, fontWeight: isTop3 ? 700 : 400, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                        {p.name}
                       </div>
+                      <span style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", padding: `${padV}px 12px ${padV}px 0`, borderRight: `1px solid ${C.borderLight}`, fontFamily: BODY_FONT, fontSize: mob ? 12 : 13, color: p.uncertain ? C.muted : ACS, fontWeight: 600, letterSpacing: 1 }}>
+                        {p.elo}
+                      </span>
+                      <span style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: `${padV}px 0`, fontFamily: BODY_FONT, fontSize: mob ? 10 : 11, fontWeight: 700, color: p.uncertain ? C.muted : p.delta != null && p.delta < 0 ? "#ff3e3e" : ACS }}>
+                        {p.delta != null && p.delta !== 0 ? (p.delta > 0 ? `▲${p.delta}` : `▼${-p.delta}`) : p.uncertain ? "?" : ""}
+                      </span>
                     </div>
                   );
                 })}

@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LangProvider } from "./hooks/useLang";
 import { ThemeProvider } from "./hooks/useTheme";
 import { TopNav } from "./components/TopNav";
+import { useGridParallax } from "./hooks/useParallax";
 import { C } from "./theme";
 import Championship from "./pages/Championship";
 import Announce from "./pages/Announce";
@@ -13,7 +14,10 @@ import Divisions from "./pages/Divisions";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 
-const App: FC = () => (
+const App: FC = () => {
+  // фоновая клетка скроллится медленнее контента
+  useGridParallax(0.5);
+  return (
   <ThemeProvider>
     <LangProvider>
       <BrowserRouter>
@@ -36,6 +40,7 @@ const App: FC = () => (
       </BrowserRouter>
     </LangProvider>
   </ThemeProvider>
-);
+  );
+};
 
 export default App;
