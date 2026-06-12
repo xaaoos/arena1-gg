@@ -1,3 +1,17 @@
+/* Xolonium — шрифт Xonotic (arena FPS), стиль Quake Live; self-hosted, OFL, кириллица есть */
+@font-face {
+  font-family: "Xolonium";
+  src: url("/fonts/Xolonium-Regular.woff2") format("woff2");
+  font-weight: 100 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Xolonium";
+  src: url("/fonts/Xolonium-Bold.woff2") format("woff2");
+  font-weight: 600 900;
+  font-display: swap;
+}
+
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
 
@@ -26,6 +40,7 @@ html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
   --selection-bg: rgba(255, 62, 62, 0.3);
   --scrollbar-track: #08080c;
   --accent: #4ade80;
+  --accent-contrast: #08080c;
   --accent-subtle: rgba(74,222,128,0.06);
   --accent-border: rgba(74,222,128,0.25);
   --place-1: #ffd700;
@@ -34,10 +49,11 @@ html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
 }
 
 [data-theme="light"] {
+  /* карточки белые на сером фоне — глубина как у бумаги; тёмные карточки выглядят выключенными */
   --bg: #f4f4f6;
-  --bg-card: #e8e8ec;
-  --bg-nav: rgba(244,244,246,0.97);
-  --bg-nav-sub: rgba(236,236,240,0.97);
+  --bg-card: #ffffff;
+  --bg-nav: rgba(255,255,255,0.95);
+  --bg-nav-sub: rgba(247,247,249,0.95);
   --text: #111;
   --text-heading: #0a0a0a;
   --text-body: #2a2a2a;
@@ -46,15 +62,16 @@ html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
   --text-footer: #666;
   --text-secondary: #444;
   --text-link: #222;
-  --border: #c4c4c8;
-  --border-light: rgba(0,0,0,0.08);
-  --input-bg: rgba(0,0,0,0.05);
-  --input-border: #bbb;
+  --border: #d8d8dc;
+  --border-light: rgba(0,0,0,0.07);
+  --input-bg: #ffffff;
+  --input-border: #c8c8cc;
   --scanline: rgba(0,0,0,0.015);
   --grid-line: 0.04;
   --selection-bg: rgba(255, 62, 62, 0.2);
   --scrollbar-track: #f4f4f6;
   --accent: #15803d;
+  --accent-contrast: #ffffff;
   --accent-subtle: rgba(21,128,61,0.08);
   --accent-border: rgba(21,128,61,0.3);
   --place-1: #92400e;
@@ -63,7 +80,7 @@ html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
 }
 
 /* overflow-x: clip — hidden ломает position:sticky у потомков */
-body { background: var(--bg); color: var(--text); font-family: "Tektur", "Courier New", monospace; overflow-x: clip; transition: background 0.3s, color 0.3s; }
+body { background: var(--bg); color: var(--text); font-family: "Xolonium", "Tektur", "Courier New", monospace; overflow-x: clip; transition: background 0.3s, color 0.3s; }
 ::selection { background: var(--selection-bg); color: var(--text-heading); }
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: var(--scrollbar-track); }

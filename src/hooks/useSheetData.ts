@@ -8,6 +8,7 @@ export interface SheetPlayer {
   elo: number;
   uncertain: boolean;
   delta: number | null; // изменение ELO с прошлого кубка, null если не указано
+  rank: number | null; // место в общем рейтинге из col[0], null если не указано
 }
 
 export interface SheetDivision {
@@ -46,15 +47,22 @@ function parseSheetData(csv: string): SheetDivision[] {
 
   for (const line of lines) {
     const cols = parseRow(line);
+    // col[0] = место в общем рейтинге
+    const rankStr = cols[0]?.trim() ?? "";
+    const rank = /^\d+$/.test(rankStr) ? Number(rankStr) : null;
     const divLabel = cols[1]?.trim() ?? "";
     const name = cols[2]?.trim() ?? "";
     const eloStr = cols[3]?.trim() ?? "";
-    const col4 = cols[4]?.trim() ?? "";
-    const col5 = cols[5]?.trim() ?? "";
-    const uncertain = col4 === "?";
-    // дельта ELO: "+25" / "-13" в col[4] или col[5] (col[4] может быть занята "?")
-    const deltaStr = [col4, col5].find((s) => /^[+-]\d+$/.test(s));
-    const delta = deltaStr ? Number(deltaStr) : null;
+    const uncertain = cols.slice(4).some((s) => s?.trim() === "?");
+    // дельта ELO — самая правая колонка вида "+25" / "-13"
+    let delta: number | null = null;
+    for (let i = cols.length - 1; i >= 4; i--) {
+      const s = cols[i]?.trim() ?? "";
+      if (/^[+-]\d+$/.test(s)) {
+        delta = Number(s);
+        break;
+      }
+    }
 
     if (!name || !isNum(eloStr)) continue;
     // skip header/meta rows
@@ -65,7 +73,7 @@ function parseSheetData(csv: string): SheetDivision[] {
       divisions.push(current);
     }
 
-    current.players.push({ name, elo: Number(eloStr), uncertain, delta });
+    current.players.push({ name, elo: Number(eloStr), uncertain, delta, rank });
   }
 
   return divisions.filter((d) => d.players.length > 0);

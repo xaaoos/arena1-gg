@@ -88,7 +88,7 @@ const Divisions: FC = () => {
         <div style={{ position: "absolute", inset: 0, pointerEvents: "none", backgroundImage: `linear-gradient(rgba(74,222,128,var(--grid-line)) 1px,transparent 1px),linear-gradient(90deg,rgba(74,222,128,var(--grid-line)) 1px,transparent 1px)`, backgroundSize: "60px 60px" }} />
         <div style={{ position: "relative", zIndex: 1 }}>
           <div style={{ fontSize: mob ? 10 : 12, letterSpacing: mob ? 3 : 5, color: ACS, marginBottom: 20, fontWeight: 600 }}>{t.tag}</div>
-          <h1 style={{ fontSize: "clamp(20px,4vw,44px)", fontWeight: 900, margin: 0, lineHeight: 1.1, letterSpacing: mob ? 3 : 5, color: C.heading, fontFamily: "'Tektur', sans-serif" }}>
+          <h1 style={{ fontSize: "clamp(20px,4vw,44px)", fontWeight: 900, margin: 0, lineHeight: 1.1, letterSpacing: mob ? 3 : 5, color: C.heading, fontFamily: "'Xolonium','Tektur',sans-serif" }}>
             {t.h1} <span style={{ color: ACS }}>{t.h2}</span>
           </h1>
           {!loading && !error && divisions.length > 0 && (
@@ -120,7 +120,7 @@ const Divisions: FC = () => {
                     background: C.inputBg,
                     border: `1px solid ${C.border}`,
                     color: C.muted,
-                    fontFamily: "'Tektur',monospace",
+                    fontFamily: "'Xolonium','Tektur',monospace",
                     fontSize: 11,
                     fontWeight: 700,
                     letterSpacing: 1.5,
@@ -160,7 +160,7 @@ const Divisions: FC = () => {
             <div style={{
               display: "grid", gridTemplateColumns: ROW_COLS,
               padding: mob ? "10px 16px" : "12px 24px",
-              borderBottom: `1px solid ${AC}33`,
+              borderBottom: `1px solid ${C.accentBorder}`,
               // непрозрачный фон: sticky-плашка, строки не должны просвечивать
               background: `linear-gradient(${AC}08,${AC}08) ${C.bg}`,
               position: "sticky", top: 80, zIndex: 98,
@@ -177,10 +177,11 @@ const Divisions: FC = () => {
                 ? <div style={{ textAlign: "center", color: C.muted, padding: "40px 0", fontFamily: BODY_FONT, fontSize: 13 }}>{t.notFound}</div>
                 : filtered.map((p, i) => (
                   <div key={i} style={{ display: "grid", gridTemplateColumns: COLS, padding: mob ? "9px 16px" : "11px 24px", borderBottom: `1px solid ${C.borderLight}`, alignItems: "center" }}>
-                    <div style={{ fontSize: mob ? 10 : 11, fontWeight: 700, letterSpacing: 1, color: ACS, textTransform: "uppercase", fontFamily: "'Tektur',sans-serif", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", paddingRight: 8 }}>
+                    <div style={{ fontSize: mob ? 10 : 11, fontWeight: 700, letterSpacing: 1, color: ACS, textTransform: "uppercase", fontFamily: "'Xolonium','Tektur',sans-serif", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", paddingRight: 8 }}>
                       {p.division}
                     </div>
                     <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 12 : 13, color: C.heading, fontWeight: 600, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                      {p.rank != null && <span style={{ color: C.muted, fontWeight: 400, fontSize: mob ? 10 : 11 }}>{p.rank} </span>}
                       {p.name}
                     </div>
                     <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 12 : 13, color: ACS, fontWeight: 600, letterSpacing: 1, textAlign: "right" }}>
@@ -207,7 +208,7 @@ const Divisions: FC = () => {
                   borderBottom: `1px solid ${C.border}`,
                   marginTop: di > 0 ? 8 : 0,
                 }}>
-                  <span style={{ fontSize: mob ? 10 : 11, fontWeight: 700, letterSpacing: 2, color: ACS, textTransform: "uppercase", fontFamily: "'Tektur',sans-serif" }}>
+                  <span style={{ fontSize: mob ? 10 : 11, fontWeight: 700, letterSpacing: 2, color: ACS, textTransform: "uppercase", fontFamily: "'Xolonium','Tektur',sans-serif" }}>
                     {div.label}
                   </span>
                   <span style={{ fontSize: 11, color: C.muted, fontFamily: BODY_FONT }}>
@@ -215,13 +216,15 @@ const Divisions: FC = () => {
                   </span>
                 </div>
                 {div.players.map((p, pi) => {
-                  const rank = divStartRank[di] + pi + 1;
+                  const rank = p.rank ?? divStartRank[di] + pi + 1;
                   const isTop3 = rank <= 3;
-                  const medal = rank === 1 ? "🥇" : rank === 2 ? "🥈" : rank === 3 ? "🥉" : null;
                   return (
                     <div key={pi} style={{ padding: mob ? "8px 16px" : "10px 24px", borderBottom: `1px solid ${C.borderLight}`, background: isTop3 ? C.accentSubtle : "transparent" }}>
                       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, overflow: "hidden" }}>
-                        <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 12 : 13, color: isTop3 ? C.heading : C.body, fontWeight: isTop3 ? 700 : 400, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                        <span style={{ fontFamily: BODY_FONT, fontSize: mob ? 10 : 11, color: isTop3 ? ACS : C.muted, fontWeight: isTop3 ? 700 : 400, width: mob ? 28 : 34, flexShrink: 0 }}>
+                          {rank}
+                        </span>
+                        <div style={{ flex: 1, fontFamily: BODY_FONT, fontSize: mob ? 12 : 13, color: isTop3 ? C.heading : C.body, fontWeight: isTop3 ? 700 : 400, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                           {p.name}
                         </div>
                         <div style={{ display: "flex", alignItems: "baseline", gap: 7, flexShrink: 0 }}>

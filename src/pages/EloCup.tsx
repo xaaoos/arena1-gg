@@ -54,8 +54,8 @@ const Countdown: FC<{ target: Date; labels: [string, string, string, string]; mo
     <div style={{ display: "flex", gap: mob ? 8 : 14, justifyContent: "center" }}>
       {vals.map((v, i) => (
         <div key={i} style={{ display: "flex", alignItems: "center", gap: mob ? 8 : 14 }}>
-          <div style={{ textAlign: "center", minWidth: mob ? 58 : 86, padding: mob ? "10px 6px" : "16px 10px", background: C.bgCard, border: `1px solid ${AC}33` }}>
-            <div style={{ fontSize: mob ? 26 : 44, fontWeight: 900, color: C.heading, fontFamily: "'Tektur',monospace", lineHeight: 1, fontVariantNumeric: "tabular-nums" }}>
+          <div style={{ textAlign: "center", minWidth: mob ? 58 : 86, padding: mob ? "10px 6px" : "16px 10px", background: C.bgCard, border: `1px solid ${C.accentBorder}` }}>
+            <div style={{ fontSize: mob ? 26 : 44, fontWeight: 900, color: C.heading, fontFamily: "'Xolonium','Tektur',monospace", lineHeight: 1, fontVariantNumeric: "tabular-nums" }}>
               {pad(v)}
             </div>
             <div style={{ fontSize: mob ? 9 : 10, letterSpacing: mob ? 1.5 : 2, color: C.muted, textTransform: "uppercase", marginTop: 8, fontWeight: 700 }}>
@@ -103,7 +103,7 @@ const EloCup: FC = () => {
         <section style={{ padding: mob ? "32px 16px 0" : "60px 20px 0", maxWidth: 900, margin: "0 auto" }}>
           <div style={{
             position: "relative",
-            border: `1px solid ${AC}44`,
+            border: `1px solid ${C.accentBorder}`,
             background: `radial-gradient(ellipse at 50% 0%,rgba(74,222,128,0.07) 0%,transparent 70%)`,
             padding: mob ? "28px 16px 28px" : "48px 32px 44px",
             textAlign: "center",
@@ -116,7 +116,7 @@ const EloCup: FC = () => {
             <div style={{ fontSize: mob ? 10 : 11, letterSpacing: mob ? 2 : 4, color: ACS, fontWeight: 700, textTransform: "uppercase" }}>
               {t.next.num} · {t.next.label}
             </div>
-            <h2 style={{ fontSize: "clamp(24px,5.5vw,52px)", fontWeight: 900, color: C.heading, margin: "14px 0 0", lineHeight: 1.1, fontFamily: "'Tektur',sans-serif", letterSpacing: 1 }}>
+            <h2 style={{ fontSize: "clamp(24px,5.5vw,52px)", fontWeight: 900, color: C.heading, margin: "14px 0 0", lineHeight: 1.1, fontFamily: "'Xolonium','Tektur',sans-serif", letterSpacing: 1 }}>
               {main.name}
             </h2>
             <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 12 : 14, color: ACS, fontWeight: 700, marginTop: 12, letterSpacing: 1 }}>
@@ -139,8 +139,8 @@ const EloCup: FC = () => {
             {main.link && (
               <a href={main.link} target="_blank" rel="noopener noreferrer" style={{
                 display: "inline-block", marginTop: mob ? 24 : 32,
-                background: ACS, color: "#08080c",
-                fontFamily: "'Tektur',sans-serif", fontSize: mob ? 11 : 12, fontWeight: 800,
+                background: ACS, color: C.accentContrast,
+                fontFamily: "'Xolonium','Tektur',sans-serif", fontSize: mob ? 11 : 12, fontWeight: 800,
                 letterSpacing: 2, textTransform: "uppercase", textDecoration: "none",
                 padding: mob ? "13px 24px" : "15px 36px",
               }}>{t.next.cta} ↗</a>
@@ -260,7 +260,7 @@ const EloCup: FC = () => {
                 const isTop3 = ["1", "2", "3"].includes(s.place);
                 return (
                   <div key={si} style={{ display: "grid", gridTemplateColumns: mob ? "44px 1fr" : "56px 1fr", alignItems: "center", padding: mob ? "11px 16px" : "13px 24px", borderTop: si > 0 ? `1px solid ${C.borderLight}` : "none", background: isTop3 ? C.accentSubtle : "transparent" }}>
-                    <div style={{ fontSize: isTop3 ? (mob ? 15 : 17) : 12, fontWeight: isTop3 ? 900 : 600, color: pc, fontFamily: "'Tektur',monospace" }}>
+                    <div style={{ fontSize: isTop3 ? (mob ? 15 : 17) : 12, fontWeight: isTop3 ? 900 : 600, color: pc, fontFamily: "'Xolonium','Tektur',monospace" }}>
                       {s.place === "1" ? "🥇" : s.place === "2" ? "🥈" : s.place === "3" ? "🥉" : `#${s.place}`}
                     </div>
                     <div style={{ fontFamily: BODY_FONT, fontSize: isTop3 ? (mob ? 13 : 14) : (mob ? 12 : 13), color: isTop3 ? C.heading : C.body, fontWeight: isTop3 ? 700 : 400, overflowWrap: "break-word" }}>

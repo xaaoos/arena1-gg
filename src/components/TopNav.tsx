@@ -50,7 +50,7 @@ export const TopNav: FC = () => {
         transition: "background 0.3s",
       }}>
         <Link to="/non-pro-duel-cups" style={{ textDecoration: "none", display: "flex", alignItems: "center", flexShrink: 0 }}>
-          <span style={{ fontSize: 15, fontWeight: 900, color: C.heading, letterSpacing: 2, fontFamily: "'Tektur',monospace", whiteSpace: "nowrap" }}>
+          <span style={{ fontSize: 15, fontWeight: 900, color: C.heading, letterSpacing: 2, fontFamily: "'Xolonium','Tektur',monospace", whiteSpace: "nowrap" }}>
             ARENA <span style={{ color: "#ff3e3e" }}>1</span>
           </span>
         </Link>
@@ -61,7 +61,7 @@ export const TopNav: FC = () => {
               <Link key={p.path} to={p.path} style={{
                 textDecoration: "none", padding: "14px 12px",
                 fontSize: 11, fontWeight: 700, letterSpacing: 1.5, textTransform: "uppercase",
-                fontFamily: "'Tektur',sans-serif",
+                fontFamily: "'Xolonium','Tektur',sans-serif",
                 color: isActive(pathname, p.path) ? p.color : C.muted,
                 borderBottom: isActive(pathname, p.path) ? `2px solid ${p.color}` : "2px solid transparent",
                 transition: "all 0.3s",
@@ -84,7 +84,7 @@ export const TopNav: FC = () => {
               background: "none", border: "none", cursor: "pointer",
               color: lang === l ? activePage.color : C.subtle,
               fontSize: 11, fontWeight: 700, letterSpacing: 2,
-              fontFamily: "'Tektur',sans-serif", padding: "0 6px",
+              fontFamily: "'Xolonium','Tektur',sans-serif", padding: "0 6px",
               textTransform: "uppercase", transition: "color 0.3s",
             }}>{l}</button>
           ))}
@@ -119,7 +119,7 @@ export const TopNav: FC = () => {
                 padding: mobile ? "0 10px" : "0 14px",
                 display: "flex", alignItems: "center",
                 borderBottom: "2px solid transparent",
-                fontFamily: "'Tektur',sans-serif", whiteSpace: "nowrap", flexShrink: 0,
+                fontFamily: "'Xolonium','Tektur',sans-serif", whiteSpace: "nowrap", flexShrink: 0,
               }}>{item.label}</a>
             ) : (
               <Link key={item.href} to={item.href} style={{
@@ -130,7 +130,7 @@ export const TopNav: FC = () => {
                 padding: mobile ? "0 10px" : "0 14px",
                 display: "flex", alignItems: "center",
                 borderBottom: isActive(pathname, item.href) ? `2px solid ${ACS}` : "2px solid transparent",
-                fontFamily: "'Tektur',sans-serif", whiteSpace: "nowrap", flexShrink: 0,
+                fontFamily: "'Xolonium','Tektur',sans-serif", whiteSpace: "nowrap", flexShrink: 0,
                 transition: "all 0.2s",
               }}>{item.label}</Link>
             )
@@ -150,7 +150,7 @@ export const TopNav: FC = () => {
             <Link key={p.path} to={p.path} onClick={() => setOpen(false)} style={{
               textDecoration: "none", padding: "18px 0",
               fontSize: 14, fontWeight: 700, letterSpacing: 3, textTransform: "uppercase",
-              fontFamily: "'Tektur',sans-serif",
+              fontFamily: "'Xolonium','Tektur',sans-serif",
               color: isActive(pathname, p.path) ? p.color : C.secondary,
               borderBottom: `1px solid ${C.border}`,
               transition: "all 0.3s",
@@ -163,13 +163,13 @@ export const TopNav: FC = () => {
                   <a key={item.href} href={item.href} target="_blank" rel="noopener noreferrer" onClick={() => setOpen(false)} style={{
                     textDecoration: "none", padding: "14px 0",
                     fontSize: 12, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase",
-                    fontFamily: "'Tektur',sans-serif", color: ACS,
+                    fontFamily: "'Xolonium','Tektur',sans-serif", color: ACS,
                   }}>{item.label}</a>
                 ) : (
                   <Link key={item.href} to={item.href} onClick={() => setOpen(false)} style={{
                     textDecoration: "none", padding: "14px 0",
                     fontSize: 12, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase",
-                    fontFamily: "'Tektur',sans-serif", color: C.secondary,
+                    fontFamily: "'Xolonium','Tektur',sans-serif", color: C.secondary,
                   }}>{item.label}</Link>
                 )
               )}
