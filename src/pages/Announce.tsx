@@ -2,35 +2,12 @@ import { useState, useEffect, type FC } from "react";
 import { useLang } from "../hooks/useLang";
 import { useIsMobile } from "../hooks/useIsMobile";
 import { ELOCUP } from "../data/elocup";
-import { useArchiveData, formatAnnounceDate, parseDate, type CupAnnounce } from "../hooks/useArchiveData";
-import { ScanLine, BODY_FONT } from "../components/UI";
+import { useAnnounceData } from "../hooks/useAnnounceData";
+import { BODY_FONT } from "../components/UI";
 import { C } from "../theme";
 
 const AC = "#4ade80";
 const ACS = C.accent;
-
-// ВРЕМЕННО: мок-анонсы для предпросмотра, пока Павел не завёл таблицу.
-// Реальные строки-анонсы из таблицы архива автоматически вытесняют моки.
-const MOCK_ANNOUNCES: CupAnnounce[] = [
-  {
-    name: "700–1300 ELO Cup",
-    rawDate: "14.06.2026 19:00 MSK",
-    link: "https://discord.gg/dgPwNAph2j",
-    details: ["Duel 1v1 Bracket · dm6 + маппул", "Приз: 1 000 RUB + донаты"],
-  },
-  {
-    name: "600–1200 ELO Cup",
-    rawDate: "21.06.2026 19:00 MSK",
-    link: "https://discord.gg/dgPwNAph2j",
-    details: ["Duel 1v1 Bracket"],
-  },
-  {
-    name: "1000–2000 ELO Cup",
-    rawDate: "28.06.2026 19:00 MSK",
-    link: "https://discord.gg/dgPwNAph2j",
-    details: ["Duel 1v1 Bracket"],
-  },
-];
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
@@ -70,20 +47,16 @@ const Announce: FC = () => {
   const { lang } = useLang();
   const t = ELOCUP[lang];
   const mob = useIsMobile();
-  const { announces, loading } = useArchiveData();
-  // моки пока в таблице нет строк-анонсов
-  const announceList = announces.length > 0 ? announces : MOCK_ANNOUNCES;
-  const main = announceList[0];
-  const rest = announceList.slice(1);
-  const mainDate = main ? parseDate(main.rawDate) : null;
+  const { announces, loading } = useAnnounceData();
+  const main = announces[0];
+  const rest = announces.slice(1);
+  const mainDate = main?.date ?? null;
 
   return (
     <div style={{ overflowX: "hidden" }}>
-      <ScanLine />
 
       {/* Hero */}
       <section style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", position: "relative", padding: mob ? "140px 16px 32px" : "160px 20px 36px", textAlign: "center", background: `radial-gradient(ellipse at 50% 20%,rgba(74,222,128,0.06) 0%,transparent 60%)` }}>
-        <div style={{ position: "absolute", inset: 0, pointerEvents: "none", backgroundImage: `linear-gradient(rgba(var(--grid-rgb),var(--grid-line)) 1px,transparent 1px),linear-gradient(90deg,rgba(var(--grid-rgb),var(--grid-line)) 1px,transparent 1px)`, backgroundSize: "60px 60px" }} />
         <div style={{ position: "relative", zIndex: 1, maxWidth: 700, width: "100%" }}>
           <div style={{ fontSize: mob ? 10 : 12, letterSpacing: mob ? 3 : 5, color: ACS, marginBottom: 12, fontWeight: 600 }}>{t.hero.tag}</div>
           <h1 style={{ fontSize: "clamp(28px,6vw,64px)", fontWeight: 900, margin: 0, lineHeight: 1, letterSpacing: -1, color: C.heading, whiteSpace: "nowrap" }}>
@@ -115,7 +88,7 @@ const Announce: FC = () => {
               {main.name}
             </h2>
             <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 12 : 14, color: ACS, fontWeight: 700, marginTop: 12, letterSpacing: 1 }}>
-              {formatAnnounceDate(main.rawDate, lang)}
+              {main.rawDate}
             </div>
             {main.details.length > 0 && (
               <div style={{ marginTop: 10, display: "flex", flexDirection: "column", gap: 4 }}>
@@ -156,7 +129,7 @@ const Announce: FC = () => {
                   borderTop: i > 0 ? "none" : `1px solid ${C.border}`,
                 }}>
                   <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 10 : 11, color: ACS, fontWeight: 700, whiteSpace: "nowrap", flexShrink: 0 }}>
-                    {formatAnnounceDate(a.rawDate, lang)}
+                    {a.rawDate}
                   </div>
                   <div style={{ fontSize: mob ? 11 : 12, fontWeight: 800, color: C.heading, letterSpacing: 0.5, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                     {a.name}

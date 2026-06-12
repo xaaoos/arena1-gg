@@ -3,7 +3,7 @@ import { useLang } from "../hooks/useLang";
 import { useCountdown } from "../hooks/useCountdown";
 import { useIsMobile } from "../hooks/useIsMobile";
 import { CHAMP, LAUNCH_DATE } from "../data/championship";
-import { ScanLine, GlitchText, CUnit, Sep, SL, ST, BODY_FONT } from "../components/UI";
+import { GlitchText, CUnit, Sep, SL, ST, BODY_FONT } from "../components/UI";
 import { Icon } from "../components/Icons";
 import { C } from "../theme";
 
@@ -38,7 +38,6 @@ const Championship: FC = () => {
 
   return (
     <div style={{ overflowX: "hidden" }}>
-      <ScanLine />
       <nav style={{ position: "fixed", top: 48, left: 0, right: 0, zIndex: 99, background: C.bgNavSub, backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(255,62,62,0.12)", display: "flex", justifyContent: m ? "flex-start" : "center", overflowX: "auto", WebkitOverflowScrolling: "touch", transition: "background 0.3s" }}>
         {NAV_IDS.map((id, i) => (
           <button key={id} onClick={() => scrollTo(id)} style={{ background: "none", border: "none", cursor: "pointer", color: active === id ? "#ff3e3e" : C.muted, fontSize: m ? 10 : 11, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", padding: m ? "10px 10px" : "12px 14px", whiteSpace: "nowrap", borderBottom: active === id ? "2px solid #ff3e3e" : "2px solid transparent", transition: "all 0.3s", fontFamily: "'Xolonium','Tektur',sans-serif", flexShrink: 0 }}>{t.nav[i]}</button>

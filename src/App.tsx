@@ -17,7 +17,8 @@ const App: FC = () => (
   <ThemeProvider>
     <LangProvider>
       <BrowserRouter>
-        <div style={{ background: C.bg, color: C.text, minHeight: "100vh", fontFamily: "'Xolonium','Tektur','Courier New',monospace", transition: "background 0.3s, color 0.3s" }}>
+        {/* фон не задаём — клетка-грид живёт на body */}
+        <div style={{ color: C.text, minHeight: "100vh", fontFamily: "'Xolonium','Tektur','Courier New',monospace", transition: "color 0.3s" }}>
           <TopNav />
           <div style={{ paddingTop: 0 }}>
             <Routes>

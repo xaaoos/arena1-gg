@@ -2,7 +2,7 @@ import { useRef, useState, useEffect, type FC } from "react";
 import { useLang } from "../hooks/useLang";
 import { useIsMobile } from "../hooks/useIsMobile";
 import { useSheetData } from "../hooks/useSheetData";
-import { ScanLine, BODY_FONT } from "../components/UI";
+import { BODY_FONT } from "../components/UI";
 import { C } from "../theme";
 
 const AC = "#4ade80";
@@ -69,7 +69,6 @@ const Divisions: FC = () => {
 
   return (
     <div>
-      <ScanLine />
 
       {/* Hero */}
       <section
@@ -85,7 +84,6 @@ const Divisions: FC = () => {
           background: `radial-gradient(ellipse at 50% 20%,rgba(74,222,128,0.06) 0%,transparent 60%)`,
         }}
       >
-        <div style={{ position: "absolute", inset: 0, pointerEvents: "none", backgroundImage: `linear-gradient(rgba(var(--grid-rgb),var(--grid-line)) 1px,transparent 1px),linear-gradient(90deg,rgba(var(--grid-rgb),var(--grid-line)) 1px,transparent 1px)`, backgroundSize: "60px 60px" }} />
         <div style={{ position: "relative", zIndex: 1 }}>
           <div style={{ fontSize: mob ? 10 : 12, letterSpacing: mob ? 3 : 5, color: ACS, marginBottom: 20, fontWeight: 600 }}>{t.tag}</div>
           <h1 style={{ fontSize: "clamp(20px,4vw,44px)", fontWeight: 900, margin: 0, lineHeight: 1.1, letterSpacing: mob ? 3 : 5, color: C.heading, fontFamily: "'Xolonium','Tektur',sans-serif" }}>

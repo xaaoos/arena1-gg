@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback, type FC } from "react";
 import { useLang } from "../hooks/useLang";
 import { useIsMobile } from "../hooks/useIsMobile";
-import { ScanLine, BODY_FONT } from "../components/UI";
+import { BODY_FONT } from "../components/UI";
 import { C } from "../theme";
 
 interface Card { pickup: number; respawn: number; offset: number; itemType: string; }
@@ -133,7 +133,6 @@ const Trainer: FC = () => {
 
   return (
     <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "calc(100vh - 48px)", padding: mob ? "60px 12px 16px" : "68px 20px 20px", overflowX: "hidden" }}>
-      <ScanLine />
       <div style={{ maxWidth: 520, width: "100%" }}>
 
         {screen === "start" && (

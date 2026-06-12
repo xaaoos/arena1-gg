@@ -3,7 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { useLang } from "../hooks/useLang";
 import { useIsMobile } from "../hooks/useIsMobile";
 import { BLOG_POSTS } from "../data/blog";
-import { ScanLine, BODY_FONT } from "../components/UI";
+import { BODY_FONT } from "../components/UI";
 import { C } from "../theme";
 
 const AC = "#c084fc";
@@ -45,7 +45,6 @@ const BlogPost: FC = () => {
   if (!post) {
     return (
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "calc(100vh - 48px)", padding: "68px 20px 20px", textAlign: "center" }}>
-        <ScanLine />
         <div style={{ fontSize: 48, fontWeight: 900, color: C.footer, marginBottom: 16 }}>404</div>
         <div style={{ fontFamily: BODY_FONT, fontSize: 14, color: C.muted, marginBottom: 32 }}>{lang === "ru" ? "Статья не найдена" : "Post not found"}</div>
         <Link to="/blog" style={{ fontFamily: BODY_FONT, fontSize: 13, color: AC, textDecoration: "none" }}>{lang === "ru" ? "Назад к блогу" : "Back to blog"}</Link>
@@ -59,7 +58,6 @@ const BlogPost: FC = () => {
 
   return (
     <div style={{ overflowX: "hidden" }}>
-      <ScanLine />
       <article style={{ maxWidth: 720, margin: "0 auto", padding: mob ? "80px 16px 40px" : "120px 20px 60px" }}>
         <Link to="/blog" style={{ fontFamily: BODY_FONT, fontSize: 12, color: AC, textDecoration: "none", letterSpacing: 1, display: "inline-block", marginBottom: mob ? 28 : 40 }}>&larr; {lang === "ru" ? "Блог" : "Blog"}</Link>
 

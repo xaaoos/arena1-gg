@@ -82,7 +82,18 @@ html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
 }
 
 /* overflow-x: clip — hidden ломает position:sticky у потомков */
-body { background: var(--bg); color: var(--text); font-family: "Xolonium", "Tektur", "Courier New", monospace; overflow-x: clip; transition: background 0.3s, color 0.3s; }
+/* клетка-грид на весь фон страницы (обе темы) */
+body {
+  background-color: var(--bg);
+  background-image:
+    linear-gradient(rgba(var(--grid-rgb),var(--grid-line)) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(var(--grid-rgb),var(--grid-line)) 1px, transparent 1px);
+  background-size: 60px 60px;
+  color: var(--text);
+  font-family: "Xolonium", "Tektur", "Courier New", monospace;
+  overflow-x: clip;
+  transition: background 0.3s, color 0.3s;
+}
 ::selection { background: var(--selection-bg); color: var(--text-heading); }
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: var(--scrollbar-track); }
