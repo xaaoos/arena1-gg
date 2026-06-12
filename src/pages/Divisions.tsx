@@ -178,7 +178,7 @@ const Divisions: FC = () => {
       </div>
 
       {/* Table */}
-      <section style={{ padding: mob ? "0 10px 80px" : "0 20px 120px", maxWidth: 520, margin: "0 auto" }}>
+      <section style={{ padding: mob ? "28px 10px 80px" : "36px 20px 120px", maxWidth: 520, margin: "0 auto" }}>
         {loading && (
           <div style={{ textAlign: "center", color: C.muted, padding: "80px 0", fontFamily: BODY_FONT, fontSize: 13, letterSpacing: 2 }}>
             {t.loading}
