@@ -9,18 +9,24 @@ const AC = "#4ade80";
 const ACS = C.accent;
 
 const PAGES = [
-  { path: "/non-pro-duel-cups", label: "Non-Pro Duel Cups", color: AC },
+  { path: "/", label: "Non-Pro Duel Cups", color: AC },
   { path: "/trainer", label: "Trainer", color: "#fbbf24" },
   { path: "/blog", label: "Blog", color: "#c084fc" },
 ] as const;
 
+// страницы раздела Non-Pro: анонсы (главная), результаты, дивизионы
+const isNonPro = (pathname: string) =>
+  pathname === "/" || pathname.startsWith("/non-pro-duel-cups") || pathname.startsWith("/divisions");
+
 const SUB_NAV = {
   ru: [
+    { label: "Анонсы", href: "/", external: false },
     { label: "Результаты", href: "/non-pro-duel-cups", external: false },
     { label: "Дивизионы и игроки", href: "/divisions", external: false },
     { label: "Регистрация", href: "https://discord.gg/dgPwNAph2j", external: true },
   ],
   en: [
+    { label: "Announces", href: "/", external: false },
     { label: "Results", href: "/non-pro-duel-cups", external: false },
     { label: "Divisions & Players", href: "/divisions", external: false },
     { label: "Register", href: "https://discord.gg/dgPwNAph2j", external: true },
@@ -30,13 +36,17 @@ const SUB_NAV = {
 const isActive = (pathname: string, path: string) =>
   path === "/" ? pathname === "/" : pathname.startsWith(path);
 
+// для главного меню: пункт Non-Pro активен на всех страницах раздела
+const isPageActive = (pathname: string, path: string) =>
+  path === "/" ? isNonPro(pathname) : pathname.startsWith(path);
+
 export const TopNav: FC = () => {
   const { pathname } = useLocation();
   const { lang, setLang } = useLang();
   const { theme, toggle } = useTheme();
   const mobile = useIsMobile();
   const [open, setOpen] = useState(false);
-  const activePage = PAGES.find((p) => isActive(pathname, p.path)) ?? PAGES[0];
+  const activePage = PAGES.find((p) => isPageActive(pathname, p.path)) ?? PAGES[0];
   const subItems = SUB_NAV[lang];
 
   return (
@@ -49,7 +59,7 @@ export const TopNav: FC = () => {
         display: "flex", alignItems: "center", padding: "0 16px", height: 48,
         transition: "background 0.3s",
       }}>
-        <Link to="/non-pro-duel-cups" style={{ textDecoration: "none", display: "flex", alignItems: "center", flexShrink: 0 }}>
+        <Link to="/" style={{ textDecoration: "none", display: "flex", alignItems: "center", flexShrink: 0 }}>
           <span style={{ fontSize: 15, fontWeight: 900, color: C.heading, letterSpacing: 2, fontFamily: "'Xolonium','Tektur',monospace", whiteSpace: "nowrap" }}>
             ARENA <span style={{ color: "#ff3e3e" }}>1</span>
           </span>
@@ -62,8 +72,8 @@ export const TopNav: FC = () => {
                 textDecoration: "none", padding: "14px 12px",
                 fontSize: 11, fontWeight: 700, letterSpacing: 1.5, textTransform: "uppercase",
                 fontFamily: "'Xolonium','Tektur',sans-serif",
-                color: isActive(pathname, p.path) ? p.color : C.muted,
-                borderBottom: isActive(pathname, p.path) ? `2px solid ${p.color}` : "2px solid transparent",
+                color: isPageActive(pathname, p.path) ? p.color : C.muted,
+                borderBottom: isPageActive(pathname, p.path) ? `2px solid ${p.color}` : "2px solid transparent",
                 transition: "all 0.3s",
               }}>{p.label}</Link>
             ))}
@@ -100,12 +110,13 @@ export const TopNav: FC = () => {
       </div>
 
       {/* Sub-nav — non-pro-duel-cups and divisions */}
-      {(pathname.startsWith("/non-pro-duel-cups") || pathname.startsWith("/divisions")) && (
+      {isNonPro(pathname) && (
         <div style={{
           position: "fixed", top: 48, left: 0, right: 0, zIndex: 199, height: 32,
           background: C.bgNavSub, backdropFilter: "blur(12px)",
           borderBottom: "none",
-          display: "flex", justifyContent: "center",
+          // на мобильном 4 пункта переполняются: center при overflow обрезает левый край
+          display: "flex", justifyContent: mobile ? "flex-start" : "center",
           overflowX: "auto", WebkitOverflowScrolling: "touch",
           transition: "background 0.3s",
         }}>
@@ -151,12 +162,12 @@ export const TopNav: FC = () => {
               textDecoration: "none", padding: "18px 0",
               fontSize: 14, fontWeight: 700, letterSpacing: 3, textTransform: "uppercase",
               fontFamily: "'Xolonium','Tektur',sans-serif",
-              color: isActive(pathname, p.path) ? p.color : C.secondary,
+              color: isPageActive(pathname, p.path) ? p.color : C.secondary,
               borderBottom: `1px solid ${C.border}`,
               transition: "all 0.3s",
             }}>{p.label}</Link>
           ))}
-          {(pathname.startsWith("/non-pro-duel-cups") || pathname.startsWith("/divisions")) && (
+          {isNonPro(pathname) && (
             <div style={{ marginTop: 24, borderTop: `1px solid ${C.border}`, paddingTop: 24, display: "flex", flexDirection: "column", gap: 4 }}>
               {subItems.map((item) =>
                 item.external ? (

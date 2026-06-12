@@ -165,9 +165,11 @@ const Divisions: FC = () => {
               background: `linear-gradient(${AC}08,${AC}08) ${C.bg}`,
               position: "sticky", top: 80, zIndex: 98,
             }}>
-              <div style={{ display: "flex", justifyContent: "space-between" }}>
-                <span style={{ fontSize: 10, letterSpacing: 1.5, color: C.muted, fontWeight: 700, textTransform: "uppercase" }}>{t.cols.player}</span>
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <span style={{ width: mob ? 28 : 34, flexShrink: 0, fontSize: 10, letterSpacing: 1.5, color: C.muted, fontWeight: 700 }}>#</span>
+                <span style={{ flex: 1, fontSize: 10, letterSpacing: 1.5, color: C.muted, fontWeight: 700, textTransform: "uppercase" }}>{t.cols.player}</span>
                 <span style={{ fontSize: 10, letterSpacing: 1.5, color: C.muted, fontWeight: 700, textTransform: "uppercase" }}>{t.cols.elo}</span>
+                <span style={{ minWidth: mob ? 30 : 36, flexShrink: 0, fontSize: 10, letterSpacing: 1.5, color: C.muted, fontWeight: 700 }}>±</span>
               </div>
             </div>
 
@@ -185,12 +187,12 @@ const Divisions: FC = () => {
                       {p.name}
                     </div>
                     <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 12 : 13, color: ACS, fontWeight: 600, letterSpacing: 1, textAlign: "right" }}>
+                      {p.elo}
                       {p.delta != null && p.delta !== 0 && (
-                        <span style={{ fontSize: mob ? 10 : 11, fontWeight: 700, color: p.delta > 0 ? ACS : "#ff3e3e", marginRight: 7 }}>
+                        <span style={{ fontSize: mob ? 10 : 11, fontWeight: 700, color: p.delta > 0 ? ACS : "#ff3e3e", marginLeft: 7 }}>
                           {p.delta > 0 ? `▲${p.delta}` : `▼${-p.delta}`}
                         </span>
                       )}
-                      {p.elo}
                     </div>
                   </div>
                 ))
@@ -227,14 +229,12 @@ const Divisions: FC = () => {
                         <div style={{ flex: 1, fontFamily: BODY_FONT, fontSize: mob ? 12 : 13, color: isTop3 ? C.heading : C.body, fontWeight: isTop3 ? 700 : 400, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                           {p.name}
                         </div>
-                        <div style={{ display: "flex", alignItems: "baseline", gap: 7, flexShrink: 0 }}>
-                          {p.delta != null && p.delta !== 0 && (
-                            <span style={{ fontFamily: BODY_FONT, fontSize: mob ? 10 : 11, fontWeight: 700, color: p.delta > 0 ? ACS : "#ff3e3e" }}>
-                              {p.delta > 0 ? `▲${p.delta}` : `▼${-p.delta}`}
-                            </span>
-                          )}
+                        <div style={{ display: "flex", alignItems: "baseline", gap: 8, flexShrink: 0 }}>
                           <span style={{ fontFamily: BODY_FONT, fontSize: mob ? 12 : 13, color: ACS, fontWeight: 600, letterSpacing: 1 }}>
                             {p.elo}
+                          </span>
+                          <span style={{ minWidth: mob ? 30 : 36, fontFamily: BODY_FONT, fontSize: mob ? 10 : 11, fontWeight: 700, color: p.delta != null && p.delta < 0 ? "#ff3e3e" : ACS }}>
+                            {p.delta != null && p.delta !== 0 ? (p.delta > 0 ? `▲${p.delta}` : `▼${-p.delta}`) : ""}
                           </span>
                         </div>
                       </div>

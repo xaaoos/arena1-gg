@@ -20,7 +20,10 @@ export interface EloCupData {
     ctaDivisions: string; ctaVerified: string;
     upcoming: string; cd: [string, string, string, string];
   };
-  archive: { num: string; label: string; t1: string; t2: string; bracket: string };
+  archive: {
+    num: string; label: string; t1: string; t2: string; bracket: string;
+    search: string; notFound: string; more: string; results: string;
+  };
   footer: string;
   standings: { place: string };
   past: PastCup[];
@@ -49,7 +52,10 @@ export const ELOCUP: Record<"ru" | "en", EloCupData> = {
       upcoming: "Далее",
       cd: ["дни", "часы", "мин", "сек"],
     },
-    archive: { num: "02", label: "АРХИВ РЕЗУЛЬТАТОВ", t1: "Прошедшие", t2: "турниры", bracket: "Сетка турнира" },
+    archive: {
+      num: "02", label: "АРХИВ РЕЗУЛЬТАТОВ", t1: "Прошедшие", t2: "турниры", bracket: "Сетка турнира",
+      search: "Поиск игрока по нику...", notFound: "Игрок не найден", more: "Ранее", results: "Результаты",
+    },
     footer: "ARENA 1 NON-PRO DUEL CUPS · WEEKLY DUEL TOURNAMENT · 2026",
     standings: { place: "место" },
     past: [
@@ -106,7 +112,10 @@ export const ELOCUP: Record<"ru" | "en", EloCupData> = {
       upcoming: "Upcoming",
       cd: ["days", "hrs", "min", "sec"],
     },
-    archive: { num: "02", label: "RESULTS ARCHIVE", t1: "Past", t2: "tournaments", bracket: "Tournament bracket" },
+    archive: {
+      num: "02", label: "RESULTS ARCHIVE", t1: "Past", t2: "tournaments", bracket: "Tournament bracket",
+      search: "Search player by nickname...", notFound: "Player not found", more: "Earlier", results: "Results",
+    },
     footer: "ARENA 1 NON-PRO DUEL CUPS · WEEKLY DUEL TOURNAMENT · 2026",
     standings: { place: "place" },
     past: [
