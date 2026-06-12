@@ -85,7 +85,7 @@ const Divisions: FC = () => {
           background: `radial-gradient(ellipse at 50% 20%,rgba(74,222,128,0.06) 0%,transparent 60%)`,
         }}
       >
-        <div style={{ position: "absolute", inset: 0, pointerEvents: "none", backgroundImage: `linear-gradient(rgba(74,222,128,var(--grid-line)) 1px,transparent 1px),linear-gradient(90deg,rgba(74,222,128,var(--grid-line)) 1px,transparent 1px)`, backgroundSize: "60px 60px" }} />
+        <div style={{ position: "absolute", inset: 0, pointerEvents: "none", backgroundImage: `linear-gradient(rgba(var(--grid-rgb),var(--grid-line)) 1px,transparent 1px),linear-gradient(90deg,rgba(var(--grid-rgb),var(--grid-line)) 1px,transparent 1px)`, backgroundSize: "60px 60px" }} />
         <div style={{ position: "relative", zIndex: 1 }}>
           <div style={{ fontSize: mob ? 10 : 12, letterSpacing: mob ? 3 : 5, color: ACS, marginBottom: 20, fontWeight: 600 }}>{t.tag}</div>
           <h1 style={{ fontSize: "clamp(20px,4vw,44px)", fontWeight: 900, margin: 0, lineHeight: 1.1, letterSpacing: mob ? 3 : 5, color: C.heading, fontFamily: "'Xolonium','Tektur',sans-serif" }}>
@@ -113,28 +113,39 @@ const Divisions: FC = () => {
               />
               {/* Jump to division — hidden while searching */}
               {!query && (
-                <select
-                  value={activeDiv}
-                  onChange={(e) => scrollToDiv(e.target.value)}
-                  style={{
-                    background: C.inputBg,
-                    border: `1px solid ${C.border}`,
-                    color: C.muted,
-                    fontFamily: "'Xolonium','Tektur',monospace",
-                    fontSize: 11,
-                    fontWeight: 700,
-                    letterSpacing: 1.5,
-                    textTransform: "uppercase",
-                    padding: mob ? "8px 32px 8px 12px" : "10px 36px 10px 16px",
-                    cursor: "pointer",
-                    outline: "none",
-                    width: mob ? 220 : 280,
-                  }}
-                >
-                  {divisions.map((d) => (
-                    <option key={d.label} value={d.label}>{d.label}</option>
-                  ))}
-                </select>
+                <div style={{ position: "relative", width: mob ? 220 : 280 }}>
+                  <select
+                    value={activeDiv}
+                    onChange={(e) => scrollToDiv(e.target.value)}
+                    style={{
+                      background: C.inputBg,
+                      border: `1px solid ${C.border}`,
+                      color: C.muted,
+                      fontFamily: "'Xolonium','Tektur',monospace",
+                      fontSize: 11,
+                      fontWeight: 700,
+                      letterSpacing: 1.5,
+                      textTransform: "uppercase",
+                      padding: mob ? "8px 36px 8px 12px" : "10px 40px 10px 16px",
+                      cursor: "pointer",
+                      outline: "none",
+                      width: "100%",
+                      // нативная стрелка select не стилизуется — рисуем свою
+                      appearance: "none",
+                      WebkitAppearance: "none",
+                      MozAppearance: "none",
+                    }}
+                  >
+                    {divisions.map((d) => (
+                      <option key={d.label} value={d.label}>{d.label}</option>
+                    ))}
+                  </select>
+                  <span style={{
+                    position: "absolute", right: mob ? 12 : 16, top: "50%",
+                    transform: "translateY(-50%)", pointerEvents: "none",
+                    color: ACS, fontSize: 10, lineHeight: 1,
+                  }}>▼</span>
+                </div>
               )}
             </div>
           )}
@@ -166,11 +177,12 @@ const Divisions: FC = () => {
               position: "sticky", top: 80, zIndex: 98,
             }}>
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <span style={{ width: mob ? 28 : 34, flexShrink: 0, fontSize: 10, letterSpacing: 1.5, color: C.muted, fontWeight: 700 }}>#</span>
+                {/* колонки # и ± — квадратные (ширина ≈ высоте строки), контент по центру */}
+                <span style={{ width: mob ? 32 : 38, flexShrink: 0, textAlign: "center", fontSize: 10, letterSpacing: 1.5, color: C.muted, fontWeight: 700 }}>#</span>
                 <span style={{ flex: 1, fontSize: 10, letterSpacing: 1.5, color: C.muted, fontWeight: 700, textTransform: "uppercase" }}>{t.cols.player}</span>
-                <div style={{ display: "flex", gap: mob ? 14 : 20, flexShrink: 0 }}>
+                <div style={{ display: "flex", gap: mob ? 10 : 16, flexShrink: 0 }}>
                   <span style={{ minWidth: mob ? 38 : 44, textAlign: "right", fontSize: 10, letterSpacing: 1.5, color: C.muted, fontWeight: 700, textTransform: "uppercase" }}>{t.cols.elo}</span>
-                  <span style={{ minWidth: mob ? 32 : 40, fontSize: 10, letterSpacing: 1.5, color: C.muted, fontWeight: 700 }}>±</span>
+                  <span style={{ width: mob ? 32 : 38, flexShrink: 0, textAlign: "center", fontSize: 10, letterSpacing: 1.5, color: C.muted, fontWeight: 700 }}>±</span>
                 </div>
               </div>
             </div>
@@ -228,17 +240,17 @@ const Divisions: FC = () => {
                   return (
                     <div key={pi} style={{ padding: mob ? "8px 16px" : "10px 24px", borderBottom: `1px solid ${C.borderLight}`, background: isTop3 ? C.accentSubtle : "transparent" }}>
                       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, overflow: "hidden" }}>
-                        <span style={{ fontFamily: BODY_FONT, fontSize: mob ? 10 : 11, color: isTop3 ? ACS : C.muted, fontWeight: isTop3 ? 700 : 400, width: mob ? 28 : 34, flexShrink: 0 }}>
+                        <span style={{ fontFamily: BODY_FONT, fontSize: mob ? 10 : 11, color: isTop3 ? ACS : C.muted, fontWeight: isTop3 ? 700 : 400, width: mob ? 32 : 38, textAlign: "center", flexShrink: 0 }}>
                           {rank}
                         </span>
                         <div style={{ flex: 1, fontFamily: BODY_FONT, fontSize: mob ? 12 : 13, color: p.uncertain ? C.muted : isTop3 ? C.heading : C.body, fontWeight: isTop3 ? 700 : 400, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                           {p.name}
                         </div>
-                        <div style={{ display: "flex", alignItems: "baseline", gap: mob ? 14 : 20, flexShrink: 0 }}>
+                        <div style={{ display: "flex", alignItems: "baseline", gap: mob ? 10 : 16, flexShrink: 0 }}>
                           <span style={{ minWidth: mob ? 38 : 44, textAlign: "right", fontFamily: BODY_FONT, fontSize: mob ? 12 : 13, color: p.uncertain ? C.muted : ACS, fontWeight: 600, letterSpacing: 1 }}>
                             {p.elo}
                           </span>
-                          <span style={{ minWidth: mob ? 32 : 40, fontFamily: BODY_FONT, fontSize: mob ? 10 : 11, fontWeight: 700, color: p.uncertain ? C.muted : p.delta != null && p.delta < 0 ? "#ff3e3e" : ACS }}>
+                          <span style={{ width: mob ? 32 : 38, textAlign: "center", flexShrink: 0, fontFamily: BODY_FONT, fontSize: mob ? 10 : 11, fontWeight: 700, color: p.uncertain ? C.muted : p.delta != null && p.delta < 0 ? "#ff3e3e" : ACS }}>
                             {p.delta != null && p.delta !== 0 ? (p.delta > 0 ? `▲${p.delta}` : `▼${-p.delta}`) : p.uncertain ? "?" : ""}
                           </span>
                         </div>
