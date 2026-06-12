@@ -46,7 +46,7 @@ const Verified: FC = () => {
         <div style={{ position: "absolute", inset: 0, pointerEvents: "none", backgroundImage: `linear-gradient(rgba(0,240,255,var(--grid-line)) 1px,transparent 1px),linear-gradient(90deg,rgba(0,240,255,var(--grid-line)) 1px,transparent 1px)`, backgroundSize: "60px 60px" }} />
         <div style={{ position: "relative", zIndex: 1, maxWidth: 700, width: "100%" }}>
           <div style={{ marginBottom: mob ? 24 : 40, display: "flex", justifyContent: "center" }}><Icon type="shield" color="#00f0ff" size={mob ? 36 : 48} /></div>
-          <div style={{ fontSize: mob ? 9 : 11, letterSpacing: mob ? 3 : 6, color: "#00f0ff", marginBottom: 20, fontWeight: 600 }}>{t.hero.badge}</div>
+          <div style={{ fontSize: mob ? 10 : 12, letterSpacing: mob ? 3 : 5, color: "#00f0ff", marginBottom: 20, fontWeight: 600 }}>{t.hero.badge}</div>
           <h1 style={{ fontSize: "clamp(26px,6vw,64px)", fontWeight: 900, margin: 0, lineHeight: 1.1, color: C.heading }}>{t.hero.t1}<br /><span style={{ color: "#00f0ff" }}>{t.hero.t2}</span></h1>
           <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 13 : 15, color: C.body, marginTop: 28, lineHeight: 1.8, maxWidth: 560, margin: "28px auto 0" }}>{t.hero.text}</div>
           <button onClick={() => scrollTo("cta")} style={{ marginTop: mob ? 32 : 44, padding: mob ? "12px 28px" : "14px 40px", background: "#00f0ff", border: "none", color: "#08080c", fontSize: mob ? 11 : 12, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", cursor: "pointer", fontFamily: "'Tektur',monospace" }}>{t.cta.btn1}</button>
@@ -119,7 +119,7 @@ const Verified: FC = () => {
         <div style={{ border: `1px solid ${C.border}`, overflow: "hidden" }}>
           <div style={{ display: "grid", gridTemplateColumns: mob ? "36px 1fr 60px" : "56px 1fr 100px 1fr", padding: mob ? "12px 12px" : "14px 24px", background: "rgba(0,240,255,0.04)", borderBottom: `1px solid ${C.border}` }}>
             {(mob ? [t.players.cols.rank, t.players.cols.player, t.players.cols.elo] : [t.players.cols.rank, t.players.cols.player, t.players.cols.elo, t.players.cols.date]).map((col) => (
-              <div key={col} style={{ fontSize: 9, letterSpacing: mob ? 1 : 3, color: C.muted, textTransform: "uppercase", fontWeight: 700 }}>{col}</div>
+              <div key={col} style={{ fontSize: 10, letterSpacing: mob ? 1 : 2, color: C.muted, textTransform: "uppercase", fontWeight: 700 }}>{col}</div>
             ))}
           </div>
           {t.players.list.map((p) => {

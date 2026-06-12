@@ -15,6 +15,15 @@ export interface ArchiveCup {
   standings: ArchiveStanding[];
 }
 
+// Анонс — строка той же таблицы: дата есть, результатов ещё нет.
+// Когда заполняются результаты, строка автоматически становится карточкой архива.
+export interface CupAnnounce {
+  name: string;
+  rawDate: string; // "дд.мм.гггг" + опционально время/таймзона текстом
+  link: string; // ссылка регистрации (Discord и т.п.), может быть пустой
+  details: string[]; // остальные строки из ячейки анонса (ELO-диапазон, приз...)
+}
+
 const RU_MONTHS = [
   "января","февраля","марта","апреля","мая","июня",
   "июля","августа","сентября","октября","ноября","декабря",
@@ -33,6 +42,13 @@ export function formatArchiveDate(rawDate: string, lang: "ru" | "en"): string {
   return lang === "ru"
     ? `${day} ${RU_MONTHS[month]} ${year}`
     : `${EN_MONTHS[month]} ${day}, ${year}`;
+}
+
+// Дата анонса: "14.06.2026 19:00 MSK" → "14 июня 2026, 19:00 MSK"
+export function formatAnnounceDate(rawDate: string, lang: "ru" | "en"): string {
+  const extra = rawDate.replace(/^\d{2}\.\d{2}\.\d{4}\s*/, "").trim();
+  const base = formatArchiveDate(rawDate, lang);
+  return extra ? `${base}, ${extra}` : base;
 }
 
 // Full CSV parser that handles multi-line quoted cells
@@ -100,27 +116,55 @@ function parseStandingsText(text: string): { name: string; standings: ArchiveSta
   return { name, standings };
 }
 
-function parseArchiveCSV(csv: string): ArchiveCup[] {
+export function parseDate(raw: string): Date | null {
+  const m = raw.match(/^(\d{2})\.(\d{2})\.(\d{4})(?:\s+(\d{1,2}):(\d{2}))?/);
+  if (!m) return null;
+  return new Date(+m[3], +m[2] - 1, +m[1], m[4] ? +m[4] : 0, m[5] ? +m[5] : 0);
+}
+
+function parseArchiveCSV(csv: string): { cups: ArchiveCup[]; announces: CupAnnounce[] } {
   const rows = parseCSVFull(csv);
   const cups: ArchiveCup[] = [];
+  const announces: CupAnnounce[] = [];
 
   for (const cols of rows) {
     // CSV structure: col[0]=empty, col[1]=date, col[2]=bracketUrl, col[3]=standings, col[4]=discord
     const rawDate = cols[1]?.trim() ?? "";
-    const bracketUrl = cols[2]?.trim() ?? "";
+    const url = cols[2]?.trim() ?? "";
     const standingsText = cols[3]?.trim() ?? "";
 
-    if (!rawDate.match(/^\d{2}\.\d{2}\.\d{4}/) || !bracketUrl.startsWith("http")) continue;
+    if (!rawDate.match(/^\d{2}\.\d{2}\.\d{4}/)) continue;
 
     const { name, standings } = parseStandingsText(standingsText);
-    cups.push({ name, rawDate, bracketUrl, standings });
+
+    if (standings.length > 0 && url.startsWith("http")) {
+      cups.push({ name, rawDate, bracketUrl: url, standings });
+    } else if (standings.length === 0) {
+      // строка без результатов = анонс будущего кубка
+      const lines = standingsText.split("\n").map((l) => l.trim()).filter(Boolean);
+      announces.push({
+        name: lines[0] ?? "Non-Pro Duel Cup",
+        rawDate,
+        link: url.startsWith("http") ? url : "",
+        details: lines.slice(1).filter((l) => l.toLowerCase() !== "standings:"),
+      });
+    }
   }
 
-  return cups.reverse();
+  // анонсы с датой сегодня или позже, ближайший первым
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const upcoming = announces
+    .map((a) => ({ a, d: parseDate(a.rawDate) }))
+    .filter((x): x is { a: CupAnnounce; d: Date } => x.d !== null && x.d >= today)
+    .sort((x, y) => x.d.getTime() - y.d.getTime());
+
+  return { cups: cups.reverse(), announces: upcoming.map((x) => x.a) };
 }
 
 export function useArchiveData() {
   const [cups, setCups] = useState<ArchiveCup[]>([]);
+  const [announces, setAnnounces] = useState<CupAnnounce[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
@@ -131,7 +175,9 @@ export function useArchiveData() {
         return r.text();
       })
       .then((csv) => {
-        setCups(parseArchiveCSV(csv));
+        const parsed = parseArchiveCSV(csv);
+        setCups(parsed.cups);
+        setAnnounces(parsed.announces);
         setLoading(false);
       })
       .catch(() => {
@@ -140,5 +186,5 @@ export function useArchiveData() {
       });
   }, []);
 
-  return { cups, loading, error };
+  return { cups, announces, loading, error };
 }

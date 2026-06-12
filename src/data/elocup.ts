@@ -18,6 +18,7 @@ export interface EloCupData {
     name: string; date: string; elo: string; format: string;
     mappool: string; maps: string[]; prize: string; cta: string;
     ctaDivisions: string; ctaVerified: string;
+    upcoming: string; cd: [string, string, string, string];
   };
   archive: { num: string; label: string; t1: string; t2: string; bracket: string };
   footer: string;
@@ -45,6 +46,8 @@ export const ELOCUP: Record<"ru" | "en", EloCupData> = {
       cta: "Регистрация — Discord",
       ctaDivisions: "Дивизионы и игроки",
       ctaVerified: "Верифицированные игроки",
+      upcoming: "Далее",
+      cd: ["дни", "часы", "мин", "сек"],
     },
     archive: { num: "02", label: "АРХИВ РЕЗУЛЬТАТОВ", t1: "Прошедшие", t2: "турниры", bracket: "Сетка турнира" },
     footer: "ARENA 1 NON-PRO DUEL CUPS · WEEKLY DUEL TOURNAMENT · 2026",
@@ -100,6 +103,8 @@ export const ELOCUP: Record<"ru" | "en", EloCupData> = {
       cta: "Register — Discord",
       ctaDivisions: "Divisions & Players",
       ctaVerified: "Verified Players",
+      upcoming: "Upcoming",
+      cd: ["days", "hrs", "min", "sec"],
     },
     archive: { num: "02", label: "RESULTS ARCHIVE", t1: "Past", t2: "tournaments", bracket: "Tournament bracket" },
     footer: "ARENA 1 NON-PRO DUEL CUPS · WEEKLY DUEL TOURNAMENT · 2026",

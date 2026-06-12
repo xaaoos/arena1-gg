@@ -160,7 +160,7 @@ const Trainer: FC = () => {
             <div style={{ height: 3, background: C.border, marginBottom: 20, overflow: "hidden" }}><div style={{ height: "100%", width: `${(idx / 60) * 100}%`, background: "linear-gradient(90deg,#ff3e3e,#ff8800)", transition: "width 0.3s" }} /></div>
             <div style={{ display: "flex", justifyContent: "space-between", padding: "12px 0", marginBottom: 16 }}>
               {[{ v: correct, c: "#4ade80", l: t.correct }, { v: wrong, c: "#f87171", l: t.wrong }, { v: fmtT(elapsed), c: "#fbbf24", l: t.time }, { v: `${idx + 1}/60`, c: C.body, l: t.card }].map((s, i) => (
-                <div key={i} style={{ textAlign: "center" }}><div style={{ fontFamily: BODY_FONT, fontSize: 20, fontWeight: 700, color: s.c }}>{s.v}</div><div style={{ fontSize: 9, letterSpacing: 2, color: C.muted, textTransform: "uppercase" }}>{s.l}</div></div>
+                <div key={i} style={{ textAlign: "center" }}><div style={{ fontFamily: BODY_FONT, fontSize: 20, fontWeight: 700, color: s.c }}>{s.v}</div><div style={{ fontSize: 10, letterSpacing: 1.5, color: C.muted, textTransform: "uppercase" }}>{s.l}</div></div>
               ))}
             </div>
             <div style={{ background: checked ? (isCorrect ? "rgba(74,222,128,0.06)" : "rgba(248,113,113,0.06)") : C.bgCard, border: checked ? `2px solid ${isCorrect ? "#4ade80" : "#f87171"}` : `2px solid ${C.border}`, padding: mob ? "28px 16px" : "40px 24px", textAlign: "center", marginBottom: 20, transition: "all 0.3s" }}>
@@ -189,7 +189,7 @@ const Trainer: FC = () => {
               {[{ v: `${accuracy}%`, c: "#4ade80", l: t.res.accuracy }, { v: fmtT(elapsed), c: "#fbbf24", l: t.res.totalTime }, { v: `${(elapsed / 60000).toFixed(1)}s`, c: C.body, l: t.res.avgTime }].map((s, i) => (
                 <div key={i} style={{ background: C.bg, padding: "24px 16px", transition: "background 0.3s" }}>
                   <div style={{ fontSize: 28, fontWeight: 900, color: s.c, fontFamily: "'Tektur',monospace" }}>{s.v}</div>
-                  <div style={{ fontSize: 9, letterSpacing: 2, color: C.muted, marginTop: 6, textTransform: "uppercase" }}>{s.l}</div>
+                  <div style={{ fontSize: 10, letterSpacing: 1.5, color: C.muted, marginTop: 6, textTransform: "uppercase" }}>{s.l}</div>
                 </div>
               ))}
             </div>
@@ -215,9 +215,9 @@ const Trainer: FC = () => {
                 <div style={{ display: "flex", gap: 2, flexDirection: "column" }}>
                   {errors.map((e, i) => (
                     <div key={i} style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", padding: "12px 16px", background: "rgba(248,113,113,0.04)", borderLeft: "3px solid #f87171" }}>
-                      <div><div style={{ fontSize: 9, color: C.muted, letterSpacing: 1, marginBottom: 2 }}>{t.res.pickup}</div><div style={{ fontFamily: BODY_FONT, fontSize: 14, color: C.heading, fontWeight: 700 }}>{fmt(e.pickup)}</div></div>
-                      <div><div style={{ fontSize: 9, color: C.muted, letterSpacing: 1, marginBottom: 2 }}>{t.res.you}</div><div style={{ fontFamily: BODY_FONT, fontSize: 14, color: "#f87171", fontWeight: 700 }}>{e.yours !== null ? fmt(e.yours) : "—"}</div></div>
-                      <div><div style={{ fontSize: 9, color: C.muted, letterSpacing: 1, marginBottom: 2 }}>{t.res.cor}</div><div style={{ fontFamily: BODY_FONT, fontSize: 14, color: "#4ade80", fontWeight: 700 }}>{fmt(e.correct)}</div></div>
+                      <div><div style={{ fontSize: 10, color: C.muted, letterSpacing: 1, marginBottom: 2 }}>{t.res.pickup}</div><div style={{ fontFamily: BODY_FONT, fontSize: 14, color: C.heading, fontWeight: 700 }}>{fmt(e.pickup)}</div></div>
+                      <div><div style={{ fontSize: 10, color: C.muted, letterSpacing: 1, marginBottom: 2 }}>{t.res.you}</div><div style={{ fontFamily: BODY_FONT, fontSize: 14, color: "#f87171", fontWeight: 700 }}>{e.yours !== null ? fmt(e.yours) : "—"}</div></div>
+                      <div><div style={{ fontSize: 10, color: C.muted, letterSpacing: 1, marginBottom: 2 }}>{t.res.cor}</div><div style={{ fontFamily: BODY_FONT, fontSize: 14, color: "#4ade80", fontWeight: 700 }}>{fmt(e.correct)}</div></div>
                     </div>
                   ))}
                 </div>

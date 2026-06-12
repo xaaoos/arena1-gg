@@ -32,7 +32,7 @@ export const CUnit: FC<{ value: number; label: string }> = ({ value, label }) =>
 export const Sep: FC = () => <div style={{ color: "#ff3e3e", fontSize: "clamp(20px,4vw,32px)", fontWeight: 300, marginTop: -6, flexShrink: 0 }}>:</div>;
 
 export const SL: FC<{ num: string; text: string; color?: string }> = ({ num, text, color = "#ff3e3e" }) => (
-  <div style={{ fontSize: "clamp(9px,2vw,11px)", letterSpacing: "clamp(2px,1vw,5px)", color, marginBottom: 16, fontWeight: 600 }}>{num} · {text}</div>
+  <div style={{ fontSize: "clamp(10px,2vw,12px)", letterSpacing: "clamp(1.5px,0.8vw,4px)", color, marginBottom: 16, fontWeight: 600 }}>{num} · {text}</div>
 );
 
 export const ST: FC<{ children: ReactNode }> = ({ children }) => (

@@ -60,7 +60,7 @@ export const TopNav: FC = () => {
             {PAGES.map((p) => (
               <Link key={p.path} to={p.path} style={{
                 textDecoration: "none", padding: "14px 12px",
-                fontSize: 10, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase",
+                fontSize: 11, fontWeight: 700, letterSpacing: 1.5, textTransform: "uppercase",
                 fontFamily: "'Tektur',sans-serif",
                 color: isActive(pathname, p.path) ? p.color : C.muted,
                 borderBottom: isActive(pathname, p.path) ? `2px solid ${p.color}` : "2px solid transparent",
@@ -102,7 +102,7 @@ export const TopNav: FC = () => {
       {/* Sub-nav — non-pro-duel-cups and divisions */}
       {(pathname.startsWith("/non-pro-duel-cups") || pathname.startsWith("/divisions")) && (
         <div style={{
-          position: "fixed", top: 48, left: 0, right: 0, zIndex: 199,
+          position: "fixed", top: 48, left: 0, right: 0, zIndex: 199, height: 32,
           background: C.bgNavSub, backdropFilter: "blur(12px)",
           borderBottom: "none",
           display: "flex", justifyContent: "center",
@@ -114,9 +114,10 @@ export const TopNav: FC = () => {
               <a key={item.href} href={item.href} target="_blank" rel="noopener noreferrer" style={{
                 textDecoration: "none",
                 color: ACS,
-                fontSize: mobile ? 9 : 10, fontWeight: 700, letterSpacing: 2,
+                fontSize: mobile ? 10 : 11, fontWeight: 700, letterSpacing: 1.5,
                 textTransform: "uppercase",
-                padding: mobile ? "9px 10px" : "10px 14px",
+                padding: mobile ? "0 10px" : "0 14px",
+                display: "flex", alignItems: "center",
                 borderBottom: "2px solid transparent",
                 fontFamily: "'Tektur',sans-serif", whiteSpace: "nowrap", flexShrink: 0,
               }}>{item.label}</a>
@@ -124,9 +125,10 @@ export const TopNav: FC = () => {
               <Link key={item.href} to={item.href} style={{
                 textDecoration: "none",
                 color: isActive(pathname, item.href) ? ACS : C.muted,
-                fontSize: mobile ? 9 : 10, fontWeight: 700, letterSpacing: 2,
+                fontSize: mobile ? 10 : 11, fontWeight: 700, letterSpacing: 1.5,
                 textTransform: "uppercase",
-                padding: mobile ? "9px 10px" : "10px 14px",
+                padding: mobile ? "0 10px" : "0 14px",
+                display: "flex", alignItems: "center",
                 borderBottom: isActive(pathname, item.href) ? `2px solid ${ACS}` : "2px solid transparent",
                 fontFamily: "'Tektur',sans-serif", whiteSpace: "nowrap", flexShrink: 0,
                 transition: "all 0.2s",
