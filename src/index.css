@@ -109,3 +109,5 @@ body {
   nav::-webkit-scrollbar { display: none; }
   nav { -ms-overflow-style: none; scrollbar-width: none; }
 }
+
+input::placeholder { font-size: 13px; letter-spacing: 0; }

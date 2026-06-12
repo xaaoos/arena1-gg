@@ -65,8 +65,18 @@ const Divisions: FC = () => {
     return () => clearTimeout(id);
   }, [query, found?.name, divisions.length]);
 
+  // при загрузке таблица показывается с DIV 1 (Pro/Semi-Pro выше, доступны кнопками)
+  const didInitScroll = useRef(false);
   useEffect(() => {
-    if (divisions.length > 0 && !activeDiv) setActiveDiv(divisions[0].label);
+    if (divisions.length === 0 || didInitScroll.current) return;
+    didInitScroll.current = true;
+    const firstDiv = divisions.find((d) => /div/i.test(d.label));
+    if (firstDiv) {
+      setActiveDiv(firstDiv.label);
+      divRefs.current[firstDiv.label]?.scrollIntoView({ behavior: "auto", block: "start" });
+    } else {
+      setActiveDiv(divisions[0].label);
+    }
   }, [divisions]);
 
   const scrollToDiv = (label: string) => {
@@ -133,7 +143,7 @@ const Divisions: FC = () => {
                 fontSize: 16, // меньше нельзя — мобильный браузер зумит при фокусе
                 padding: "4px 12px",
                 outline: "none",
-                width: mob ? 200 : 220,
+                width: mob ? 140 : 154,
                 caretColor: ACS,
               }}
             />
@@ -144,7 +154,6 @@ const Divisions: FC = () => {
           {!loading && !error && divisions.length > 0 && (
             <div style={{ display: "flex", flexWrap: mob ? "wrap" : "nowrap", gap: 6, justifyContent: "center", maxWidth: mob ? 372 : "none" }}>
               {divisions
-                .filter((d) => !/^(pro|semi[- ]?pro)$/i.test(d.label.trim()))
                 .map((d) => {
                   const active = activeDiv === d.label;
                   return (
@@ -152,7 +161,8 @@ const Divisions: FC = () => {
                       key={d.label}
                       onClick={() => scrollToDiv(d.label)}
                       style={{
-                        width: mob ? 54 : 58,
+                        minWidth: mob ? 54 : 58,
+                        padding: mob ? "6px 8px" : "7px 10px",
                         background: active ? ACS : C.inputBg,
                         color: active ? C.accentContrast : C.muted,
                         border: `1px solid ${active ? ACS : C.border}`,
@@ -161,7 +171,6 @@ const Divisions: FC = () => {
                         fontWeight: 700,
                         letterSpacing: 0.5,
                         textTransform: "uppercase",
-                        padding: mob ? "6px 0" : "7px 0",
                         textAlign: "center",
                         cursor: "pointer",
                         transition: "all 0.2s",
@@ -203,7 +212,7 @@ const Divisions: FC = () => {
               borderBottom: `1px solid ${C.accentBorder}`,
               // непрозрачный фон: sticky-плашка, строки не должны просвечивать
               background: `linear-gradient(rgba(var(--glow-rgb),0.03),rgba(var(--glow-rgb),0.03)) ${C.bg}`,
-              position: "sticky", top: mob ? 184 : 124, zIndex: 98,
+              position: "sticky", top: mob ? 216 : 124, zIndex: 98,
             }}>
               <span style={{ padding: `${padV + 2}px 0`, textAlign: "center", borderRight: `1px solid ${C.borderLight}`, fontSize: 10, letterSpacing: 1.5, color: C.muted, fontWeight: 700 }}>#</span>
               <span style={{ padding: `${padV + 2}px 12px`, borderRight: `1px solid ${C.borderLight}`, fontSize: 10, letterSpacing: 1.5, color: C.muted, fontWeight: 700, textTransform: "uppercase" }}>{t.cols.player}</span>
@@ -213,7 +222,7 @@ const Divisions: FC = () => {
 
             {/* Grouped by division */}
             {divisions.map((div, di) => (
-              <div key={div.label} ref={(el) => { divRefs.current[div.label] = el; }} style={{ scrollMarginTop: mob ? 226 : 168 }}>
+              <div key={div.label} ref={(el) => { divRefs.current[div.label] = el; }} style={{ scrollMarginTop: mob ? 258 : 168 }}>
                 {/* Division header row */}
                 <div style={{
                   display: "flex", alignItems: "center", gap: 12,
