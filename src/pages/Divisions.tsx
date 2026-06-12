@@ -9,6 +9,9 @@ import { C } from "../theme";
 const AC = "#4ade80";
 const ACS = C.accent; // solid accent — uses CSS var, dark in light mode
 
+// Pro и Semi-Pro скрыты по умолчанию, показываются одной кнопкой
+const isProGroup = (label: string) => /^(pro|semi[- ]?pro)$/i.test(label.trim());
+
 const T = {
   ru: {
     tag: "N O N - P R O",
@@ -41,6 +44,7 @@ const Divisions: FC = () => {
   const { divisions, loading, error } = useSheetData();
   const heroRef = useParallax<HTMLDivElement>(0.3);
   const [activeDiv, setActiveDiv] = useState("");
+  const [showPro, setShowPro] = useState(false);
   const [search, setSearch] = useState("");
   const divRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
@@ -58,6 +62,8 @@ const Divisions: FC = () => {
       setMatch(null);
       return;
     }
+    // найденный игрок в скрытой Pro-части — раскрываем её
+    if (isProGroup(found.division)) setShowPro(true);
     const id = setTimeout(() => {
       setMatch(found.name);
       rowRefs.current[found.name.toLowerCase()]?.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -65,23 +71,18 @@ const Divisions: FC = () => {
     return () => clearTimeout(id);
   }, [query, found?.name, divisions.length]);
 
-  // при загрузке таблица показывается с DIV 1 (Pro/Semi-Pro выше, доступны кнопками)
-  const didInitScroll = useRef(false);
-  useEffect(() => {
-    if (divisions.length === 0 || didInitScroll.current) return;
-    didInitScroll.current = true;
-    const firstDiv = divisions.find((d) => /div/i.test(d.label));
-    if (firstDiv) {
-      setActiveDiv(firstDiv.label);
-      divRefs.current[firstDiv.label]?.scrollIntoView({ behavior: "auto", block: "start" });
-    } else {
-      setActiveDiv(divisions[0].label);
-    }
-  }, [divisions]);
-
   const scrollToDiv = (label: string) => {
     divRefs.current[label]?.scrollIntoView({ behavior: "smooth", block: "start" });
     setActiveDiv(label);
+  };
+
+  const togglePro = () => {
+    const next = !showPro;
+    setShowPro(next);
+    if (next) {
+      const proLabel = divisions.find((d) => isProGroup(d.label))?.label;
+      if (proLabel) setTimeout(() => divRefs.current[proLabel]?.scrollIntoView({ behavior: "smooth", block: "start" }), 60);
+    }
   };
 
   // колонки таблицы: # | игрок | ELO | ± (границы колонок сквозные, поэтому grid)
@@ -129,31 +130,33 @@ const Divisions: FC = () => {
           padding: mob ? "6px 8px" : "6px 12px",
           maxWidth: "calc(100vw - 8px)",
         }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <input
-              type="text"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder={t.search}
-              style={{
-                background: C.inputBg,
-                border: `1px solid ${C.border}`,
-                color: C.heading,
-                fontFamily: BODY_FONT,
-                fontSize: 16, // меньше нельзя — мобильный браузер зумит при фокусе
-                padding: "4px 12px",
-                outline: "none",
-                width: mob ? 140 : 154,
-                caretColor: ACS,
-              }}
-            />
-            {query && !found && (
-              <span style={{ fontFamily: BODY_FONT, fontSize: 11, color: C.muted, whiteSpace: "nowrap" }}>{t.notFound}</span>
-            )}
-          </div>
           {!loading && !error && divisions.length > 0 && (
             <div style={{ display: "flex", flexWrap: mob ? "wrap" : "nowrap", gap: 6, justifyContent: "center", maxWidth: mob ? 372 : "none" }}>
+              {/* одна кнопка раскрывает Pro и Semi-Pro части таблицы */}
+              {divisions.some((d) => isProGroup(d.label)) && (
+                <button
+                  onClick={togglePro}
+                  style={{
+                    padding: mob ? "6px 8px" : "7px 10px",
+                    background: showPro ? ACS : C.inputBg,
+                    color: showPro ? C.accentContrast : C.muted,
+                    border: `1px solid ${showPro ? ACS : C.border}`,
+                    fontFamily: "'Xolonium','Tektur',monospace",
+                    fontSize: 10,
+                    fontWeight: 700,
+                    letterSpacing: 0.5,
+                    textTransform: "uppercase",
+                    textAlign: "center",
+                    cursor: "pointer",
+                    transition: "all 0.2s",
+                    flexShrink: 0,
+                  }}
+                >
+                  PRO / SEMI-PRO
+                </button>
+              )}
               {divisions
+                .filter((d) => !isProGroup(d.label))
                 .map((d) => {
                   const active = activeDiv === d.label;
                   return (
@@ -183,6 +186,29 @@ const Divisions: FC = () => {
                 })}
             </div>
           )}
+          {/* поиск — справа после кнопок */}
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder={t.search}
+              style={{
+                background: C.inputBg,
+                border: `1px solid ${C.border}`,
+                color: C.heading,
+                fontFamily: BODY_FONT,
+                fontSize: 16, // меньше нельзя — мобильный браузер зумит при фокусе
+                padding: "4px 12px",
+                outline: "none",
+                width: mob ? 140 : 154,
+                caretColor: ACS,
+              }}
+            />
+            {query && !found && (
+              <span style={{ fontFamily: BODY_FONT, fontSize: 11, color: C.muted, whiteSpace: "nowrap" }}>{t.notFound}</span>
+            )}
+          </div>
         </div>
       </div>
 
@@ -220,8 +246,10 @@ const Divisions: FC = () => {
               <span style={{ padding: `${padV + 2}px 0`, textAlign: "center", fontSize: 10, letterSpacing: 1.5, color: C.muted, fontWeight: 700 }}>±</span>
             </div>
 
-            {/* Grouped by division */}
-            {divisions.map((div, di) => (
+            {/* Grouped by division; Pro/Semi-Pro только при showPro */}
+            {divisions.filter((d) => showPro || !isProGroup(d.label)).map((div) => {
+              const di = divisions.indexOf(div);
+              return (
               <div key={div.label} ref={(el) => { divRefs.current[div.label] = el; }} style={{ scrollMarginTop: mob ? 258 : 168 }}>
                 {/* Division header row */}
                 <div style={{
@@ -271,7 +299,8 @@ const Divisions: FC = () => {
                   );
                 })}
               </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </section>
