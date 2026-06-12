@@ -176,11 +176,11 @@ const Divisions: FC = () => {
               background: `linear-gradient(${AC}08,${AC}08) ${C.bg}`,
               position: "sticky", top: 80, zIndex: 98,
             }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                {/* колонки # и ± — квадратные (ширина ≈ высоте строки), контент по центру */}
+              <div style={{ display: "flex", alignItems: "center", gap: mob ? 16 : 24 }}>
+                {/* колонки # и ± — квадратные, отступы вокруг # и ± симметричны (gap = боковому паддингу строки) */}
                 <span style={{ width: mob ? 32 : 38, flexShrink: 0, textAlign: "center", fontSize: 10, letterSpacing: 1.5, color: C.muted, fontWeight: 700 }}>#</span>
                 <span style={{ flex: 1, fontSize: 10, letterSpacing: 1.5, color: C.muted, fontWeight: 700, textTransform: "uppercase" }}>{t.cols.player}</span>
-                <div style={{ display: "flex", gap: mob ? 10 : 16, flexShrink: 0 }}>
+                <div style={{ display: "flex", gap: mob ? 16 : 24, flexShrink: 0 }}>
                   <span style={{ minWidth: mob ? 38 : 44, textAlign: "right", fontSize: 10, letterSpacing: 1.5, color: C.muted, fontWeight: 700, textTransform: "uppercase" }}>{t.cols.elo}</span>
                   <span style={{ width: mob ? 32 : 38, flexShrink: 0, textAlign: "center", fontSize: 10, letterSpacing: 1.5, color: C.muted, fontWeight: 700 }}>±</span>
                 </div>
@@ -239,14 +239,14 @@ const Divisions: FC = () => {
                   const isTop3 = rank <= 3 && !p.uncertain;
                   return (
                     <div key={pi} style={{ padding: mob ? "8px 16px" : "10px 24px", borderBottom: `1px solid ${C.borderLight}`, background: isTop3 ? C.accentSubtle : "transparent" }}>
-                      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, overflow: "hidden" }}>
+                      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: mob ? 16 : 24, overflow: "hidden" }}>
                         <span style={{ fontFamily: BODY_FONT, fontSize: mob ? 10 : 11, color: isTop3 ? ACS : C.muted, fontWeight: isTop3 ? 700 : 400, width: mob ? 32 : 38, textAlign: "center", flexShrink: 0 }}>
                           {rank}
                         </span>
                         <div style={{ flex: 1, fontFamily: BODY_FONT, fontSize: mob ? 12 : 13, color: p.uncertain ? C.muted : isTop3 ? C.heading : C.body, fontWeight: isTop3 ? 700 : 400, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                           {p.name}
                         </div>
-                        <div style={{ display: "flex", alignItems: "baseline", gap: mob ? 10 : 16, flexShrink: 0 }}>
+                        <div style={{ display: "flex", alignItems: "baseline", gap: mob ? 16 : 24, flexShrink: 0 }}>
                           <span style={{ minWidth: mob ? 38 : 44, textAlign: "right", fontFamily: BODY_FONT, fontSize: mob ? 12 : 13, color: p.uncertain ? C.muted : ACS, fontWeight: 600, letterSpacing: 1 }}>
                             {p.elo}
                           </span>
