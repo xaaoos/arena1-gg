@@ -107,69 +107,74 @@ const Divisions: FC = () => {
             {t.h1} <span style={{ color: ACS }}>{t.h2}</span>
           </h1>
         </div>
-        {/* Прыжок к дивизиону — кнопки одного размера; Pro и Semi-Pro не нужны (видны сразу), "non-pro" опускаем */}
-        {!loading && !error && divisions.length > 0 && (
-          <div style={{ position: "relative", zIndex: 1, marginTop: mob ? 28 : 36, display: "flex", flexWrap: mob ? "wrap" : "nowrap", gap: mob ? 8 : 8, justifyContent: "center", maxWidth: mob ? 320 : "none" }}>
-            {divisions
-              .filter((d) => !/^(pro|semi[- ]?pro)$/i.test(d.label.trim()))
-              .map((d) => {
-                const active = activeDiv === d.label;
-                return (
-                  <button
-                    key={d.label}
-                    onClick={() => scrollToDiv(d.label)}
-                    style={{
-                      width: mob ? 68 : 72,
-                      background: active ? ACS : C.inputBg,
-                      color: active ? C.accentContrast : C.muted,
-                      border: `1px solid ${active ? ACS : C.border}`,
-                      fontFamily: "'Xolonium','Tektur',monospace",
-                      fontSize: mob ? 10 : 11,
-                      fontWeight: 700,
-                      letterSpacing: 1,
-                      textTransform: "uppercase",
-                      padding: mob ? "8px 0" : "9px 0",
-                      textAlign: "center",
-                      cursor: "pointer",
-                      transition: "all 0.2s",
-                      flexShrink: 0,
-                    }}
-                  >
-                    {d.label.replace(/non-?pro\s*/i, "").trim()}
-                  </button>
-                );
-              })}
-          </div>
-        )}
       </section>
 
-      {/* Поиск — sticky, всегда на экране над таблицей */}
-      <div style={{
-        position: "sticky", top: 80, zIndex: 99,
-        background: C.bg, borderBottom: `1px solid ${C.borderLight}`,
-        display: "flex", justifyContent: "center", alignItems: "center", gap: 12,
-        padding: "7px 16px",
-      }}>
-        <input
-          type="text"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          placeholder={t.search}
-          style={{
-            background: C.inputBg,
-            border: `1px solid ${C.border}`,
-            color: C.heading,
-            fontFamily: BODY_FONT,
-            fontSize: 16,
-            padding: "7px 14px",
-            outline: "none",
-            width: mob ? 220 : 300,
-            caretColor: ACS,
-          }}
-        />
-        {query && !found && (
-          <span style={{ fontFamily: BODY_FONT, fontSize: 11, color: C.muted, whiteSpace: "nowrap" }}>{t.notFound}</span>
-        )}
+      {/* Поиск + кнопки дивизионов — sticky-плашка по ширине контента, не полоса на весь экран */}
+      <div style={{ position: "sticky", top: 80, zIndex: 99, display: "flex", justifyContent: "center", pointerEvents: "none" }}>
+        <div style={{
+          pointerEvents: "auto",
+          display: "flex", flexDirection: mob ? "column" : "row", alignItems: "center",
+          gap: mob ? 6 : 10,
+          background: C.bg, border: `1px solid ${C.borderLight}`, borderTop: "none",
+          padding: mob ? "6px 8px" : "6px 12px",
+          maxWidth: "calc(100vw - 8px)",
+        }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder={t.search}
+              style={{
+                background: C.inputBg,
+                border: `1px solid ${C.border}`,
+                color: C.heading,
+                fontFamily: BODY_FONT,
+                fontSize: 16, // меньше нельзя — мобильный браузер зумит при фокусе
+                padding: "4px 12px",
+                outline: "none",
+                width: mob ? 200 : 220,
+                caretColor: ACS,
+              }}
+            />
+            {query && !found && (
+              <span style={{ fontFamily: BODY_FONT, fontSize: 11, color: C.muted, whiteSpace: "nowrap" }}>{t.notFound}</span>
+            )}
+          </div>
+          {!loading && !error && divisions.length > 0 && (
+            <div style={{ display: "flex", flexWrap: mob ? "wrap" : "nowrap", gap: 6, justifyContent: "center", maxWidth: mob ? 372 : "none" }}>
+              {divisions
+                .filter((d) => !/^(pro|semi[- ]?pro)$/i.test(d.label.trim()))
+                .map((d) => {
+                  const active = activeDiv === d.label;
+                  return (
+                    <button
+                      key={d.label}
+                      onClick={() => scrollToDiv(d.label)}
+                      style={{
+                        width: mob ? 54 : 58,
+                        background: active ? ACS : C.inputBg,
+                        color: active ? C.accentContrast : C.muted,
+                        border: `1px solid ${active ? ACS : C.border}`,
+                        fontFamily: "'Xolonium','Tektur',monospace",
+                        fontSize: 10,
+                        fontWeight: 700,
+                        letterSpacing: 0.5,
+                        textTransform: "uppercase",
+                        padding: mob ? "6px 0" : "7px 0",
+                        textAlign: "center",
+                        cursor: "pointer",
+                        transition: "all 0.2s",
+                        flexShrink: 0,
+                      }}
+                    >
+                      {d.label.replace(/non-?pro\s*/i, "").trim()}
+                    </button>
+                  );
+                })}
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Table */}
@@ -198,7 +203,7 @@ const Divisions: FC = () => {
               borderBottom: `1px solid ${C.accentBorder}`,
               // непрозрачный фон: sticky-плашка, строки не должны просвечивать
               background: `linear-gradient(rgba(var(--glow-rgb),0.03),rgba(var(--glow-rgb),0.03)) ${C.bg}`,
-              position: "sticky", top: 130, zIndex: 98,
+              position: "sticky", top: mob ? 184 : 124, zIndex: 98,
             }}>
               <span style={{ padding: `${padV + 2}px 0`, textAlign: "center", borderRight: `1px solid ${C.borderLight}`, fontSize: 10, letterSpacing: 1.5, color: C.muted, fontWeight: 700 }}>#</span>
               <span style={{ padding: `${padV + 2}px 12px`, borderRight: `1px solid ${C.borderLight}`, fontSize: 10, letterSpacing: 1.5, color: C.muted, fontWeight: 700, textTransform: "uppercase" }}>{t.cols.player}</span>
@@ -208,7 +213,7 @@ const Divisions: FC = () => {
 
             {/* Grouped by division */}
             {divisions.map((div, di) => (
-              <div key={div.label} ref={(el) => { divRefs.current[div.label] = el; }} style={{ scrollMarginTop: mob ? 172 : 176 }}>
+              <div key={div.label} ref={(el) => { divRefs.current[div.label] = el; }} style={{ scrollMarginTop: mob ? 226 : 168 }}>
                 {/* Division header row */}
                 <div style={{
                   display: "flex", alignItems: "center", gap: 12,
