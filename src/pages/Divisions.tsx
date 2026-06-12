@@ -168,8 +168,10 @@ const Divisions: FC = () => {
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                 <span style={{ width: mob ? 28 : 34, flexShrink: 0, fontSize: 10, letterSpacing: 1.5, color: C.muted, fontWeight: 700 }}>#</span>
                 <span style={{ flex: 1, fontSize: 10, letterSpacing: 1.5, color: C.muted, fontWeight: 700, textTransform: "uppercase" }}>{t.cols.player}</span>
-                <span style={{ fontSize: 10, letterSpacing: 1.5, color: C.muted, fontWeight: 700, textTransform: "uppercase" }}>{t.cols.elo}</span>
-                <span style={{ minWidth: mob ? 30 : 36, flexShrink: 0, fontSize: 10, letterSpacing: 1.5, color: C.muted, fontWeight: 700 }}>±</span>
+                <div style={{ display: "flex", gap: mob ? 14 : 20, flexShrink: 0 }}>
+                  <span style={{ minWidth: mob ? 38 : 44, textAlign: "right", fontSize: 10, letterSpacing: 1.5, color: C.muted, fontWeight: 700, textTransform: "uppercase" }}>{t.cols.elo}</span>
+                  <span style={{ minWidth: mob ? 32 : 40, fontSize: 10, letterSpacing: 1.5, color: C.muted, fontWeight: 700 }}>±</span>
+                </div>
               </div>
             </div>
 
@@ -179,20 +181,22 @@ const Divisions: FC = () => {
                 ? <div style={{ textAlign: "center", color: C.muted, padding: "40px 0", fontFamily: BODY_FONT, fontSize: 13 }}>{t.notFound}</div>
                 : filtered.map((p, i) => (
                   <div key={i} style={{ display: "grid", gridTemplateColumns: COLS, padding: mob ? "9px 16px" : "11px 24px", borderBottom: `1px solid ${C.borderLight}`, alignItems: "center" }}>
-                    <div style={{ fontSize: mob ? 10 : 11, fontWeight: 700, letterSpacing: 1, color: ACS, textTransform: "uppercase", fontFamily: "'Xolonium','Tektur',sans-serif", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", paddingRight: 8 }}>
+                    <div style={{ fontSize: mob ? 10 : 11, fontWeight: 700, letterSpacing: 1, color: p.uncertain ? C.muted : ACS, textTransform: "uppercase", fontFamily: "'Xolonium','Tektur',sans-serif", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", paddingRight: 8 }}>
                       {p.division}
                     </div>
-                    <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 12 : 13, color: C.heading, fontWeight: 600, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                    <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 12 : 13, color: p.uncertain ? C.muted : C.heading, fontWeight: 600, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                       {p.rank != null && <span style={{ color: C.muted, fontWeight: 400, fontSize: mob ? 10 : 11 }}>{p.rank} </span>}
                       {p.name}
                     </div>
-                    <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 12 : 13, color: ACS, fontWeight: 600, letterSpacing: 1, textAlign: "right" }}>
+                    <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 12 : 13, color: p.uncertain ? C.muted : ACS, fontWeight: 600, letterSpacing: 1, textAlign: "right" }}>
                       {p.elo}
-                      {p.delta != null && p.delta !== 0 && (
-                        <span style={{ fontSize: mob ? 10 : 11, fontWeight: 700, color: p.delta > 0 ? ACS : "#ff3e3e", marginLeft: 7 }}>
+                      {p.delta != null && p.delta !== 0 ? (
+                        <span style={{ fontSize: mob ? 10 : 11, fontWeight: 700, color: p.uncertain ? C.muted : p.delta > 0 ? ACS : "#ff3e3e", marginLeft: 10 }}>
                           {p.delta > 0 ? `▲${p.delta}` : `▼${-p.delta}`}
                         </span>
-                      )}
+                      ) : p.uncertain ? (
+                        <span style={{ fontSize: mob ? 10 : 11, fontWeight: 700, color: C.muted, marginLeft: 10 }}>?</span>
+                      ) : null}
                     </div>
                   </div>
                 ))
@@ -219,22 +223,23 @@ const Divisions: FC = () => {
                 </div>
                 {div.players.map((p, pi) => {
                   const rank = p.rank ?? divStartRank[di] + pi + 1;
-                  const isTop3 = rank <= 3;
+                  // "?" в таблице = неуверенный рейтинг: вся строка серая
+                  const isTop3 = rank <= 3 && !p.uncertain;
                   return (
                     <div key={pi} style={{ padding: mob ? "8px 16px" : "10px 24px", borderBottom: `1px solid ${C.borderLight}`, background: isTop3 ? C.accentSubtle : "transparent" }}>
                       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, overflow: "hidden" }}>
                         <span style={{ fontFamily: BODY_FONT, fontSize: mob ? 10 : 11, color: isTop3 ? ACS : C.muted, fontWeight: isTop3 ? 700 : 400, width: mob ? 28 : 34, flexShrink: 0 }}>
                           {rank}
                         </span>
-                        <div style={{ flex: 1, fontFamily: BODY_FONT, fontSize: mob ? 12 : 13, color: isTop3 ? C.heading : C.body, fontWeight: isTop3 ? 700 : 400, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                        <div style={{ flex: 1, fontFamily: BODY_FONT, fontSize: mob ? 12 : 13, color: p.uncertain ? C.muted : isTop3 ? C.heading : C.body, fontWeight: isTop3 ? 700 : 400, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                           {p.name}
                         </div>
-                        <div style={{ display: "flex", alignItems: "baseline", gap: 8, flexShrink: 0 }}>
-                          <span style={{ fontFamily: BODY_FONT, fontSize: mob ? 12 : 13, color: ACS, fontWeight: 600, letterSpacing: 1 }}>
+                        <div style={{ display: "flex", alignItems: "baseline", gap: mob ? 14 : 20, flexShrink: 0 }}>
+                          <span style={{ minWidth: mob ? 38 : 44, textAlign: "right", fontFamily: BODY_FONT, fontSize: mob ? 12 : 13, color: p.uncertain ? C.muted : ACS, fontWeight: 600, letterSpacing: 1 }}>
                             {p.elo}
                           </span>
-                          <span style={{ minWidth: mob ? 30 : 36, fontFamily: BODY_FONT, fontSize: mob ? 10 : 11, fontWeight: 700, color: p.delta != null && p.delta < 0 ? "#ff3e3e" : ACS }}>
-                            {p.delta != null && p.delta !== 0 ? (p.delta > 0 ? `▲${p.delta}` : `▼${-p.delta}`) : ""}
+                          <span style={{ minWidth: mob ? 32 : 40, fontFamily: BODY_FONT, fontSize: mob ? 10 : 11, fontWeight: 700, color: p.uncertain ? C.muted : p.delta != null && p.delta < 0 ? "#ff3e3e" : ACS }}>
+                            {p.delta != null && p.delta !== 0 ? (p.delta > 0 ? `▲${p.delta}` : `▼${-p.delta}`) : p.uncertain ? "?" : ""}
                           </span>
                         </div>
                       </div>
