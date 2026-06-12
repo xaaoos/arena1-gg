@@ -9,9 +9,10 @@ const AC = "#4ade80";
 const ACS = C.accent;
 
 const PAGES = [
-  { path: "/", label: "Non-Pro Duel Cups", color: AC },
-  { path: "/trainer", label: "Trainer", color: "#fbbf24" },
-  { path: "/blog", label: "Blog", color: "#c084fc" },
+  // зелёный — через var(--accent): в светлой теме только тёмный зелёный
+  { path: "/", label: "Non-Pro Duel Cups", color: "var(--accent)", border: "var(--accent-border)" },
+  { path: "/trainer", label: "Trainer", color: "#fbbf24", border: "#fbbf2466" },
+  { path: "/blog", label: "Blog", color: "#c084fc", border: "#c084fc66" },
 ] as const;
 
 // страницы раздела Non-Pro: анонсы (главная), результаты, дивизионы
@@ -55,7 +56,7 @@ export const TopNav: FC = () => {
       <div style={{
         position: "fixed", top: 0, left: 0, right: 0, zIndex: 200,
         background: C.bgNav, backdropFilter: "blur(12px)",
-        borderBottom: `1px solid ${activePage.color}66`,
+        borderBottom: `1px solid ${activePage.border}`,
         display: "flex", alignItems: "center", padding: "0 16px", height: 48,
         transition: "background 0.3s",
       }}>

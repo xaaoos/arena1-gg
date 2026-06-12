@@ -57,7 +57,7 @@ const EloCup: FC = () => {
     <div style={{ overflowX: "hidden" }}>
 
       {/* Hero */}
-      <section style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", position: "relative", padding: mob ? "120px 16px 32px" : "150px 20px 40px", textAlign: "center", background: `radial-gradient(ellipse at 50% 20%,rgba(74,222,128,0.06) 0%,transparent 60%)` }}>
+      <section style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", position: "relative", padding: mob ? "120px 16px 32px" : "150px 20px 40px", textAlign: "center", background: `radial-gradient(ellipse at 50% 20%,rgba(var(--glow-rgb),0.06) 0%,transparent 60%)` }}>
         <div style={{ position: "relative", zIndex: 1, maxWidth: 700, width: "100%" }}>
           <div style={{ fontSize: mob ? 10 : 12, letterSpacing: mob ? 3 : 5, color: ACS, marginBottom: 12, fontWeight: 600 }}>{t.hero.tag}</div>
           <h1 style={{ fontSize: "clamp(26px,5vw,52px)", fontWeight: 900, margin: 0, lineHeight: 1.1, color: C.heading }}>
@@ -78,7 +78,7 @@ const EloCup: FC = () => {
               padding: mob ? "10px 14px" : "12px 18px",
               outline: "none",
               width: mob ? 240 : 320,
-              caretColor: AC,
+              caretColor: ACS,
               marginTop: mob ? 24 : 32,
             }}
           />
@@ -177,7 +177,7 @@ const EloCup: FC = () => {
                           display: "flex", flexDirection: "column", gap: 8,
                           transition: "border-color 0.2s",
                         }}
-                        onMouseEnter={e => (e.currentTarget.style.borderColor = `${AC}66`)}
+                        onMouseEnter={e => (e.currentTarget.style.borderColor = C.accentBorder)}
                         onMouseLeave={e => (e.currentTarget.style.borderColor = C.border)}
                       >
                         <div style={{ fontSize: mob ? 11 : 12, fontWeight: 800, color: C.heading, letterSpacing: 0.5, lineHeight: 1.3 }}>{cup.name}</div>

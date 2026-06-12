@@ -56,7 +56,7 @@ const Announce: FC = () => {
     <div style={{ overflowX: "hidden" }}>
 
       {/* Hero */}
-      <section style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", position: "relative", padding: mob ? "140px 16px 32px" : "160px 20px 36px", textAlign: "center", background: `radial-gradient(ellipse at 50% 20%,rgba(74,222,128,0.06) 0%,transparent 60%)` }}>
+      <section style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", position: "relative", padding: mob ? "140px 16px 32px" : "160px 20px 36px", textAlign: "center", background: `radial-gradient(ellipse at 50% 20%,rgba(var(--glow-rgb),0.06) 0%,transparent 60%)` }}>
         <div style={{ position: "relative", zIndex: 1, maxWidth: 700, width: "100%" }}>
           <div style={{ fontSize: mob ? 10 : 12, letterSpacing: mob ? 3 : 5, color: ACS, marginBottom: 12, fontWeight: 600 }}>{t.hero.tag}</div>
           <h1 style={{ fontSize: "clamp(28px,6vw,64px)", fontWeight: 900, margin: 0, lineHeight: 1, letterSpacing: -1, color: C.heading, whiteSpace: "nowrap" }}>
@@ -72,7 +72,8 @@ const Announce: FC = () => {
           <div style={{
             position: "relative",
             border: `1px solid ${C.accentBorder}`,
-            background: `radial-gradient(ellipse at 50% 0%,rgba(74,222,128,0.07) 0%,transparent 70%)`,
+            // solid подложка: клетка фона не должна просвечивать внутрь рамки
+            background: `radial-gradient(ellipse at 50% 0%,rgba(var(--glow-rgb),0.07) 0%,transparent 70%) ${C.bg}`,
             padding: mob ? "28px 16px 28px" : "48px 32px 44px",
             textAlign: "center",
           }}>
@@ -104,15 +105,26 @@ const Announce: FC = () => {
               </div>
             )}
 
-            {main.link && (
-              <a href={main.link} target="_blank" rel="noopener noreferrer" style={{
-                display: "inline-block", marginTop: mob ? 24 : 32,
-                background: ACS, color: C.accentContrast,
-                fontFamily: "'Xolonium','Tektur',sans-serif", fontSize: mob ? 11 : 12, fontWeight: 800,
-                letterSpacing: 2, textTransform: "uppercase", textDecoration: "none",
-                padding: mob ? "13px 24px" : "15px 36px",
-              }}>{t.next.cta} ↗</a>
-            )}
+            <div style={{ display: "flex", gap: mob ? 10 : 14, justifyContent: "center", alignItems: "stretch", flexWrap: "wrap", marginTop: mob ? 24 : 32 }}>
+              {main.link && (
+                <a href={main.link} target="_blank" rel="noopener noreferrer" style={{
+                  display: "inline-block",
+                  background: ACS, color: C.accentContrast,
+                  fontFamily: "'Xolonium','Tektur',sans-serif", fontSize: mob ? 11 : 12, fontWeight: 800,
+                  letterSpacing: 2, textTransform: "uppercase", textDecoration: "none",
+                  padding: mob ? "13px 24px" : "15px 36px",
+                }}>{t.next.cta} ↗</a>
+              )}
+              {main.bracketUrl && (
+                <a href={main.bracketUrl} target="_blank" rel="noopener noreferrer" style={{
+                  display: "inline-block",
+                  border: `1px solid ${C.accentBorder}`, color: ACS,
+                  fontFamily: "'Xolonium','Tektur',sans-serif", fontSize: mob ? 11 : 12, fontWeight: 800,
+                  letterSpacing: 2, textTransform: "uppercase", textDecoration: "none",
+                  padding: mob ? "12px 24px" : "14px 36px",
+                }}>{t.archive.bracket} ↗</a>
+              )}
+            </div>
           </div>
 
           {/* Следующие кубки — компактный список */}
@@ -134,11 +146,18 @@ const Announce: FC = () => {
                   <div style={{ fontSize: mob ? 11 : 12, fontWeight: 800, color: C.heading, letterSpacing: 0.5, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                     {a.name}
                   </div>
-                  {a.link && (
-                    <a href={a.link} target="_blank" rel="noopener noreferrer" style={{ marginLeft: "auto", fontFamily: BODY_FONT, fontSize: 11, color: C.muted, textDecoration: "none", whiteSpace: "nowrap", flexShrink: 0 }}>
-                      {lang === "ru" ? "инфо" : "info"} ↗
-                    </a>
-                  )}
+                  <div style={{ marginLeft: "auto", display: "flex", gap: mob ? 8 : 12, flexShrink: 0, alignItems: "center" }}>
+                    {a.bracketUrl && (
+                      <a href={a.bracketUrl} target="_blank" rel="noopener noreferrer" style={{ fontFamily: BODY_FONT, fontSize: 11, color: ACS, textDecoration: "none", whiteSpace: "nowrap" }}>
+                        {lang === "ru" ? "сетка" : "bracket"} ↗
+                      </a>
+                    )}
+                    {a.link && (
+                      <a href={a.link} target="_blank" rel="noopener noreferrer" style={{ fontFamily: BODY_FONT, fontSize: 11, color: C.muted, textDecoration: "none", whiteSpace: "nowrap" }}>
+                        {lang === "ru" ? "инфо" : "info"} ↗
+                      </a>
+                    )}
+                  </div>
                 </div>
               ))}
             </div>

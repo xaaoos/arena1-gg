@@ -12,6 +12,7 @@ export interface CupAnnounce {
   rawDate: string; // показывается как есть
   date: Date | null; // для отсчёта и фильтра будущих
   link: string;
+  bracketUrl: string; // ссылка на сетку из ключа Brackets, может быть пустой
   details: string[];
 }
 
@@ -42,18 +43,27 @@ export function parseAnnounceDate(raw: string): Date | null {
 
 const isNameKey = (k: string) => /назв|name/i.test(k);
 const isDateKey = (k: string) => /date|дата/i.test(k);
+const isBracketKey = (k: string) => /bracket|сетк/i.test(k);
 
 function blockToAnnounce(entries: [string, string][]): CupAnnounce | null {
   const name = entries.find(([k]) => isNameKey(k))?.[1] ?? "";
   const rawDate = entries.find(([k]) => isDateKey(k))?.[1] ?? "";
   if (!name || !rawDate) return null;
 
-  const httpVal = entries.find(([, v]) => v.startsWith("http"))?.[1];
+  const bracketVal = entries.find(([k, v]) => isBracketKey(k) && v.startsWith("http"))?.[1] ?? "";
+  const httpVal = entries.find(([k, v]) => !isBracketKey(k) && v.startsWith("http"))?.[1];
   const details = entries
     .filter(([k, v]) => !isNameKey(k) && !isDateKey(k) && v && !v.startsWith("http"))
     .map(([k, v]) => `${k.replace(/:\s*$/, "")}: ${v}`);
 
-  return { name, rawDate, date: parseAnnounceDate(rawDate), link: httpVal ?? REGISTER_LINK, details };
+  return {
+    name,
+    rawDate,
+    date: parseAnnounceDate(rawDate),
+    link: httpVal ?? REGISTER_LINK,
+    bracketUrl: bracketVal,
+    details,
+  };
 }
 
 function parseAnnounceCSV(csv: string): CupAnnounce[] {

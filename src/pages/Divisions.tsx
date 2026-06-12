@@ -81,7 +81,7 @@ const Divisions: FC = () => {
           position: "relative",
           padding: mob ? "160px 16px 60px" : "180px 20px 80px",
           textAlign: "center",
-          background: `radial-gradient(ellipse at 50% 20%,rgba(74,222,128,0.06) 0%,transparent 60%)`,
+          background: `radial-gradient(ellipse at 50% 20%,rgba(var(--glow-rgb),0.06) 0%,transparent 60%)`,
         }}
       >
         <div style={{ position: "relative", zIndex: 1 }}>
@@ -106,7 +106,7 @@ const Divisions: FC = () => {
                   padding: mob ? "10px 14px" : "12px 18px",
                   outline: "none",
                   width: mob ? 220 : 280,
-                  caretColor: AC,
+                  caretColor: ACS,
                 }}
               />
               {/* Jump to division — hidden while searching */}
@@ -164,14 +164,14 @@ const Divisions: FC = () => {
         )}
 
         {!loading && !error && (
-          <div>
+          <div style={{ background: C.bg }}>
             {/* Header */}
             <div style={{
               display: "grid", gridTemplateColumns: ROW_COLS,
               padding: mob ? "10px 16px" : "12px 24px",
               borderBottom: `1px solid ${C.accentBorder}`,
               // непрозрачный фон: sticky-плашка, строки не должны просвечивать
-              background: `linear-gradient(${AC}08,${AC}08) ${C.bg}`,
+              background: `linear-gradient(rgba(var(--glow-rgb),0.03),rgba(var(--glow-rgb),0.03)) ${C.bg}`,
               position: "sticky", top: 80, zIndex: 98,
             }}>
               <div style={{ display: "flex", alignItems: "center", gap: mob ? 16 : 24 }}>
