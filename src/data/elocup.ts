@@ -35,7 +35,7 @@ export const ELOCUP: Record<"ru" | "en", EloCupData> = {
     hero: {
       tag: "A R E N A  1",
       t1: "NON-PRO", t2: "DUEL CUPS",
-      sub: "Еженедельные дуэльные турниры с ELO-ограничениями для верифицированных игроков. Докажи свой уровень в честном брекете.",
+      sub: "Еженедельные дуэльные турниры с ELO-ограничениями для верифицированных игроков.",
     },
     next: {
       num: "01", label: "СЛЕДУЮЩИЙ ТУРНИР", t1: "Следующий", t2: "турнир",
@@ -95,7 +95,7 @@ export const ELOCUP: Record<"ru" | "en", EloCupData> = {
     hero: {
       tag: "A R E N A  1",
       t1: "NON-PRO", t2: "DUEL CUPS",
-      sub: "Weekly duel tournaments with ELO restrictions for verified players. Prove your level in a fair bracket.",
+      sub: "Weekly duel tournaments with ELO restrictions for verified players.",
     },
     next: {
       num: "01", label: "NEXT TOURNAMENT", t1: "Next", t2: "tournament",
