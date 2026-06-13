@@ -145,7 +145,7 @@ const Divisions: FC = () => {
       </section>
 
       {/* Поиск + кнопки дивизионов — sticky-плашка по ширине контента, не полоса на весь экран */}
-      <div ref={panelRef} style={{ position: "sticky", top: 79, zIndex: 99, display: "flex", justifyContent: "center", pointerEvents: "none", background: C.bg, paddingBottom: mob ? 28 : 36 }}>
+      <div ref={panelRef} style={{ position: "sticky", top: 79, zIndex: 99, display: "flex", justifyContent: "center", pointerEvents: "none", background: C.bg, paddingBottom: mob ? 28 : 36, transform: "translateZ(0)", willChange: "transform" }}>
         <div style={{
           pointerEvents: "auto",
           display: "flex", flexDirection: "column", alignItems: "center",
@@ -267,6 +267,7 @@ const Divisions: FC = () => {
               // непрозрачный «потолок» цветом фона — едет с заголовком и закрывает
               // микрозазор при инерционной прокрутке вверх (рассинхрон двух sticky)
               boxShadow: `0 -48px 0 0 ${C.bg}`,
+              transform: "translateZ(0)", willChange: "transform",
             }}>
               {/* верхние угловые акценты */}
               {[{ top: -1, left: -1, borderWidth: "2px 0 0 2px" }, { top: -1, right: -1, borderWidth: "2px 2px 0 0" }].map((p, i) => (

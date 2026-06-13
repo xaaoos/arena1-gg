@@ -85,19 +85,27 @@ html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
 }
 
 /* overflow-x: clip — hidden ломает position:sticky у потомков */
-/* клетка-грид на весь фон страницы (обе темы) */
 body {
   background-color: var(--bg);
-  background-image:
-    linear-gradient(rgba(var(--grid-rgb),var(--grid-line)) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(var(--grid-rgb),var(--grid-line)) 1px, transparent 1px);
-  background-size: 60px 60px;
-  /* фон зафиксирован к экрану — нативный параллакс, плавно без JS */
-  background-attachment: fixed;
   color: var(--text);
   font-family: "Xolonium", "Tektur", "Courier New", monospace;
   overflow-x: clip;
   transition: background 0.3s, color 0.3s;
+}
+/* клетка-грид — отдельный статичный fixed-слой за контентом (обе темы).
+   НЕ background-attachment:fixed на body: тот гонит браузер на медленный путь
+   скролла и рвёт перекрывающие sticky-элементы. Фиксированный слой статичен,
+   не перерисовывается при скролле — скролл плавный, sticky не мерцает. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(var(--grid-rgb),var(--grid-line)) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(var(--grid-rgb),var(--grid-line)) 1px, transparent 1px);
+  background-size: 60px 60px;
 }
 ::selection { background: var(--selection-bg); color: var(--text-heading); }
 ::-webkit-scrollbar { width: 6px; }
