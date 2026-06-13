@@ -68,6 +68,21 @@ const Announce: FC = () => {
   const rest = announces.slice(1);
   const mainDate = main?.date ?? null;
 
+  // ASCII-интро играет один раз; за сессию показываем только при первом заходе
+  const seen = typeof sessionStorage !== "undefined" && sessionStorage.getItem("a1-intro") === "1";
+  const [introDone, setIntroDone] = useState(seen);   // клип доиграл → проявляем анонс
+  const [introHidden, setIntroHidden] = useState(seen); // overlay убран из DOM
+  const finishIntro = () => {
+    setIntroDone(true);
+    try { sessionStorage.setItem("a1-intro", "1"); } catch { /* ignore */ }
+  };
+  // фоллбэк: если автоплей видео заблокирован/не загрузилось — не держим анонс скрытым
+  useEffect(() => {
+    if (introDone) return;
+    const id = setTimeout(finishIntro, 6000);
+    return () => clearTimeout(id);
+  }, [introDone]);
+
   return (
     <div style={{ overflowX: "hidden" }}>
       <Seo
@@ -87,14 +102,15 @@ const Announce: FC = () => {
         </div>
       </section>
 
-      {/* ASCII-врезка перед блоком анонса */}
-      <section style={{ padding: mob ? "8px 16px 8px" : "16px 20px 8px", maxWidth: 700, margin: "0 auto" }}>
-        <AsciiVideo src="/hero-ascii.mp4" cols={200} contrast={1.1} floor={0} ramp="classic" color={ACS} maxWidth={620} />
-      </section>
-
       {/* Announce — ближайший кубок крупно с отсчётом, следующие списком */}
       {!loading && main && (
-        <section style={{ padding: mob ? "32px 16px 0" : "60px 20px 0", maxWidth: 900, margin: "0 auto" }}>
+        <section style={{ position: "relative", padding: mob ? "32px 16px 0" : "60px 20px 0", maxWidth: 900, margin: "0 auto" }}>
+          {/* контент анонса — проявляется после интро */}
+          <div style={{
+            opacity: introDone ? 1 : 0,
+            transform: introDone ? "translateY(0)" : "translateY(16px)",
+            transition: "opacity 0.7s ease, transform 0.7s ease",
+          }}>
           <div style={{
             position: "relative",
             border: `1px solid ${C.accentBorder}`,
@@ -185,6 +201,26 @@ const Announce: FC = () => {
                   </div>
                 </div>
               ))}
+            </div>
+          )}
+          {/* конец контента анонса */}
+          </div>
+
+          {/* ASCII-интро: играет один раз поверх анонса, затем затухает */}
+          {!introHidden && (
+            <div
+              onTransitionEnd={() => { if (introDone) setIntroHidden(true); }}
+              style={{
+                position: "absolute", inset: 0, zIndex: 5,
+                background: C.bg,
+                display: "flex", alignItems: "center", justifyContent: "center",
+                padding: mob ? "0 16px" : "0 20px",
+                opacity: introDone ? 0 : 1,
+                transition: "opacity 0.7s ease",
+                pointerEvents: introDone ? "none" : "auto",
+              }}
+            >
+              <AsciiVideo src="/hero-ascii.mp4" cols={200} contrast={1.1} floor={0} ramp="classic" color={ACS} maxWidth={620} loop={false} onEnded={finishIntro} />
             </div>
           )}
         </section>
