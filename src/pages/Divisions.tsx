@@ -92,9 +92,15 @@ const Divisions: FC = () => {
   const TCOLS = mob ? "48px 1fr 52px 48px" : "56px 1fr 62px 56px";
   const padV = mob ? 8 : 10;
 
-  // Compute overall start rank per division
+  // Сквозная нумерация по ОТОБРАЖАЕМЫМ дивизионам:
+  // Pro/Semi-Pro скрыты → счёт с 1 от DIV 1; раскрыты → с 1 от Pro.
+  const startRank: Record<string, number> = {};
   let _r = 0;
-  const divStartRank = divisions.map(d => { const s = _r; _r += d.players.length; return s; });
+  divisions.forEach((d) => {
+    if (!showPro && isProGroup(d.label)) return; // скрытые не влияют на нумерацию
+    startRank[d.label] = _r;
+    _r += d.players.length;
+  });
 
   return (
     <div>
@@ -132,7 +138,7 @@ const Divisions: FC = () => {
           pointerEvents: "auto",
           display: "flex", flexDirection: mob ? "column" : "row", alignItems: "center",
           gap: mob ? 6 : 10,
-          background: C.bg, border: `1px solid ${C.borderLight}`, borderTop: "none",
+          background: C.bg,
           padding: mob ? "6px 8px" : "6px 12px",
           maxWidth: "calc(100vw - 8px)",
         }}>
@@ -275,7 +281,7 @@ const Divisions: FC = () => {
                   </span>
                 </div>
                 {div.players.map((p, pi) => {
-                  const rank = p.rank ?? divStartRank[di] + pi + 1;
+                  const rank = (startRank[div.label] ?? 0) + pi + 1;
                   // "?" в таблице = неуверенный рейтинг: вся строка серая
                   const isTop3 = rank <= 3 && !p.uncertain;
                   const isMatch = match != null && p.name === match;
