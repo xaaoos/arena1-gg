@@ -69,8 +69,8 @@ const Divisions: FC = () => {
     ro.observe(el);
     return () => ro.disconnect();
   }, [loading, divisions.length]);
-  // плашка садится на 79px (на 1px заходит под саб-нав z199) — без 1px-зазора в стыке
-  const headTop = panelH ? 79 + panelH : (mob ? 216 : 124);
+  // прыжок к дивизиону/совпадению должен лечь под прилипшую плашку (её низ = 79 + высота)
+  const jumpOffset = 79 + (panelH || (mob ? 200 : 110)) + 8;
 
   useEffect(() => {
     if (!query || !found) {
@@ -145,7 +145,8 @@ const Divisions: FC = () => {
       </section>
 
       {/* Поиск + кнопки дивизионов — sticky-плашка по ширине контента, не полоса на весь экран */}
-      <div ref={panelRef} style={{ position: "sticky", top: 79, zIndex: 99, display: "flex", justifyContent: "center", pointerEvents: "none", background: C.bg, paddingBottom: mob ? 28 : 36, transform: "translateZ(0)", willChange: "transform" }}>
+      <div ref={panelRef} style={{ position: "sticky", top: 79, zIndex: 99, background: C.bg, transform: "translateZ(0)", willChange: "transform" }}>
+        <div style={{ display: "flex", justifyContent: "center", pointerEvents: "none" }}>
         <div style={{
           pointerEvents: "auto",
           display: "flex", flexDirection: "column", alignItems: "center",
@@ -235,6 +236,25 @@ const Divisions: FC = () => {
             )}
           </div>
         </div>
+        </div>{/* центрирующая обёртка кнопок/поиска */}
+
+        {/* Заголовок столбцов — ВНУТРИ той же sticky-плашки: один прилипающий блок,
+            нет измеренного offset между двумя sticky → зазор невозможен в принципе */}
+        {!loading && !error && divisions.length > 0 && (
+          <div style={{ maxWidth: 520, margin: "0 auto", padding: mob ? "12px 10px 0" : "16px 20px 0" }}>
+            <div style={{ position: "relative", borderTop: `1px solid ${C.accentBorder}`, borderLeft: `1px solid ${C.accentBorder}`, borderRight: `1px solid ${C.accentBorder}` }}>
+              {[{ top: -1, left: -1, borderWidth: "2px 0 0 2px" }, { top: -1, right: -1, borderWidth: "2px 2px 0 0" }].map((p, i) => (
+                <div key={i} style={{ position: "absolute", width: 14, height: 14, borderStyle: "solid", borderColor: ACS, zIndex: 100, pointerEvents: "none", ...p }} />
+              ))}
+              <div style={{ display: "grid", gridTemplateColumns: TCOLS, borderBottom: `1px solid ${C.accentBorder}`, background: `linear-gradient(rgba(var(--glow-rgb),0.03),rgba(var(--glow-rgb),0.03)) ${C.bg}` }}>
+                <span style={{ padding: `${padV + 2}px 0`, textAlign: "center", borderRight: `1px solid ${C.borderLight}`, fontSize: 10, letterSpacing: 1.5, color: C.muted, fontWeight: 700 }}>#</span>
+                <span style={{ padding: `${padV + 2}px 12px`, borderRight: `1px solid ${C.borderLight}`, fontSize: 10, letterSpacing: 1.5, color: C.muted, fontWeight: 700, textTransform: "uppercase" }}>{t.cols.player}</span>
+                <span style={{ padding: `${padV + 2}px 12px ${padV + 2}px 0`, textAlign: "right", borderRight: `1px solid ${C.borderLight}`, fontSize: 10, letterSpacing: 1.5, color: C.muted, fontWeight: 700, textTransform: "uppercase" }}>{t.cols.elo}</span>
+                <span style={{ padding: `${padV + 2}px 0`, textAlign: "center", fontSize: 10, letterSpacing: 1.5, color: C.muted, fontWeight: 700 }}>±</span>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Table */}
@@ -251,39 +271,17 @@ const Divisions: FC = () => {
         )}
 
         {!loading && !error && (
-          <div style={{ position: "relative", background: C.bg, border: `1px solid ${C.accentBorder}`, borderTop: "none" }}>
-            {/* нижние углы рамки (верхние — на sticky-заголовке) */}
+          <div style={{ position: "relative", background: C.bg, borderLeft: `1px solid ${C.accentBorder}`, borderRight: `1px solid ${C.accentBorder}`, borderBottom: `1px solid ${C.accentBorder}` }}>
+            {/* нижние углы рамки (верхние — на заголовке внутри плашки) */}
             {[{ bottom: -1, left: -1, borderWidth: "0 0 2px 2px" }, { bottom: -1, right: -1, borderWidth: "0 2px 2px 0" }].map((p, i) => (
               <div key={i} style={{ position: "absolute", width: 14, height: 14, borderStyle: "solid", borderColor: ACS, zIndex: 99, pointerEvents: "none", ...p }} />
             ))}
-
-            {/* Header — sticky; верхняя грань и верхние углы прилипают вместе с ним */}
-            <div style={{
-              display: "grid", gridTemplateColumns: TCOLS,
-              borderTop: `1px solid ${C.accentBorder}`,
-              borderBottom: `1px solid ${C.accentBorder}`,
-              background: `linear-gradient(rgba(var(--glow-rgb),0.03),rgba(var(--glow-rgb),0.03)) ${C.bg}`,
-              position: "sticky", top: headTop, zIndex: 98,
-              // непрозрачный «потолок» цветом фона — едет с заголовком и закрывает
-              // микрозазор при инерционной прокрутке вверх (рассинхрон двух sticky)
-              boxShadow: `0 -48px 0 0 ${C.bg}`,
-              transform: "translateZ(0)", willChange: "transform",
-            }}>
-              {/* верхние угловые акценты */}
-              {[{ top: -1, left: -1, borderWidth: "2px 0 0 2px" }, { top: -1, right: -1, borderWidth: "2px 2px 0 0" }].map((p, i) => (
-                <div key={i} style={{ position: "absolute", width: 14, height: 14, borderStyle: "solid", borderColor: ACS, zIndex: 100, pointerEvents: "none", ...p }} />
-              ))}
-              <span style={{ padding: `${padV + 2}px 0`, textAlign: "center", borderRight: `1px solid ${C.borderLight}`, fontSize: 10, letterSpacing: 1.5, color: C.muted, fontWeight: 700 }}>#</span>
-              <span style={{ padding: `${padV + 2}px 12px`, borderRight: `1px solid ${C.borderLight}`, fontSize: 10, letterSpacing: 1.5, color: C.muted, fontWeight: 700, textTransform: "uppercase" }}>{t.cols.player}</span>
-              <span style={{ padding: `${padV + 2}px 12px ${padV + 2}px 0`, textAlign: "right", borderRight: `1px solid ${C.borderLight}`, fontSize: 10, letterSpacing: 1.5, color: C.muted, fontWeight: 700, textTransform: "uppercase" }}>{t.cols.elo}</span>
-              <span style={{ padding: `${padV + 2}px 0`, textAlign: "center", fontSize: 10, letterSpacing: 1.5, color: C.muted, fontWeight: 700 }}>±</span>
-            </div>
 
             {/* Grouped by division; Pro/Semi-Pro только при showPro */}
             {divisions.filter((d) => showPro || !isProGroup(d.label)).map((div) => {
               const di = divisions.indexOf(div);
               return (
-              <div key={div.label} ref={(el) => { divRefs.current[div.label] = el; }} style={{ scrollMarginTop: headTop + 48 }}>
+              <div key={div.label} ref={(el) => { divRefs.current[div.label] = el; }} style={{ scrollMarginTop: jumpOffset }}>
                 {/* Division header row */}
                 <div style={{
                   display: "flex", alignItems: "center", gap: 12,
@@ -314,7 +312,7 @@ const Divisions: FC = () => {
                         display: "grid", gridTemplateColumns: TCOLS, alignItems: "stretch",
                         borderBottom: `1px solid ${C.borderLight}`,
                         background: isMatch || isTop3 ? C.accentSubtle : "transparent",
-                        scrollMarginTop: headTop + 48,
+                        scrollMarginTop: jumpOffset,
                       }}
                     >
                       <span style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: `${padV}px 0`, borderRight: `1px solid ${C.borderLight}`, fontFamily: BODY_FONT, fontSize: mob ? 10 : 11, color: isTop3 ? ACS : C.muted, fontWeight: isTop3 ? 700 : 400 }}>
