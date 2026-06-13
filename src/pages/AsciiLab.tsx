@@ -26,6 +26,11 @@ const AsciiLab: FC = () => {
   const [rampKey, setRampKey] = useState<keyof typeof RAMPS>("classic");
   const [invert, setInvert] = useState(false);
   const [mode, setMode] = useState<Mode>("plasma");
+  const [playing, setPlaying] = useState(false);
+  const [cur, setCur] = useState(0);
+  const [dur, setDur] = useState(0);
+
+  const fmt = (s: number) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, "0")}`;
 
   // актуальные значения для rAF без пересоздания цикла
   const cfg = useRef({ cols, rampKey, invert, mode });
@@ -90,13 +95,23 @@ const AsciiLab: FC = () => {
     return () => cancelAnimationFrame(raf);
   }, []);
 
+  // навешиваем слушатели на video для перемотки/времени
+  const attachVideo = (v: HTMLVideoElement) => {
+    v.muted = true; v.playsInline = true; v.loop = false;
+    v.onloadedmetadata = () => setDur(v.duration || 0);
+    v.ontimeupdate = () => setCur(v.currentTime);
+    v.onplay = () => setPlaying(true);
+    v.onpause = () => setPlaying(false);
+    videoRef.current = v;
+    v.play().catch(() => {});
+    setMode("video");
+  };
+
   // демо-клип (лежит в public, same-origin — canvas не «пачкается»)
   const loadDemo = () => {
     const v = document.createElement("video");
-    v.src = "/ascii-demo.mp4"; v.loop = true; v.muted = true; v.playsInline = true;
-    v.play().catch(() => {});
-    videoRef.current = v;
-    setMode("video");
+    v.src = "/ascii-demo.mp4";
+    attachVideo(v);
   };
 
   // при входе сразу показываем демо-клип
@@ -106,16 +121,24 @@ const AsciiLab: FC = () => {
     const url = URL.createObjectURL(file);
     if (file.type.startsWith("video")) {
       const v = document.createElement("video");
-      v.src = url; v.loop = true; v.muted = true; v.playsInline = true;
-      v.play().catch(() => {});
-      videoRef.current = v;
-      setMode("video");
+      v.src = url;
+      attachVideo(v);
     } else if (file.type.startsWith("image")) {
       const im = new Image();
       im.src = url;
       imgRef.current = im;
       setMode("image");
     }
+  };
+
+  const playPause = () => {
+    const v = videoRef.current;
+    if (!v) return;
+    if (v.paused) v.play().catch(() => {}); else v.pause();
+  };
+  const seek = (val: number) => {
+    const v = videoRef.current;
+    if (v) { v.currentTime = val; setCur(val); }
   };
 
   const btn = (active: boolean): React.CSSProperties => ({
@@ -147,6 +170,15 @@ const AsciiLab: FC = () => {
             }}
           />
         </div>
+
+        {/* перемотка видео — выбрать отрезок */}
+        {mode === "video" && dur > 0 && (
+          <div style={{ marginTop: 16, display: "flex", alignItems: "center", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
+            <button style={btn(false)} onClick={playPause}>{playing ? "❚❚ Пауза" : "▶ Играть"}</button>
+            <input type="range" min={0} max={dur} step={0.05} value={cur} onChange={(e) => seek(+e.target.value)} style={{ accentColor: ACS, width: mob ? 200 : 420 }} />
+            <span style={{ fontFamily: BODY_FONT, fontSize: 12, color: C.muted, fontVariantNumeric: "tabular-nums", whiteSpace: "nowrap" }}>{fmt(cur)} / {fmt(dur)}</span>
+          </div>
+        )}
 
         {/* контролы */}
         <div style={{ marginTop: 18, display: "flex", flexWrap: "wrap", gap: 10, alignItems: "center", justifyContent: "center" }}>
