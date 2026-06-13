@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { useLang } from "../hooks/useLang";
 import { useIsMobile } from "../hooks/useIsMobile";
 import { useSheetData } from "../hooks/useSheetData";
-import { useParallax } from "../hooks/useParallax";
 import { Seo } from "../components/Seo";
 import { BODY_FONT } from "../components/UI";
 import { C } from "../theme";
@@ -44,7 +43,6 @@ const Divisions: FC = () => {
   const mob = useIsMobile();
   const t = T[lang];
   const { divisions, loading, error } = useSheetData();
-  const heroRef = useParallax<HTMLDivElement>(0.3);
   const [activeDiv, setActiveDiv] = useState("");
   const [showPro, setShowPro] = useState(false);
   const [search, setSearch] = useState("");
@@ -123,8 +121,7 @@ const Divisions: FC = () => {
           background: `radial-gradient(ellipse at 50% 20%,rgba(var(--glow-rgb),0.06) 0%,transparent 60%)`,
         }}
       >
-        {/* параллакс только на заголовке — кнопки не должны уезжать на таблицу */}
-        <div ref={heroRef} style={{ position: "relative", zIndex: 1 }}>
+        <div style={{ position: "relative", zIndex: 1 }}>
           <img src="/quake-live-logo.png" alt="Quake Live" style={{ display: "block", height: mob ? 44 : 52, width: "auto", margin: "0 auto 14px" }} />
           <h1 style={{ fontSize: "clamp(24px,4.5vw,42px)", fontWeight: 900, margin: 0, lineHeight: 1.05, letterSpacing: -0.5, color: C.heading }}>
             {t.h1} <span style={{ color: ACS }}>{t.h2}</span>
@@ -142,29 +139,6 @@ const Divisions: FC = () => {
           padding: mob ? "6px 8px" : "6px 12px",
           maxWidth: "calc(100vw - 8px)",
         }}>
-          {/* поиск — сверху по центру */}
-          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <input
-              type="text"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder={t.search}
-              style={{
-                background: C.inputBg,
-                border: `1px solid ${C.border}`,
-                color: C.heading,
-                fontFamily: BODY_FONT,
-                fontSize: 16,
-                padding: "4px 12px",
-                outline: "none",
-                width: mob ? 200 : 240,
-                caretColor: ACS,
-              }}
-            />
-            {query && !found && (
-              <span style={{ fontFamily: BODY_FONT, fontSize: 11, color: C.muted, whiteSpace: "nowrap" }}>{t.notFound}</span>
-            )}
-          </div>
           {!loading && !error && divisions.length > 0 && (
             <div style={{ display: "flex", flexWrap: mob ? "wrap" : "nowrap", gap: 6, justifyContent: "center", maxWidth: mob ? 372 : "none" }}>
               {/* одна кнопка раскрывает Pro и Semi-Pro части таблицы */}
@@ -223,6 +197,29 @@ const Divisions: FC = () => {
                 })}
             </div>
           )}
+          {/* поиск — под кнопками */}
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder={t.search}
+              style={{
+                background: C.inputBg,
+                border: `1px solid ${C.border}`,
+                color: C.heading,
+                fontFamily: BODY_FONT,
+                fontSize: 16,
+                padding: "4px 12px",
+                outline: "none",
+                width: mob ? 200 : 240,
+                caretColor: ACS,
+              }}
+            />
+            {query && !found && (
+              <span style={{ fontFamily: BODY_FONT, fontSize: 11, color: C.muted, whiteSpace: "nowrap" }}>{t.notFound}</span>
+            )}
+          </div>
         </div>
       </div>
 
