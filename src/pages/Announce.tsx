@@ -88,7 +88,7 @@ const Announce: FC = () => {
       />
 
       {/* Hero */}
-      <section style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", position: "relative", padding: mob ? "140px 16px 32px" : "160px 20px 36px", textAlign: "center", background: `radial-gradient(ellipse at 50% 20%,rgba(var(--glow-rgb),0.06) 0%,transparent 60%)` }}>
+      <section style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", position: "relative", padding: mob ? "120px 16px 16px" : "160px 20px 36px", textAlign: "center", background: `radial-gradient(ellipse at 50% 20%,rgba(var(--glow-rgb),0.06) 0%,transparent 60%)` }}>
         <div ref={heroRef} style={{ position: "relative", zIndex: 1, maxWidth: 700, width: "100%" }}>
           <div style={{ fontSize: mob ? 10 : 12, letterSpacing: mob ? 3 : 5, color: ACS, marginBottom: 12, fontWeight: 600 }}>{t.hero.tag}</div>
           <h1 style={{ fontSize: "clamp(28px,6vw,64px)", fontWeight: 900, margin: 0, lineHeight: 1, letterSpacing: -1, color: C.heading, whiteSpace: "nowrap" }}>
@@ -100,7 +100,7 @@ const Announce: FC = () => {
 
       {/* Announce — ближайший кубок крупно с отсчётом, следующие списком */}
       {!loading && main && (
-        <section style={{ position: "relative", padding: mob ? "32px 16px 0" : "60px 20px 0", maxWidth: 900, margin: "0 auto" }}>
+        <section style={{ position: "relative", padding: mob ? "16px 16px 0" : "60px 20px 0", maxWidth: 900, margin: "0 auto" }}>
           {/* контент анонса — проявляется после интро */}
           <div style={{
             opacity: introDone ? 1 : 0,
@@ -209,8 +209,8 @@ const Announce: FC = () => {
               style={{
                 position: "absolute", inset: 0, zIndex: 5,
                 background: C.bg,
-                display: "flex", alignItems: "center", justifyContent: "center",
-                padding: mob ? "0 16px" : "0 20px",
+                display: "flex", alignItems: mob ? "flex-start" : "center", justifyContent: "center",
+                padding: mob ? "4px 16px 0" : "0 20px",
                 opacity: introDone ? 0 : 1,
                 transition: "opacity 0.3s ease",
                 pointerEvents: introDone ? "none" : "auto",
