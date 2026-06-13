@@ -17,8 +17,8 @@ const isProGroup = (label: string) => /^(pro|semi[- ]?pro)$/i.test(label.trim())
 const T = {
   ru: {
     tag: "QUAKE LIVE",
-    h1: "ДИВИЗИОНЫ",
-    h2: "& ИГРОКИ",
+    h1: "Дивизионы",
+    h2: "& игроки",
     loading: "Загрузка...",
     error: "Не удалось загрузить данные. Попробуй позже.",
     cols: { div: "Дивизион", player: "Игрок", elo: "ELO" },
@@ -28,8 +28,8 @@ const T = {
   },
   en: {
     tag: "QUAKE LIVE",
-    h1: "DIVISIONS",
-    h2: "& PLAYERS",
+    h1: "Divisions",
+    h2: "& players",
     loading: "Loading...",
     error: "Failed to load data. Please try again later.",
     cols: { div: "Division", player: "Player", elo: "ELO" },
@@ -107,13 +107,12 @@ const Divisions: FC = () => {
       {/* Hero */}
       <section
         style={{
-          minHeight: "35vh",
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
           position: "relative",
-          padding: mob ? "160px 16px 60px" : "180px 20px 80px",
+          padding: mob ? "92px 16px 12px" : "120px 20px 24px",
           textAlign: "center",
           background: `radial-gradient(ellipse at 50% 20%,rgba(var(--glow-rgb),0.06) 0%,transparent 60%)`,
         }}
