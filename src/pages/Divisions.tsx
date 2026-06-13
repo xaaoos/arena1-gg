@@ -136,12 +136,35 @@ const Divisions: FC = () => {
       <div style={{ position: "sticky", top: 80, zIndex: 99, display: "flex", justifyContent: "center", pointerEvents: "none" }}>
         <div style={{
           pointerEvents: "auto",
-          display: "flex", flexDirection: mob ? "column" : "row", alignItems: "center",
-          gap: mob ? 6 : 10,
-          background: C.bg,
+          display: "flex", flexDirection: "column", alignItems: "center",
+          gap: 8,
+          background: "transparent",
           padding: mob ? "6px 8px" : "6px 12px",
           maxWidth: "calc(100vw - 8px)",
         }}>
+          {/* поиск — сверху по центру */}
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder={t.search}
+              style={{
+                background: C.inputBg,
+                border: `1px solid ${C.border}`,
+                color: C.heading,
+                fontFamily: BODY_FONT,
+                fontSize: 16,
+                padding: "4px 12px",
+                outline: "none",
+                width: mob ? 200 : 240,
+                caretColor: ACS,
+              }}
+            />
+            {query && !found && (
+              <span style={{ fontFamily: BODY_FONT, fontSize: 11, color: C.muted, whiteSpace: "nowrap" }}>{t.notFound}</span>
+            )}
+          </div>
           {!loading && !error && divisions.length > 0 && (
             <div style={{ display: "flex", flexWrap: mob ? "wrap" : "nowrap", gap: 6, justifyContent: "center", maxWidth: mob ? 372 : "none" }}>
               {/* одна кнопка раскрывает Pro и Semi-Pro части таблицы */}
@@ -200,29 +223,6 @@ const Divisions: FC = () => {
                 })}
             </div>
           )}
-          {/* поиск — справа после кнопок */}
-          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <input
-              type="text"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder={t.search}
-              style={{
-                background: C.inputBg,
-                border: `1px solid ${C.border}`,
-                color: C.heading,
-                fontFamily: BODY_FONT,
-                fontSize: 16, // меньше нельзя — мобильный браузер зумит при фокусе
-                padding: "4px 12px",
-                outline: "none",
-                width: mob ? 140 : 154,
-                caretColor: ACS,
-              }}
-            />
-            {query && !found && (
-              <span style={{ fontFamily: BODY_FONT, fontSize: 11, color: C.muted, whiteSpace: "nowrap" }}>{t.notFound}</span>
-            )}
-          </div>
         </div>
       </div>
 
