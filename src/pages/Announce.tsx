@@ -109,8 +109,8 @@ const Announce: FC = () => {
             <h2 style={{ fontSize: "clamp(30px,7vw,64px)", fontWeight: 900, color: C.heading, margin: mob ? "16px 0 0" : "20px 0 0", lineHeight: 1.02, fontFamily: "'Xolonium','Tektur',sans-serif", letterSpacing: mob ? 0 : 1, textShadow: `0 0 40px rgba(var(--glow-rgb),0.25)` }}>
               {main.name}
             </h2>
-            {/* дата — акцентная плашка под названием */}
-            <div style={{ display: "inline-block", fontFamily: BODY_FONT, fontSize: mob ? 12 : 15, color: ACS, fontWeight: 700, marginTop: mob ? 14 : 18, letterSpacing: 1, padding: mob ? "6px 14px" : "8px 18px", border: `1px solid ${C.accentBorder}` }}>
+            {/* дата под названием */}
+            <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 12 : 15, color: ACS, fontWeight: 700, marginTop: mob ? 14 : 18, letterSpacing: 1 }}>
               {main.rawDate}
             </div>
             {main.details.length > 0 && (
