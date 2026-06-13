@@ -1,5 +1,6 @@
 import { useState, useEffect, type FC } from "react";
 import { useLang } from "../hooks/useLang";
+import { useTheme } from "../hooks/useTheme";
 import { useIsMobile } from "../hooks/useIsMobile";
 import { ELOCUP } from "../data/elocup";
 import { useAnnounceData } from "../hooks/useAnnounceData";
@@ -67,6 +68,8 @@ const Countdown: FC<{ target: Date; labels: [string, string, string, string]; mo
 
 const Announce: FC = () => {
   const { lang } = useLang();
+  const { theme } = useTheme();
+  const light = theme === "light";
   const t = ELOCUP[lang];
   const mob = useIsMobile();
   const { announces, loading } = useAnnounceData();
@@ -236,6 +239,7 @@ const Announce: FC = () => {
                 cols={mob ? 96 : 200}
                 contrast={1.1} floor={0} ramp="classic" color={ACS}
                 maxWidth={mob ? 1000 : 860}
+                invert={light}
                 loop={false} onEnded={finishIntro}
               />
             </div>
