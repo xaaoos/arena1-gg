@@ -250,19 +250,24 @@ const Divisions: FC = () => {
         )}
 
         {!loading && !error && (
-          <div style={{ position: "relative", background: C.bg, border: `1px solid ${C.accentBorder}` }}>
-            {/* углы рамки — в стиле блока анонса */}
-            {[{ top: -1, left: -1, borderWidth: "2px 0 0 2px" }, { top: -1, right: -1, borderWidth: "2px 2px 0 0" }, { bottom: -1, left: -1, borderWidth: "0 0 2px 2px" }, { bottom: -1, right: -1, borderWidth: "0 2px 2px 0" }].map((p, i) => (
+          <div style={{ position: "relative", background: C.bg, border: `1px solid ${C.accentBorder}`, borderTop: "none" }}>
+            {/* нижние углы рамки (верхние — на sticky-заголовке) */}
+            {[{ bottom: -1, left: -1, borderWidth: "0 0 2px 2px" }, { bottom: -1, right: -1, borderWidth: "0 2px 2px 0" }].map((p, i) => (
               <div key={i} style={{ position: "absolute", width: 14, height: 14, borderStyle: "solid", borderColor: ACS, zIndex: 99, pointerEvents: "none", ...p }} />
             ))}
 
-            {/* Header — sticky при прокрутке страницы */}
+            {/* Header — sticky; верхняя грань и верхние углы прилипают вместе с ним */}
             <div style={{
               display: "grid", gridTemplateColumns: TCOLS,
+              borderTop: `1px solid ${C.accentBorder}`,
               borderBottom: `1px solid ${C.accentBorder}`,
               background: `linear-gradient(rgba(var(--glow-rgb),0.03),rgba(var(--glow-rgb),0.03)) ${C.bg}`,
               position: "sticky", top: headTop, zIndex: 98,
             }}>
+              {/* верхние угловые акценты */}
+              {[{ top: -1, left: -1, borderWidth: "2px 0 0 2px" }, { top: -1, right: -1, borderWidth: "2px 2px 0 0" }].map((p, i) => (
+                <div key={i} style={{ position: "absolute", width: 14, height: 14, borderStyle: "solid", borderColor: ACS, zIndex: 100, pointerEvents: "none", ...p }} />
+              ))}
               <span style={{ padding: `${padV + 2}px 0`, textAlign: "center", borderRight: `1px solid ${C.borderLight}`, fontSize: 10, letterSpacing: 1.5, color: C.muted, fontWeight: 700 }}>#</span>
               <span style={{ padding: `${padV + 2}px 12px`, borderRight: `1px solid ${C.borderLight}`, fontSize: 10, letterSpacing: 1.5, color: C.muted, fontWeight: 700, textTransform: "uppercase" }}>{t.cols.player}</span>
               <span style={{ padding: `${padV + 2}px 12px ${padV + 2}px 0`, textAlign: "right", borderRight: `1px solid ${C.borderLight}`, fontSize: 10, letterSpacing: 1.5, color: C.muted, fontWeight: 700, textTransform: "uppercase" }}>{t.cols.elo}</span>
