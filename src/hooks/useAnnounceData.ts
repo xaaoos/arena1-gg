@@ -48,7 +48,7 @@ const isBracketKey = (k: string) => /bracket|сетк/i.test(k);
 function blockToAnnounce(entries: [string, string][]): CupAnnounce | null {
   const name = entries.find(([k]) => isNameKey(k))?.[1] ?? "";
   const rawDate = entries.find(([k]) => isDateKey(k))?.[1] ?? "";
-  if (!name || !rawDate) return null;
+  if (!name) return null; // дата опциональна — анонс без даты показываем строкой
 
   const bracketVal = entries.find(([k, v]) => isBracketKey(k) && v.startsWith("http"))?.[1] ?? "";
   const httpVal = entries.find(([k, v]) => !isBracketKey(k) && v.startsWith("http"))?.[1];

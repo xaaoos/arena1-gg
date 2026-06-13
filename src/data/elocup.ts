@@ -33,7 +33,7 @@ export const ELOCUP: Record<"ru" | "en", EloCupData> = {
   ru: {
     nav: ["Анонс", "Результаты"],
     hero: {
-      tag: "A R E N A  1",
+      tag: "QUAKE LIVE",
       t1: "Следующие", t2: "турниры",
       sub: "Еженедельные дуэльные турниры для игроков любого уровня.",
     },
@@ -93,7 +93,7 @@ export const ELOCUP: Record<"ru" | "en", EloCupData> = {
   en: {
     nav: ["Announce", "Results"],
     hero: {
-      tag: "A R E N A  1",
+      tag: "QUAKE LIVE",
       t1: "Upcoming", t2: "tournaments",
       sub: "Weekly duel tournaments for players of any level.",
     },
