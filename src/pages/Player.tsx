@@ -22,15 +22,17 @@ const T = {
   ru: {
     back: "← К дивизионам",
     notInDiv: "Нет в текущем рейтинге",
-    division: "Дивизион",
     rank: "Место",
     cups: "Турниров",
     wins: "Побед",
     podiums: "Топ-3",
+    avg: "Ср. место",
     best: "Лучший",
     history: "История выступлений",
     noHistory: "Пока нет сыгранных турниров",
-    results: "Результаты",
+    colPlace: "Место",
+    colCup: "Турнир",
+    colDate: "Дата",
     bracket: "сетка",
     notFound: "Игрок не найден",
     notFoundSub: "Нет ни в рейтинге, ни в архиве турниров",
@@ -39,15 +41,17 @@ const T = {
   en: {
     back: "← To divisions",
     notInDiv: "Not in current rating",
-    division: "Division",
     rank: "Rank",
     cups: "Tournaments",
     wins: "Wins",
     podiums: "Top-3",
+    avg: "Avg place",
     best: "Best",
     history: "Match history",
     noHistory: "No tournaments played yet",
-    results: "Results",
+    colPlace: "Place",
+    colCup: "Tournament",
+    colDate: "Date",
     bracket: "bracket",
     notFound: "Player not found",
     notFoundSub: "Not in the rating nor in the tournament archive",
@@ -92,6 +96,9 @@ const Player: FC = () => {
   const best = history.length
     ? history.reduce((m, h) => Math.min(m, placeNum(h.place)), Infinity)
     : null;
+  const avgPlace = history.length
+    ? Math.round(history.reduce((s, h) => s + placeNum(h.place), 0) / history.length)
+    : null;
 
   const displayName =
     divisions.flatMap((d) => d.players).find((p) => p.name.toLowerCase() === key)?.name ??
@@ -101,11 +108,15 @@ const Player: FC = () => {
 
   const exists = sheet !== null || history.length > 0;
 
+  // колонки таблицы истории (сквозные границы как в дивизионах)
+  const HCOLS = mob ? "44px 1fr 44px" : "64px 1fr 150px 64px";
+  const pv = mob ? 10 : 12;
+
   return (
     <div style={{ overflowX: "hidden", minHeight: "100vh" }}>
       <Seo
         path={`/player/${encodeURIComponent(decoded)}`}
-        title={`${displayName} — профиль игрока`}
+        title={`${displayName} — статистика`}
         description={`${displayName}: рейтинг, дивизион и история выступлений на турнирах Arena 1 (Non-Pro Duel Cups).`}
       />
       <section style={{ maxWidth: 720, margin: "0 auto", padding: mob ? "110px 14px 80px" : "140px 20px 120px" }}>
@@ -165,39 +176,58 @@ const Player: FC = () => {
 
             {/* Статистика по турнирам */}
             {history.length > 0 && (
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: mob ? 8 : 12, marginTop: mob ? 12 : 16 }}>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(90px, 1fr))", gap: mob ? 8 : 12, marginTop: mob ? 12 : 16 }}>
                 <Box label={t.cups} value={String(history.length)} mob={mob} />
                 <Box label={t.wins} value={String(wins)} mob={mob} color={wins > 0 ? C.place1 : undefined} />
                 <Box label={t.podiums} value={String(podiums)} mob={mob} />
+                <Box label={t.avg} value={avgPlace ? `#${avgPlace}` : "—"} mob={mob} />
                 <Box label={t.best} value={best ? placeLabel(String(best)) : "—"} mob={mob} />
               </div>
             )}
 
-            {/* История */}
+            {/* История — таблица в стиле дивизионов */}
             <div style={{ marginTop: mob ? 28 : 40 }}>
               <div style={{ fontSize: mob ? 10 : 11, letterSpacing: 2, color: C.muted, fontWeight: 700, textTransform: "uppercase", marginBottom: 12 }}>{t.history}</div>
               {history.length === 0 ? (
                 <div style={{ fontFamily: BODY_FONT, fontSize: 13, color: C.muted, padding: "20px 0" }}>{t.noHistory}</div>
               ) : (
-                history.map((h, i) => (
-                  <div key={i} style={{
-                    display: "flex", alignItems: "center", gap: mob ? 10 : 16,
-                    padding: mob ? "12px 12px" : "14px 18px",
-                    background: C.bgCard, border: `1px solid ${C.border}`,
-                    borderTop: i > 0 ? "none" : `1px solid ${C.border}`,
-                  }}>
-                    <div style={{ fontSize: mob ? 14 : 16, fontWeight: 900, color: PLACE_C[h.place] ?? C.heading, fontFamily: "'Xolonium','Tektur',monospace", minWidth: mob ? 36 : 44, flexShrink: 0 }}>
-                      {placeLabel(h.place)}
-                    </div>
-                    <div style={{ overflow: "hidden", flex: 1 }}>
-                      <div style={{ fontSize: mob ? 11 : 12, fontWeight: 800, color: C.heading, letterSpacing: 0.5, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{h.cup.name}</div>
-                      <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 10 : 11, color: C.muted, marginTop: 3 }}>{formatArchiveDate(h.cup.rawDate, lang)}</div>
-                    </div>
-                    <a href={h.cup.bracketUrl} target="_blank" rel="noopener noreferrer" style={{ fontFamily: BODY_FONT, fontSize: mob ? 10 : 11, color: C.muted, textDecoration: "none", padding: mob ? "6px 8px" : "6px 12px", border: `1px solid ${C.border}`, whiteSpace: "nowrap", flexShrink: 0 }}>
-                      {t.bracket} ↗
-                    </a>
+                <div style={{ position: "relative", border: `1px solid ${C.accentBorder}`, background: C.bg }}>
+                  {[{ top: -1, left: -1, borderWidth: "2px 0 0 2px" }, { top: -1, right: -1, borderWidth: "2px 2px 0 0" }, { bottom: -1, left: -1, borderWidth: "0 0 2px 2px" }, { bottom: -1, right: -1, borderWidth: "0 2px 2px 0" }].map((p, i) => (
+                    <div key={i} style={{ position: "absolute", width: 14, height: 14, borderStyle: "solid", borderColor: ACS, zIndex: 2, pointerEvents: "none", ...p }} />
+                  ))}
+
+                  {/* Header */}
+                  <div style={{ display: "grid", gridTemplateColumns: HCOLS, borderBottom: `1px solid ${C.accentBorder}`, background: `linear-gradient(rgba(var(--glow-rgb),0.03),rgba(var(--glow-rgb),0.03)) ${C.bg}` }}>
+                    <span style={{ padding: `${pv + 2}px 0`, textAlign: "center", borderRight: `1px solid ${C.borderLight}`, fontSize: 10, letterSpacing: 1.5, color: C.muted, fontWeight: 700, textTransform: "uppercase" }}>{t.colPlace}</span>
+                    <span style={{ padding: `${pv + 2}px 12px`, borderRight: `1px solid ${C.borderLight}`, fontSize: 10, letterSpacing: 1.5, color: C.muted, fontWeight: 700, textTransform: "uppercase" }}>{t.colCup}</span>
+                    {!mob && <span style={{ padding: `${pv + 2}px 12px`, borderRight: `1px solid ${C.borderLight}`, fontSize: 10, letterSpacing: 1.5, color: C.muted, fontWeight: 700, textTransform: "uppercase" }}>{t.colDate}</span>}
+                    <span style={{ padding: `${pv + 2}px 0`, textAlign: "center", fontSize: 10, letterSpacing: 1.5, color: C.muted, fontWeight: 700, textTransform: "uppercase" }}>{t.bracket}</span>
                   </div>
-                ))
+
+                  {/* Rows */}
+                  {history.map((h, i) => {
+                    const isTop3 = ["1", "2", "3"].includes(h.place);
+                    return (
+                      <div key={i} style={{ display: "grid", gridTemplateColumns: HCOLS, alignItems: "stretch", borderBottom: i < history.length - 1 ? `1px solid ${C.borderLight}` : "none", background: isTop3 ? C.accentSubtle : "transparent" }}>
+                        <span style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: `${pv}px 0`, borderRight: `1px solid ${C.borderLight}`, fontSize: isTop3 ? (mob ? 14 : 16) : (mob ? 11 : 12), fontWeight: isTop3 ? 900 : 600, color: PLACE_C[h.place] ?? C.body, fontFamily: "'Xolonium','Tektur',monospace" }}>
+                          {placeLabel(h.place)}
+                        </span>
+                        <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", padding: `${pv}px 12px`, borderRight: `1px solid ${C.borderLight}`, overflow: "hidden" }}>
+                          <span style={{ fontSize: mob ? 11 : 12, fontWeight: 800, color: C.heading, letterSpacing: 0.5, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{h.cup.name}</span>
+                          {mob && <span style={{ fontFamily: BODY_FONT, fontSize: 10, color: C.muted, marginTop: 3 }}>{formatArchiveDate(h.cup.rawDate, lang)}</span>}
+                        </div>
+                        {!mob && (
+                          <span style={{ display: "flex", alignItems: "center", padding: `${pv}px 12px`, borderRight: `1px solid ${C.borderLight}`, fontFamily: BODY_FONT, fontSize: 11, color: C.muted, whiteSpace: "nowrap" }}>
+                            {formatArchiveDate(h.cup.rawDate, lang)}
+                          </span>
+                        )}
+                        <a href={h.cup.bracketUrl} target="_blank" rel="noopener noreferrer" style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: `${pv}px 0`, fontFamily: BODY_FONT, fontSize: mob ? 10 : 11, color: ACS, textDecoration: "none" }}>
+                          ↗
+                        </a>
+                      </div>
+                    );
+                  })}
+                </div>
               )}
             </div>
           </>
