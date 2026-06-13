@@ -179,6 +179,29 @@ const Announce: FC = () => {
         </div>
       </section>
 
+      {/* ASCII-интро: играет один раз, затем схлопывается. Не зависит от загрузки анонсов */}
+      {!introHidden && (
+        <div
+          onTransitionEnd={(e) => { if (introDone && e.propertyName === "max-height") setIntroHidden(true); }}
+          style={{
+            overflow: "hidden", maxWidth: 900, margin: "0 auto",
+            padding: mob ? "8px 16px 0" : "16px 20px 0",
+            opacity: introDone ? 0 : 1,
+            maxHeight: introDone ? 0 : 2000,
+            transition: "opacity 0.3s ease, max-height 0.45s ease",
+          }}
+        >
+          <AsciiVideo
+            src={mob ? "/hero-ascii-v.mp4" : "/hero-ascii.mp4"}
+            cols={mob ? 96 : 200}
+            contrast={1.1} floor={0} ramp="classic" color={ACS}
+            maxWidth={mob ? 1000 : 860}
+            invert={light}
+            loop={false} onEnded={finishIntro}
+          />
+        </div>
+      )}
+
       {/* Announce — ближайший кубок крупно с отсчётом, следующие списком */}
       {!loading && announces.length > 0 && (
         <section style={{ position: "relative", padding: mob ? "8px 16px 0" : "16px 20px 0", maxWidth: 900, margin: "0 auto" }}>
@@ -237,31 +260,6 @@ const Announce: FC = () => {
           )}
           {/* конец контента анонса */}
           </div>
-
-          {/* ASCII-интро: играет один раз поверх анонса, затем затухает */}
-          {!introHidden && (
-            <div
-              onTransitionEnd={() => { if (introDone) setIntroHidden(true); }}
-              style={{
-                position: "absolute", inset: 0, zIndex: 5,
-                background: C.bg,
-                display: "flex", alignItems: mob ? "flex-start" : "center", justifyContent: "center",
-                padding: mob ? "4px 16px 0" : "0 20px",
-                opacity: introDone ? 0 : 1,
-                transition: "opacity 0.3s ease",
-                pointerEvents: introDone ? "none" : "auto",
-              }}
-            >
-              <AsciiVideo
-                src={mob ? "/hero-ascii-v.mp4" : "/hero-ascii.mp4"}
-                cols={mob ? 96 : 200}
-                contrast={1.1} floor={0} ramp="classic" color={ACS}
-                maxWidth={mob ? 1000 : 860}
-                invert={light}
-                loop={false} onEnded={finishIntro}
-              />
-            </div>
-          )}
         </section>
       )}
 
