@@ -47,7 +47,7 @@ const Countdown: FC<{ target: Date; labels: [string, string, string, string]; mo
               fontSize: mob ? 32 : 72, fontWeight: 900, fontFamily: "'Xolonium','Tektur',monospace",
               lineHeight: 1, fontVariantNumeric: "tabular-nums",
               color: "transparent", WebkitTextFillColor: "transparent",
-              backgroundImage: "repeating-linear-gradient(0deg, var(--text-heading) 0 3px, transparent 3px 4px)",
+              backgroundImage: "repeating-linear-gradient(0deg, var(--text-heading) 0 3px, transparent 3px 6px)",
               WebkitBackgroundClip: "text", backgroundClip: "text",
             }}>
               {pad(v)}
