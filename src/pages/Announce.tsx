@@ -42,10 +42,10 @@ const Countdown: FC<{ target: Date; labels: [string, string, string, string]; mo
     <div style={{ display: "flex", gap: mob ? 4 : 22, justifyContent: "center", alignItems: "flex-start" }}>
       {vals.map((v, i) => (
         <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: mob ? 4 : 22 }}>
-          <div style={{ textAlign: "center", minWidth: mob ? 38 : 78 }}>
+          <div style={{ textAlign: "center", minWidth: mob ? 32 : 58 }}>
             {/* CRT-сканлайны вырезаны прямо в глифах цифры (background-clip: text) */}
             <div style={{
-              fontSize: mob ? 32 : 72, fontWeight: 900, fontFamily: "'Xolonium','Tektur',monospace",
+              fontSize: mob ? 28 : 54, fontWeight: 900, fontFamily: "'Xolonium','Tektur',monospace",
               lineHeight: 1, fontVariantNumeric: "tabular-nums",
               color: "transparent", WebkitTextFillColor: "transparent",
               backgroundImage: "repeating-linear-gradient(0deg, var(--text-heading) 0 2px, transparent 2px 4px)",
@@ -61,7 +61,7 @@ const Countdown: FC<{ target: Date; labels: [string, string, string, string]; mo
           </div>
           {i < 3 && (
             <div style={{
-              fontSize: mob ? 32 : 72, fontWeight: 300, lineHeight: 1, fontFamily: "'Xolonium','Tektur',monospace",
+              fontSize: mob ? 28 : 54, fontWeight: 300, lineHeight: 1, fontFamily: "'Xolonium','Tektur',monospace",
               color: "transparent", WebkitTextFillColor: "transparent",
               backgroundImage: "repeating-linear-gradient(0deg, var(--text-heading) 0 2px, transparent 2px 4px)",
               WebkitBackgroundClip: "text", backgroundClip: "text",
@@ -144,14 +144,15 @@ const Announce: FC = () => {
               {main.rawDate}
             </div>
             <h2 style={{ fontSize: "clamp(30px,7vw,64px)", fontWeight: 900, color: C.heading, margin: mob ? "14px 0 0" : "18px 0 0", lineHeight: 1.02, fontFamily: "'Xolonium','Tektur',sans-serif", letterSpacing: mob ? 0 : 1, textShadow: `0 0 40px rgba(var(--glow-rgb),0.25)` }}>
-              {main.name}
+              {/* "Div 1" не разрываем переносом */}
+              {main.name.replace(/\b(div)\s+(\d)/i, (_m, a, b) => a + String.fromCharCode(160) + b)}
             </h2>
             {main.details.length > 0 && (
-              <div style={{ marginTop: 14, display: "flex", flexDirection: "column", gap: 5 }}>
+              <div style={{ marginTop: 16, display: "flex", flexDirection: "column", gap: 7 }}>
                 {main.details.map((d, i) => {
                   const isElo = /elo\s*limit/i.test(d); // строку с ELO-лимитом выделяем
                   return (
-                    <div key={i} style={{ fontFamily: BODY_FONT, fontSize: mob ? 11 : 12, color: isElo ? C.heading : C.muted, fontWeight: isElo ? 700 : 400, lineHeight: 1.6, letterSpacing: 0.3 }}>{d}</div>
+                    <div key={i} style={{ fontFamily: BODY_FONT, fontSize: isElo ? (mob ? 14 : 16) : (mob ? 12 : 13), color: isElo ? C.heading : C.body, fontWeight: isElo ? 800 : 500, lineHeight: 1.6, letterSpacing: 0.3 }}>{d}</div>
                   );
                 })}
               </div>
@@ -168,9 +169,9 @@ const Announce: FC = () => {
                 <a href={main.link} target="_blank" rel="noopener noreferrer" style={{
                   display: "inline-block",
                   background: ACS, color: C.accentContrast,
-                  fontFamily: "'Xolonium','Tektur',sans-serif", fontSize: mob ? 11 : 12, fontWeight: 800,
-                  letterSpacing: 2, textTransform: "uppercase", textDecoration: "none",
-                  padding: mob ? "13px 24px" : "15px 36px",
+                  fontFamily: "'Xolonium','Tektur',sans-serif", fontSize: mob ? 10 : 11, fontWeight: 800,
+                  letterSpacing: 1.5, textTransform: "uppercase", textDecoration: "none",
+                  padding: mob ? "10px 18px" : "11px 26px",
                   transition: "box-shadow 0.25s ease",
                 }}
                   onMouseEnter={(e) => (e.currentTarget.style.boxShadow = "0 0 28px rgba(var(--glow-rgb),0.6)")}
@@ -181,9 +182,9 @@ const Announce: FC = () => {
                 <a href={main.bracketUrl} target="_blank" rel="noopener noreferrer" style={{
                   display: "inline-block",
                   border: `1px solid ${C.accentBorder}`, color: ACS,
-                  fontFamily: "'Xolonium','Tektur',sans-serif", fontSize: mob ? 11 : 12, fontWeight: 800,
-                  letterSpacing: 2, textTransform: "uppercase", textDecoration: "none",
-                  padding: mob ? "12px 24px" : "14px 36px",
+                  fontFamily: "'Xolonium','Tektur',sans-serif", fontSize: mob ? 10 : 11, fontWeight: 800,
+                  letterSpacing: 1.5, textTransform: "uppercase", textDecoration: "none",
+                  padding: mob ? "9px 18px" : "10px 26px",
                   transition: "box-shadow 0.25s ease, border-color 0.25s ease",
                 }}
                   onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 0 24px rgba(var(--glow-rgb),0.45)"; e.currentTarget.style.borderColor = ACS; }}
@@ -206,8 +207,8 @@ const Announce: FC = () => {
                   background: C.bgCard, border: `1px solid ${C.border}`,
                   borderTop: i > 0 ? "none" : `1px solid ${C.border}`,
                 }}>
-                  <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 10 : 11, color: ACS, fontWeight: 700, whiteSpace: "nowrap", flexShrink: 0 }}>
-                    {a.rawDate}
+                  <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 10 : 11, color: a.date ? ACS : C.muted, fontWeight: 700, whiteSpace: "nowrap", flexShrink: 0 }}>
+                    {a.date ? a.rawDate : (lang === "ru" ? "Дата уточняется" : "Date TBA")}
                   </div>
                   <div style={{ fontSize: mob ? 11 : 12, fontWeight: 800, color: C.heading, letterSpacing: 0.5, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                     {a.name}

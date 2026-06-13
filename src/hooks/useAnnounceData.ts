@@ -87,10 +87,16 @@ function parseAnnounceCSV(csv: string): CupAnnounce[] {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
-  return blocks
+  const parsed = blocks
     .map(blockToAnnounce)
-    .filter((a): a is CupAnnounce => a !== null && a.date !== null && a.date >= today)
-    .sort((a, b) => a.date!.getTime() - b.date!.getTime());
+    .filter((a): a is CupAnnounce => a !== null)
+    // прошедшие датированные убираем; без даты — оставляем
+    .filter((a) => a.date === null || a.date >= today);
+
+  // сначала датированные по возрастанию даты, затем без даты
+  const dated = parsed.filter((a) => a.date !== null).sort((a, b) => a.date!.getTime() - b.date!.getTime());
+  const undated = parsed.filter((a) => a.date === null);
+  return [...dated, ...undated];
 }
 
 export function useAnnounceData() {
