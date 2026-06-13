@@ -34,6 +34,7 @@ const AsciiLab: FC = () => {
   const [floor, setFloor] = useState(0);     // порог чёрного: ниже — пустота
   const [colorOnly, setColorOnly] = useState(false); // оставить только цветное (убрать серый фон)
   const [satThr, setSatThr] = useState(0.25);
+  const [clip, setClip] = useState("/ascii-demo.mp4"); // активный клип-пресет
 
   const fmt = (s: number) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, "0")}`;
 
@@ -139,15 +140,16 @@ const AsciiLab: FC = () => {
     setMode("video");
   };
 
-  // демо-клип (лежит в public, same-origin — canvas не «пачкается»)
-  const loadDemo = () => {
+  // клип-пресет (лежит в public, same-origin — canvas не «пачкается»)
+  const loadClip = (src: string) => {
     const v = document.createElement("video");
-    v.src = "/ascii-demo.mp4";
+    v.src = src;
     attachVideo(v);
+    setClip(src);
   };
 
-  // при входе сразу показываем демо-клип
-  useEffect(() => { loadDemo(); }, []);
+  // при входе сразу показываем первый клип
+  useEffect(() => { loadClip("/ascii-demo.mp4"); }, []);
 
   const onFile = (file: File) => {
     const url = URL.createObjectURL(file);
@@ -214,7 +216,8 @@ const AsciiLab: FC = () => {
 
         {/* контролы */}
         <div style={{ marginTop: 18, display: "flex", flexWrap: "wrap", gap: 10, alignItems: "center", justifyContent: "center" }}>
-          <button style={btn(mode === "video")} onClick={loadDemo}>Quake-клип</button>
+          <button style={btn(mode === "video" && clip === "/ascii-demo.mp4")} onClick={() => loadClip("/ascii-demo.mp4")}>Клип 1</button>
+          <button style={btn(mode === "video" && clip === "/ascii-demo2.mp4")} onClick={() => loadClip("/ascii-demo2.mp4")}>Клип 2</button>
           <button style={btn(mode === "plasma")} onClick={() => setMode("plasma")}>Плазма</button>
 
           <label style={{ ...btn(mode === "image"), display: "inline-block" }}>
