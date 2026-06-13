@@ -69,8 +69,6 @@ export const TopNav: FC = () => {
             ARENA <span style={{ color: "#ff3e3e" }}>1</span>
           </span>
         </Link>
-        {/* логотип Quake Live */}
-        <img src="/quake-live-logo.png" alt="Quake Live" title="Quake Live" style={{ height: 26, width: 26, marginLeft: 14, flexShrink: 0, objectFit: "contain" }} />
 
         {!mobile && (
           <div style={{ display: "flex", gap: 4, marginLeft: 28 }}>
