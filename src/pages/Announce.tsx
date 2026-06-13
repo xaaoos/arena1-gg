@@ -83,7 +83,7 @@ const CupBanner: FC<{ cup: CupAnnounce; mob: boolean; t: T }> = ({ cup, mob, t }
     border: `1px solid ${C.accentBorder}`,
     background: `radial-gradient(ellipse at 50% 0%,rgba(var(--glow-rgb),0.14) 0%,transparent 72%) ${C.bg}`,
     boxShadow: `0 0 70px rgba(var(--glow-rgb),0.16)`,
-    padding: mob ? "28px 16px 28px" : "48px 32px 44px",
+    padding: mob ? "21px 12px 21px" : "36px 24px 33px",
     textAlign: "center",
   }}>
     {[{ top: -1, left: -1, borderWidth: "2px 0 0 2px" }, { top: -1, right: -1, borderWidth: "2px 2px 0 0" }, { bottom: -1, left: -1, borderWidth: "0 0 2px 2px" }, { bottom: -1, right: -1, borderWidth: "0 2px 2px 0" }].map((p, i) => (
@@ -93,25 +93,25 @@ const CupBanner: FC<{ cup: CupAnnounce; mob: boolean; t: T }> = ({ cup, mob, t }
     <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 11 : 13, letterSpacing: mob ? 1 : 1.5, color: ACS, fontWeight: 700 }}>
       {cup.rawDate}
     </div>
-    <h2 style={{ fontSize: "clamp(30px,7vw,64px)", fontWeight: 900, color: C.heading, margin: mob ? "14px 0 0" : "18px 0 0", lineHeight: 1.02, fontFamily: "'Xolonium','Tektur',sans-serif", letterSpacing: mob ? 0 : 1, textShadow: `0 0 40px rgba(var(--glow-rgb),0.25)` }}>
+    <h2 style={{ fontSize: "clamp(24px,4.5vw,42px)", fontWeight: 900, color: C.heading, margin: mob ? "10px 0 0" : "14px 0 0", lineHeight: 1.05, fontFamily: "'Xolonium','Tektur',sans-serif", letterSpacing: -0.5, textShadow: `0 0 40px rgba(var(--glow-rgb),0.25)` }}>
       {cup.name.replace(/\b(div)\s+(\d)/i, (_m, a, b) => a + String.fromCharCode(160) + b)}
     </h2>
     {cup.details.length > 0 && (
-      <div style={{ marginTop: 16, display: "flex", flexDirection: "column", gap: 7 }}>
+      <div style={{ marginTop: 12, display: "flex", flexDirection: "column", gap: 5 }}>
         {cup.details.map((d, i) => {
           const isElo = /elo\s*limit/i.test(d);
           return (
-            <div key={i} style={{ fontFamily: BODY_FONT, fontSize: isElo ? (mob ? 14 : 16) : (mob ? 12 : 13), color: isElo ? C.heading : C.body, fontWeight: isElo ? 800 : 500, lineHeight: 1.6, letterSpacing: 0.3 }}>{d}</div>
+            <div key={i} style={{ fontFamily: BODY_FONT, fontSize: isElo ? (mob ? 13 : 15) : (mob ? 11 : 12), color: isElo ? C.heading : C.body, fontWeight: isElo ? 800 : 500, lineHeight: 1.6, letterSpacing: 0.3 }}>{d}</div>
           );
         })}
       </div>
     )}
     {cup.date && (
-      <div style={{ marginTop: mob ? 32 : 44 }}>
+      <div style={{ marginTop: mob ? 24 : 33 }}>
         <Countdown target={cup.date} labels={t.next.cd} mob={mob} />
       </div>
     )}
-    <div style={{ display: "flex", gap: mob ? 10 : 14, justifyContent: "center", alignItems: "stretch", flexWrap: "wrap", marginTop: mob ? 24 : 32 }}>
+    <div style={{ display: "flex", gap: mob ? 10 : 14, justifyContent: "center", alignItems: "stretch", flexWrap: "wrap", marginTop: mob ? 18 : 24 }}>
       {cup.link && (
         <a href={cup.link} target="_blank" rel="noopener noreferrer" style={{
           display: "inline-block", background: ACS, color: C.accentContrast,
@@ -182,7 +182,7 @@ const Announce: FC = () => {
 
       {/* Announce — ближайший кубок крупно с отсчётом, следующие списком */}
       {!loading && announces.length > 0 && (
-        <section style={{ position: "relative", padding: mob ? "16px 16px 0" : "60px 20px 0", maxWidth: 900, margin: "0 auto" }}>
+        <section style={{ position: "relative", padding: mob ? "8px 16px 0" : "16px 20px 0", maxWidth: 900, margin: "0 auto" }}>
           {/* контент анонса — проявляется после интро */}
           <div style={{
             opacity: introDone ? 1 : 0,
@@ -202,33 +202,38 @@ const Announce: FC = () => {
               <div style={{ fontSize: 10, letterSpacing: 2, color: C.muted, fontWeight: 700, textTransform: "uppercase", marginBottom: 8 }}>
                 {t.next.upcoming}
               </div>
-              {undated.map((a, i) => (
-                <div key={i} style={{
-                  display: "flex", alignItems: "center", gap: mob ? 10 : 16,
-                  padding: mob ? "11px 12px" : "13px 18px",
-                  background: C.bgCard, border: `1px solid ${C.border}`,
-                  borderTop: i > 0 ? "none" : `1px solid ${C.border}`,
-                }}>
-                  <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 10 : 11, color: C.muted, fontWeight: 700, whiteSpace: "nowrap", flexShrink: 0 }}>
-                    {lang === "ru" ? "Дата уточняется" : "Date TBA"}
-                  </div>
-                  <div style={{ fontSize: mob ? 11 : 12, fontWeight: 800, color: C.heading, letterSpacing: 0.5, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                    {a.name}
-                  </div>
-                  <div style={{ marginLeft: "auto", display: "flex", gap: mob ? 8 : 12, flexShrink: 0, alignItems: "center" }}>
-                    {a.bracketUrl && (
-                      <a href={a.bracketUrl} target="_blank" rel="noopener noreferrer" style={{ fontFamily: BODY_FONT, fontSize: 11, color: ACS, textDecoration: "none", whiteSpace: "nowrap" }}>
-                        {lang === "ru" ? "сетка" : "bracket"} ↗︎
-                      </a>
+              {undated.map((a, i) => {
+                // ELO-лимит из деталей (значение после "Elo limit:")
+                const eloDetail = a.details.find((d) => /elo\s*limit/i.test(d));
+                const elo = eloDetail ? eloDetail.replace(/.*elo\s*limit:?\s*/i, "").trim() : "";
+                return (
+                  <div key={i} style={{
+                    display: "flex", alignItems: "center", gap: mob ? 8 : 14,
+                    padding: mob ? "11px 12px" : "13px 18px",
+                    background: C.bgCard, border: `1px solid ${C.border}`,
+                    borderTop: i > 0 ? "none" : `1px solid ${C.border}`,
+                  }}>
+                    {/* 1. Название */}
+                    <div style={{ fontSize: mob ? 11 : 12, fontWeight: 800, color: C.heading, letterSpacing: 0.5, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", flexShrink: 0 }}>
+                      {a.name}
+                    </div>
+                    {/* 2. ELO */}
+                    {elo && (
+                      <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 10 : 11, color: ACS, fontWeight: 700, whiteSpace: "nowrap", flexShrink: 0 }}>
+                        ELO {elo}
+                      </div>
                     )}
-                    {a.link && (
-                      <a href={a.link} target="_blank" rel="noopener noreferrer" style={{ fontFamily: BODY_FONT, fontSize: 11, color: C.muted, textDecoration: "none", whiteSpace: "nowrap" }}>
-                        {lang === "ru" ? "инфо" : "info"} ↗︎
-                      </a>
-                    )}
+                    {/* 3. Дата уточняется */}
+                    <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 10 : 11, color: C.muted, whiteSpace: "nowrap" }}>
+                      {lang === "ru" ? "дата уточняется" : "date TBA"}
+                    </div>
+                    {/* Участвовать → Discord */}
+                    <a href={a.link} target="_blank" rel="noopener noreferrer" style={{ marginLeft: "auto", fontFamily: BODY_FONT, fontSize: 11, color: ACS, fontWeight: 700, textDecoration: "none", whiteSpace: "nowrap", flexShrink: 0 }}>
+                      {lang === "ru" ? "Участвовать" : "Join"} ↗︎
+                    </a>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
           {/* конец контента анонса */}
