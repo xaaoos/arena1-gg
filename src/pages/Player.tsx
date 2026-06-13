@@ -4,6 +4,7 @@ import { useLang } from "../hooks/useLang";
 import { useIsMobile } from "../hooks/useIsMobile";
 import { useSheetData } from "../hooks/useSheetData";
 import { useArchiveData, formatArchiveDate } from "../hooks/useArchiveData";
+import { Seo } from "../components/Seo";
 import { BODY_FONT } from "../components/UI";
 import { C } from "../theme";
 
@@ -102,6 +103,11 @@ const Player: FC = () => {
 
   return (
     <div style={{ overflowX: "hidden", minHeight: "100vh" }}>
+      <Seo
+        path={`/player/${encodeURIComponent(decoded)}`}
+        title={`${displayName} — профиль игрока`}
+        description={`${displayName}: рейтинг, дивизион и история выступлений на турнирах Arena 1 (Non-Pro Duel Cups).`}
+      />
       <section style={{ maxWidth: 720, margin: "0 auto", padding: mob ? "110px 14px 80px" : "140px 20px 120px" }}>
         <Link to="/divisions" style={{ fontFamily: BODY_FONT, fontSize: mob ? 11 : 12, color: C.muted, textDecoration: "none", letterSpacing: 1 }}>
           {t.back}

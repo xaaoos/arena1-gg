@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { useLang } from "../hooks/useLang";
 import { useIsMobile } from "../hooks/useIsMobile";
 import { BLOG_POSTS } from "../data/blog";
+import { Seo } from "../components/Seo";
 import { BODY_FONT } from "../components/UI";
 import { C } from "../theme";
 
@@ -55,9 +56,14 @@ const BlogPost: FC = () => {
   const title = lang === "ru" ? post.titleRu : post.titleEn;
   const content = lang === "ru" ? post.contentRu : post.contentEn;
   const blocks = renderMarkdown(content);
+  // описание для шеринга — первый абзац статьи, обрезанный
+  const excerpt = (content.split("\n").map((l) => l.trim()).find((l) => l && !l.startsWith("## ")) ?? "")
+    .replace(/\*\*(.+?)\*\*/g, "$1")
+    .slice(0, 200);
 
   return (
     <div style={{ overflowX: "hidden" }}>
+      <Seo path={`/blog/${post.slug}`} title={title} description={excerpt} />
       <article style={{ maxWidth: 720, margin: "0 auto", padding: mob ? "80px 16px 40px" : "120px 20px 60px" }}>
         <Link to="/blog" style={{ fontFamily: BODY_FONT, fontSize: 12, color: AC, textDecoration: "none", letterSpacing: 1, display: "inline-block", marginBottom: mob ? 28 : 40 }}>&larr; {lang === "ru" ? "Блог" : "Blog"}</Link>
 

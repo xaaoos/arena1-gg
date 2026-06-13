@@ -4,6 +4,7 @@ import { useIsMobile } from "../hooks/useIsMobile";
 import { ELOCUP } from "../data/elocup";
 import { useArchiveData, formatArchiveDate, type ArchiveCup, type ArchiveStanding } from "../hooks/useArchiveData";
 import { useParallax } from "../hooks/useParallax";
+import { Seo } from "../components/Seo";
 import { BODY_FONT } from "../components/UI";
 import { C } from "../theme";
 
@@ -57,6 +58,11 @@ const EloCup: FC = () => {
 
   return (
     <div style={{ overflowX: "hidden" }}>
+      <Seo
+        path="/non-pro-duel-cups"
+        title="Результаты турниров"
+        description="Архив результатов Non-Pro Duel Cups — Arena 1. Полные таблицы прошедших дуэльных турниров по Quake и поиск выступлений игрока за всю историю."
+      />
 
       {/* Hero */}
       <section style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", position: "relative", padding: mob ? "120px 16px 32px" : "150px 20px 40px", textAlign: "center", background: `radial-gradient(ellipse at 50% 20%,rgba(var(--glow-rgb),0.06) 0%,transparent 60%)` }}>

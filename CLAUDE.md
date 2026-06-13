@@ -13,8 +13,22 @@ Arena 1 — медиабренд и чемпионат по Arena FPS (Quake Liv
 
 ## Команды
 - npm run dev — локальный сервер
-- npm run build — продакшн сборка
+- npm run build — продакшн сборка + пререндер (требует chromium от playwright)
+- npm run build:nopre — сборка без пререндера (быстрее, для локальной проверки)
 - Деплой: `git push origin main` (GitHub Actions → rsync на VPS)
+
+## SEO и пререндер
+- `npm run build` после vite build запускает `scripts/prerender.mjs`: поднимает vite preview, обходит статичные роуты headless-chromium и сохраняет отрендеренный HTML в dist/<route>/index.html (краулеры и соц-боты видят готовый контент + helmet-мета). Также пишет dist/sitemap.xml.
+- Мета per-page: компонент `src/components/Seo.tsx` (react-helmet-async) — title/description/canonical/OG/Twitter/JSON-LD. На каждой странице свой `<Seo>`.
+- Дефолтные мета — в index.html (фоллбэк для непререндеренных роутов). Пререндер удаляет статичные дубли тех тегов, что проставил helmet.
+- robots.txt — public/. Скрытые роуты (/championship, /verified) — noindex + Disallow.
+- Динамические роуты (/player/:nick, /blog/:slug кроме известных слагов) НЕ пререндерятся — индексируются Google через JS, соц-шеринг видит дефолтную карточку.
+- CI ставит chromium: шаг `npx playwright install --with-deps chromium` в deploy.yml.
+- nginx должен отдавать /route/index.html (нужен `try_files $uri $uri/ /index.html`).
+
+## Метрика
+- Яндекс.Метрика id 109816462 — `src/components/Metrika.tsx`, подключена в App внутри Router (hit на смену маршрута).
+- Не запускается при пререндере (guard по navigator.webdriver) — чтобы бот сборки не засчитывался и счётчик не попадал в статичный HTML.
 
 ## Страницы
 - / → pages/Announce.tsx — главная: анонсы кубков с обратным отсчётом

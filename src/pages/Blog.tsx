@@ -4,6 +4,7 @@ import { useLang } from "../hooks/useLang";
 import { useIsMobile } from "../hooks/useIsMobile";
 import { BLOG_POSTS } from "../data/blog";
 import { SL, ST, BODY_FONT } from "../components/UI";
+import { Seo } from "../components/Seo";
 import { C } from "../theme";
 
 const AC = "#c084fc";
@@ -14,6 +15,11 @@ const Blog: FC = () => {
 
   return (
     <div style={{ overflowX: "hidden" }}>
+      <Seo
+        path="/blog"
+        title="Блог"
+        description="Блог Arena 1: мысли и наблюдения о Quake-сообществе, Arena FPS и развитии чемпионата."
+      />
       <section style={{ minHeight: "100vh", padding: mob ? "80px 16px 40px" : "120px 20px 60px", maxWidth: 860, margin: "0 auto" }}>
         <SL num="01" text={lang === "ru" ? "БЛОГ" : "BLOG"} color={AC} />
         <ST>{lang === "ru" ? "Мысли и" : "Thoughts &"}<br /><span style={{ color: AC }}>{lang === "ru" ? "наблюдения" : "observations"}</span></ST>

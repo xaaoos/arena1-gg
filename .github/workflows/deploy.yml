@@ -16,6 +16,8 @@ jobs:
           cache: npm
 
       - run: npm ci
+      - name: Install Chromium for prerender
+        run: npx playwright install --with-deps chromium
       - run: npm run build
 
       - name: Deploy to VPS

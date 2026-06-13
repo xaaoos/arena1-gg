@@ -4,8 +4,19 @@ import { useIsMobile } from "../hooks/useIsMobile";
 import { ELOCUP } from "../data/elocup";
 import { useAnnounceData } from "../hooks/useAnnounceData";
 import { useParallax } from "../hooks/useParallax";
+import { Seo } from "../components/Seo";
 import { BODY_FONT } from "../components/UI";
 import { C } from "../theme";
+
+const ORG_JSONLD = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "Arena 1",
+  url: "https://arena1.gg",
+  logo: "https://arena1.gg/og-image.png",
+  description: "Arena 1 — киберспортивный чемпионат по Quake (Arena FPS). The Premier League of Aim.",
+  sameAs: ["https://discord.gg/dgPwNAph2j"],
+};
 
 const AC = "#4ade80";
 const ACS = C.accent;
@@ -56,6 +67,11 @@ const Announce: FC = () => {
 
   return (
     <div style={{ overflowX: "hidden" }}>
+      <Seo
+        path="/"
+        description="Arena 1 — киберспортивный чемпионат по Quake. Non-Pro Duel Cups: еженедельные дуэльные турниры с ELO-ограничениями. Анонсы, расписание, регистрация."
+        jsonLd={ORG_JSONLD}
+      />
 
       {/* Hero */}
       <section style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", position: "relative", padding: mob ? "140px 16px 32px" : "160px 20px 36px", textAlign: "center", background: `radial-gradient(ellipse at 50% 20%,rgba(var(--glow-rgb),0.06) 0%,transparent 60%)` }}>

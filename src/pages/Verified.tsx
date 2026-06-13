@@ -3,6 +3,7 @@ import { useLang } from "../hooks/useLang";
 import { useIsMobile } from "../hooks/useIsMobile";
 import { VER } from "../data/verified";
 import { SL, ST, BODY_FONT } from "../components/UI";
+import { Seo } from "../components/Seo";
 import { Icon } from "../components/Icons";
 import { C } from "../theme";
 
@@ -35,6 +36,7 @@ const Verified: FC = () => {
 
   return (
     <div style={{ overflowX: "hidden" }}>
+      <Seo path="/verified" title="Verified Players" description="Верификация игроков Arena 1." noindex />
       <nav style={{ position: "fixed", top: 48, left: 0, right: 0, zIndex: 99, background: C.bgNavSub, backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(0,240,255,0.12)", display: "flex", justifyContent: mob ? "flex-start" : "center", overflowX: "auto", WebkitOverflowScrolling: "touch", transition: "background 0.3s" }}>
         {NAV_IDS.map((id, i) => (
           <button key={id} onClick={() => scrollTo(id)} style={{ background: "none", border: "none", cursor: "pointer", color: active === id ? "#00f0ff" : C.muted, fontSize: mob ? 10 : 11, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", padding: mob ? "10px 8px" : "12px 12px", whiteSpace: "nowrap", borderBottom: active === id ? "2px solid #00f0ff" : "2px solid transparent", transition: "all 0.3s", fontFamily: "'Xolonium','Tektur',sans-serif", flexShrink: 0 }}>{t.nav[i]}</button>

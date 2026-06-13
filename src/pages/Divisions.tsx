@@ -3,6 +3,7 @@ import { useLang } from "../hooks/useLang";
 import { useIsMobile } from "../hooks/useIsMobile";
 import { useSheetData } from "../hooks/useSheetData";
 import { useParallax } from "../hooks/useParallax";
+import { Seo } from "../components/Seo";
 import { BODY_FONT } from "../components/UI";
 import { C } from "../theme";
 
@@ -96,6 +97,11 @@ const Divisions: FC = () => {
 
   return (
     <div>
+      <Seo
+        path="/divisions"
+        title="Дивизионы и игроки"
+        description="Рейтинг игроков Arena 1 по дивизионам: ELO, места, динамика. Pro, Semi-Pro и Non-Pro дивизионы Quake-сообщества."
+      />
 
       {/* Hero */}
       <section

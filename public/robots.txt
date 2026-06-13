@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /championship
+Disallow: /verified
+
+Sitemap: https://arena1.gg/sitemap.xml

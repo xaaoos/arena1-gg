@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LangProvider } from "./hooks/useLang";
 import { ThemeProvider } from "./hooks/useTheme";
 import { TopNav } from "./components/TopNav";
+import { Metrika } from "./components/Metrika";
 import { useGridParallax } from "./hooks/useParallax";
 import { C } from "./theme";
 import Championship from "./pages/Championship";
@@ -22,6 +23,7 @@ const App: FC = () => {
   <ThemeProvider>
     <LangProvider>
       <BrowserRouter>
+        <Metrika />
         {/* фон не задаём — клетка-грид живёт на body */}
         <div style={{ color: C.text, minHeight: "100vh", fontFamily: "'Xolonium','Tektur','Courier New',monospace", transition: "color 0.3s" }}>
           <TopNav />
