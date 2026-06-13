@@ -23,14 +23,14 @@ const SUB_NAV = {
   ru: [
     { label: "Анонсы", href: "/", external: false },
     { label: "Результаты", href: "/non-pro-duel-cups", external: false },
-    { label: "Дивизионы и игроки", href: "/divisions", external: false },
-    { label: "Регистрация", href: "https://discord.gg/dgPwNAph2j", external: true },
+    { label: "Рейтинг", href: "/divisions", external: false },
+    { label: "Участвовать", href: "https://discord.gg/dgPwNAph2j", external: true },
   ],
   en: [
     { label: "Announces", href: "/", external: false },
     { label: "Results", href: "/non-pro-duel-cups", external: false },
-    { label: "Divisions & Players", href: "/divisions", external: false },
-    { label: "Register", href: "https://discord.gg/dgPwNAph2j", external: true },
+    { label: "Ranking", href: "/divisions", external: false },
+    { label: "Join", href: "https://discord.gg/dgPwNAph2j", external: true },
   ],
 };
 

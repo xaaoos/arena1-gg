@@ -3,7 +3,7 @@ import { useLang } from "../hooks/useLang";
 import { useTheme } from "../hooks/useTheme";
 import { useIsMobile } from "../hooks/useIsMobile";
 import { ELOCUP } from "../data/elocup";
-import { useAnnounceData } from "../hooks/useAnnounceData";
+import { useAnnounceData, type CupAnnounce } from "../hooks/useAnnounceData";
 import { useParallax } from "../hooks/useParallax";
 import { Seo } from "../components/Seo";
 import { AsciiVideo } from "../components/AsciiVideo";
@@ -74,6 +74,70 @@ const Countdown: FC<{ target: Date; labels: [string, string, string, string]; mo
   );
 };
 
+type T = (typeof ELOCUP)["ru"];
+
+// крупный баннер одного датированного анонса (с обратным отсчётом)
+const CupBanner: FC<{ cup: CupAnnounce; mob: boolean; t: T }> = ({ cup, mob, t }) => (
+  <div style={{
+    position: "relative",
+    border: `1px solid ${C.accentBorder}`,
+    background: `radial-gradient(ellipse at 50% 0%,rgba(var(--glow-rgb),0.14) 0%,transparent 72%) ${C.bg}`,
+    boxShadow: `0 0 70px rgba(var(--glow-rgb),0.16)`,
+    padding: mob ? "28px 16px 28px" : "48px 32px 44px",
+    textAlign: "center",
+  }}>
+    {[{ top: -1, left: -1, borderWidth: "2px 0 0 2px" }, { top: -1, right: -1, borderWidth: "2px 2px 0 0" }, { bottom: -1, left: -1, borderWidth: "0 0 2px 2px" }, { bottom: -1, right: -1, borderWidth: "0 2px 2px 0" }].map((p, i) => (
+      <div key={i} style={{ position: "absolute", width: 14, height: 14, borderStyle: "solid", borderColor: ACS, ...p }} />
+    ))}
+
+    <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 11 : 13, letterSpacing: mob ? 1 : 1.5, color: ACS, fontWeight: 700 }}>
+      {cup.rawDate}
+    </div>
+    <h2 style={{ fontSize: "clamp(30px,7vw,64px)", fontWeight: 900, color: C.heading, margin: mob ? "14px 0 0" : "18px 0 0", lineHeight: 1.02, fontFamily: "'Xolonium','Tektur',sans-serif", letterSpacing: mob ? 0 : 1, textShadow: `0 0 40px rgba(var(--glow-rgb),0.25)` }}>
+      {cup.name.replace(/\b(div)\s+(\d)/i, (_m, a, b) => a + String.fromCharCode(160) + b)}
+    </h2>
+    {cup.details.length > 0 && (
+      <div style={{ marginTop: 16, display: "flex", flexDirection: "column", gap: 7 }}>
+        {cup.details.map((d, i) => {
+          const isElo = /elo\s*limit/i.test(d);
+          return (
+            <div key={i} style={{ fontFamily: BODY_FONT, fontSize: isElo ? (mob ? 14 : 16) : (mob ? 12 : 13), color: isElo ? C.heading : C.body, fontWeight: isElo ? 800 : 500, lineHeight: 1.6, letterSpacing: 0.3 }}>{d}</div>
+          );
+        })}
+      </div>
+    )}
+    {cup.date && (
+      <div style={{ marginTop: mob ? 32 : 44 }}>
+        <Countdown target={cup.date} labels={t.next.cd} mob={mob} />
+      </div>
+    )}
+    <div style={{ display: "flex", gap: mob ? 10 : 14, justifyContent: "center", alignItems: "stretch", flexWrap: "wrap", marginTop: mob ? 24 : 32 }}>
+      {cup.link && (
+        <a href={cup.link} target="_blank" rel="noopener noreferrer" style={{
+          display: "inline-block", background: ACS, color: C.accentContrast,
+          fontFamily: "'Xolonium','Tektur',sans-serif", fontSize: mob ? 10 : 11, fontWeight: 800,
+          letterSpacing: 1.5, textTransform: "uppercase", textDecoration: "none",
+          padding: mob ? "10px 18px" : "11px 26px", transition: "box-shadow 0.25s ease",
+        }}
+          onMouseEnter={(e) => (e.currentTarget.style.boxShadow = "0 0 28px rgba(var(--glow-rgb),0.6)")}
+          onMouseLeave={(e) => (e.currentTarget.style.boxShadow = "none")}
+        >{t.next.cta} ↗︎</a>
+      )}
+      {cup.bracketUrl && (
+        <a href={cup.bracketUrl} target="_blank" rel="noopener noreferrer" style={{
+          display: "inline-block", border: `1px solid ${C.accentBorder}`, color: ACS,
+          fontFamily: "'Xolonium','Tektur',sans-serif", fontSize: mob ? 10 : 11, fontWeight: 800,
+          letterSpacing: 1.5, textTransform: "uppercase", textDecoration: "none",
+          padding: mob ? "9px 18px" : "10px 26px", transition: "box-shadow 0.25s ease, border-color 0.25s ease",
+        }}
+          onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 0 24px rgba(var(--glow-rgb),0.45)"; e.currentTarget.style.borderColor = ACS; }}
+          onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "none"; e.currentTarget.style.borderColor = C.accentBorder; }}
+        >{t.archive.bracket} ↗︎</a>
+      )}
+    </div>
+  </div>
+);
+
 const Announce: FC = () => {
   const { lang } = useLang();
   const { theme } = useTheme();
@@ -82,9 +146,8 @@ const Announce: FC = () => {
   const mob = useIsMobile();
   const { announces, loading } = useAnnounceData();
   const heroRef = useParallax<HTMLDivElement>(0.3);
-  const main = announces[0];
-  const rest = announces.slice(1);
-  const mainDate = main?.date ?? null;
+  const dated = announces.filter((a) => a.date !== null);   // крупными баннерами
+  const undated = announces.filter((a) => a.date === null); // строкой в списке
 
   // ASCII-интро играет при каждом заходе
   const [introDone, setIntroDone] = useState(false);   // клип доиграл → проявляем анонс
@@ -108,7 +171,6 @@ const Announce: FC = () => {
       {/* Hero */}
       <section style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", position: "relative", padding: mob ? "120px 16px 16px" : "160px 20px 36px", textAlign: "center", background: `radial-gradient(ellipse at 50% 20%,rgba(var(--glow-rgb),0.06) 0%,transparent 60%)` }}>
         <div ref={heroRef} style={{ position: "relative", zIndex: 1, maxWidth: 700, width: "100%" }}>
-          <div style={{ fontSize: mob ? 10 : 12, letterSpacing: mob ? 3 : 5, color: ACS, marginBottom: 12, fontWeight: 600 }}>{t.hero.tag}</div>
           <h1 style={{ fontSize: "clamp(24px,4.5vw,42px)", fontWeight: 900, margin: 0, lineHeight: 1.05, letterSpacing: -0.5, color: C.heading }}>
             {t.hero.t1}{t.hero.t1 && " "}<span style={{ color: ACS }}>{t.hero.t2}</span>
           </h1>
@@ -117,7 +179,7 @@ const Announce: FC = () => {
       </section>
 
       {/* Announce — ближайший кубок крупно с отсчётом, следующие списком */}
-      {!loading && main && (
+      {!loading && announces.length > 0 && (
         <section style={{ position: "relative", padding: mob ? "16px 16px 0" : "60px 20px 0", maxWidth: 900, margin: "0 auto" }}>
           {/* контент анонса — проявляется после интро */}
           <div style={{
@@ -125,90 +187,28 @@ const Announce: FC = () => {
             transform: introDone ? "translateY(0)" : "translateY(12px)",
             transition: "opacity 0.3s ease, transform 0.3s ease",
           }}>
-          <div style={{
-            position: "relative",
-            border: `1px solid ${C.accentBorder}`,
-            // solid подложка: клетка фона не должна просвечивать внутрь рамки
-            background: `radial-gradient(ellipse at 50% 0%,rgba(var(--glow-rgb),0.14) 0%,transparent 72%) ${C.bg}`,
-            boxShadow: `0 0 70px rgba(var(--glow-rgb),0.16)`,
-            padding: mob ? "28px 16px 28px" : "48px 32px 44px",
-            textAlign: "center",
-          }}>
-            {/* углы рамки */}
-            {[{ top: -1, left: -1, borderWidth: "2px 0 0 2px" }, { top: -1, right: -1, borderWidth: "2px 2px 0 0" }, { bottom: -1, left: -1, borderWidth: "0 0 2px 2px" }, { bottom: -1, right: -1, borderWidth: "0 2px 2px 0" }].map((p, i) => (
-              <div key={i} style={{ position: "absolute", width: 14, height: 14, borderStyle: "solid", borderColor: ACS, ...p }} />
-            ))}
-
-            {/* дата/время проведения — вместо метки "следующий турнир" */}
-            <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 11 : 13, letterSpacing: mob ? 1 : 1.5, color: ACS, fontWeight: 700 }}>
-              {main.rawDate}
+          {/* каждый датированный кубок — крупным баннером */}
+          {dated.map((cup, idx) => (
+            <div key={idx} style={{ marginTop: idx > 0 ? (mob ? 16 : 28) : 0 }}>
+              <CupBanner cup={cup} mob={mob} t={t} />
             </div>
-            <h2 style={{ fontSize: "clamp(30px,7vw,64px)", fontWeight: 900, color: C.heading, margin: mob ? "14px 0 0" : "18px 0 0", lineHeight: 1.02, fontFamily: "'Xolonium','Tektur',sans-serif", letterSpacing: mob ? 0 : 1, textShadow: `0 0 40px rgba(var(--glow-rgb),0.25)` }}>
-              {/* "Div 1" не разрываем переносом */}
-              {main.name.replace(/\b(div)\s+(\d)/i, (_m, a, b) => a + String.fromCharCode(160) + b)}
-            </h2>
-            {main.details.length > 0 && (
-              <div style={{ marginTop: 16, display: "flex", flexDirection: "column", gap: 7 }}>
-                {main.details.map((d, i) => {
-                  const isElo = /elo\s*limit/i.test(d); // строку с ELO-лимитом выделяем
-                  return (
-                    <div key={i} style={{ fontFamily: BODY_FONT, fontSize: isElo ? (mob ? 14 : 16) : (mob ? 12 : 13), color: isElo ? C.heading : C.body, fontWeight: isElo ? 800 : 500, lineHeight: 1.6, letterSpacing: 0.3 }}>{d}</div>
-                  );
-                })}
-              </div>
-            )}
+          ))}
 
-            {mainDate && (
-              <div style={{ marginTop: mob ? 32 : 44 }}>
-                <Countdown target={mainDate} labels={t.next.cd} mob={mob} />
-              </div>
-            )}
-
-            <div style={{ display: "flex", gap: mob ? 10 : 14, justifyContent: "center", alignItems: "stretch", flexWrap: "wrap", marginTop: mob ? 24 : 32 }}>
-              {main.link && (
-                <a href={main.link} target="_blank" rel="noopener noreferrer" style={{
-                  display: "inline-block",
-                  background: ACS, color: C.accentContrast,
-                  fontFamily: "'Xolonium','Tektur',sans-serif", fontSize: mob ? 10 : 11, fontWeight: 800,
-                  letterSpacing: 1.5, textTransform: "uppercase", textDecoration: "none",
-                  padding: mob ? "10px 18px" : "11px 26px",
-                  transition: "box-shadow 0.25s ease",
-                }}
-                  onMouseEnter={(e) => (e.currentTarget.style.boxShadow = "0 0 28px rgba(var(--glow-rgb),0.6)")}
-                  onMouseLeave={(e) => (e.currentTarget.style.boxShadow = "none")}
-                >{t.next.cta} ↗︎</a>
-              )}
-              {main.bracketUrl && (
-                <a href={main.bracketUrl} target="_blank" rel="noopener noreferrer" style={{
-                  display: "inline-block",
-                  border: `1px solid ${C.accentBorder}`, color: ACS,
-                  fontFamily: "'Xolonium','Tektur',sans-serif", fontSize: mob ? 10 : 11, fontWeight: 800,
-                  letterSpacing: 1.5, textTransform: "uppercase", textDecoration: "none",
-                  padding: mob ? "9px 18px" : "10px 26px",
-                  transition: "box-shadow 0.25s ease, border-color 0.25s ease",
-                }}
-                  onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 0 24px rgba(var(--glow-rgb),0.45)"; e.currentTarget.style.borderColor = ACS; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "none"; e.currentTarget.style.borderColor = C.accentBorder; }}
-                >{t.archive.bracket} ↗︎</a>
-              )}
-            </div>
-          </div>
-
-          {/* Следующие кубки — компактный список */}
-          {rest.length > 0 && (
+          {/* кубки без даты — компактным списком */}
+          {undated.length > 0 && (
             <div style={{ marginTop: mob ? 20 : 28 }}>
               <div style={{ fontSize: 10, letterSpacing: 2, color: C.muted, fontWeight: 700, textTransform: "uppercase", marginBottom: 8 }}>
                 {t.next.upcoming}
               </div>
-              {rest.map((a, i) => (
+              {undated.map((a, i) => (
                 <div key={i} style={{
                   display: "flex", alignItems: "center", gap: mob ? 10 : 16,
                   padding: mob ? "11px 12px" : "13px 18px",
                   background: C.bgCard, border: `1px solid ${C.border}`,
                   borderTop: i > 0 ? "none" : `1px solid ${C.border}`,
                 }}>
-                  <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 10 : 11, color: a.date ? ACS : C.muted, fontWeight: 700, whiteSpace: "nowrap", flexShrink: 0 }}>
-                    {a.date ? a.rawDate : (lang === "ru" ? "Дата уточняется" : "Date TBA")}
+                  <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 10 : 11, color: C.muted, fontWeight: 700, whiteSpace: "nowrap", flexShrink: 0 }}>
+                    {lang === "ru" ? "Дата уточняется" : "Date TBA"}
                   </div>
                   <div style={{ fontSize: mob ? 11 : 12, fontWeight: 800, color: C.heading, letterSpacing: 0.5, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                     {a.name}

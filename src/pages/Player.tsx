@@ -166,7 +166,7 @@ const Player: FC = () => {
               <div style={{ fontSize: mob ? 9 : 10, letterSpacing: 3, color: ACS, fontWeight: 700, textTransform: "uppercase", fontFamily: "'Xolonium','Tektur',sans-serif" }}>
                 {sheet ? sheet.division : "ARENA 1"}
               </div>
-              <h1 style={{ fontSize: "clamp(26px,6vw,48px)", fontWeight: 900, color: C.heading, margin: "10px 0 0", lineHeight: 1.05, fontFamily: "'Xolonium','Tektur',sans-serif", wordBreak: "break-word" }}>
+              <h1 style={{ fontSize: "clamp(24px,4.5vw,42px)", fontWeight: 900, color: C.heading, margin: "10px 0 0", lineHeight: 1.05, fontFamily: "'Xolonium','Tektur',sans-serif", wordBreak: "break-word" }}>
                 {displayName}
               </h1>
 

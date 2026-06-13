@@ -78,8 +78,7 @@ const EloCup: FC = () => {
       {/* Hero */}
       <section style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", position: "relative", padding: mob ? "120px 16px 32px" : "150px 20px 40px", textAlign: "center", background: `radial-gradient(ellipse at 50% 20%,rgba(var(--glow-rgb),0.06) 0%,transparent 60%)` }}>
         <div ref={heroRef} style={{ position: "relative", zIndex: 1, maxWidth: 700, width: "100%" }}>
-          <div style={{ fontSize: mob ? 10 : 12, letterSpacing: mob ? 3 : 5, color: ACS, marginBottom: 12, fontWeight: 600 }}>{t.hero.tag}</div>
-          <h1 style={{ fontSize: "clamp(26px,5vw,52px)", fontWeight: 900, margin: 0, lineHeight: 1.1, color: C.heading }}>
+          <h1 style={{ fontSize: "clamp(24px,4.5vw,42px)", fontWeight: 900, margin: 0, lineHeight: 1.05, letterSpacing: -0.5, color: C.heading }}>
             {t.archive.t1} <span style={{ color: ACS }}>{t.archive.t2}</span>
           </h1>
           {/* Поиск игрока за всю историю */}
