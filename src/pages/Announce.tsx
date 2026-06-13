@@ -50,6 +50,8 @@ const Countdown: FC<{ target: Date; labels: [string, string, string, string]; mo
               color: "transparent", WebkitTextFillColor: "transparent",
               backgroundImage: "repeating-linear-gradient(0deg, var(--text-heading) 0 3px, transparent 3px 6px)",
               WebkitBackgroundClip: "text", backgroundClip: "text",
+              // свечение по штрихам — эффект глубины/объёма
+              filter: "drop-shadow(0 0 5px rgba(var(--glow-rgb),0.55)) drop-shadow(0 0 14px rgba(var(--glow-rgb),0.28))",
             }}>
               {pad(v)}
             </div>
