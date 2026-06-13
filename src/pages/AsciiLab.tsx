@@ -32,12 +32,14 @@ const AsciiLab: FC = () => {
   const [edge, setEdge] = useState(false);   // режим контуров
   const [contrast, setContrast] = useState(1.4);
   const [floor, setFloor] = useState(0);     // порог чёрного: ниже — пустота
+  const [colorOnly, setColorOnly] = useState(false); // оставить только цветное (убрать серый фон)
+  const [satThr, setSatThr] = useState(0.25);
 
   const fmt = (s: number) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, "0")}`;
 
   // актуальные значения для rAF без пересоздания цикла
-  const cfg = useRef({ cols, rampKey, invert, mode, edge, contrast, floor });
-  cfg.current = { cols, rampKey, invert, mode, edge, contrast, floor };
+  const cfg = useRef({ cols, rampKey, invert, mode, edge, contrast, floor, colorOnly, satThr });
+  cfg.current = { cols, rampKey, invert, mode, edge, contrast, floor, colorOnly, satThr };
 
   useEffect(() => {
     if (!canvasRef.current) canvasRef.current = document.createElement("canvas");
@@ -52,7 +54,7 @@ const AsciiLab: FC = () => {
       last = ts;
       t += 0.06;
 
-      const { cols, rampKey, invert, mode, edge, contrast, floor } = cfg.current;
+      const { cols, rampKey, invert, mode, edge, contrast, floor, colorOnly, satThr } = cfg.current;
       const chars = RAMPS[rampKey];
       const src = mode === "video" ? videoRef.current : mode === "image" ? imgRef.current : null;
 
@@ -60,6 +62,7 @@ const AsciiLab: FC = () => {
       let rows: number;
       // собираем буфер яркостей 0..1
       let buf: Float32Array;
+      let sat: Float32Array | null = null; // насыщенность (для маски «только цвет»)
 
       if (src) {
         const sw = (src as HTMLVideoElement).videoWidth || (src as HTMLImageElement).naturalWidth || 16;
@@ -70,8 +73,13 @@ const AsciiLab: FC = () => {
         try { ctx.drawImage(src as CanvasImageSource, 0, 0, w, rows); } catch { return; }
         const data = ctx.getImageData(0, 0, w, rows).data;
         buf = new Float32Array(w * rows);
-        for (let i = 0; i < w * rows; i++)
-          buf[i] = (0.299 * data[i * 4] + 0.587 * data[i * 4 + 1] + 0.114 * data[i * 4 + 2]) / 255;
+        sat = new Float32Array(w * rows);
+        for (let i = 0; i < w * rows; i++) {
+          const r = data[i * 4], g = data[i * 4 + 1], b = data[i * 4 + 2];
+          buf[i] = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+          const mx = Math.max(r, g, b), mn = Math.min(r, g, b);
+          sat[i] = mx ? (mx - mn) / mx : 0;
+        }
       } else {
         rows = Math.round(cols * 0.5);
         buf = new Float32Array(w * rows);
@@ -85,8 +93,9 @@ const AsciiLab: FC = () => {
         }
       }
 
-      // контраст вокруг средней точки + порог чёрного
+      // контраст + порог чёрного + маска «только цвет» (серый фон → пустота)
       for (let i = 0; i < buf.length; i++) {
+        if (colorOnly && sat && sat[i] < satThr) { buf[i] = 0; continue; }
         let b = (buf[i] - 0.5) * contrast + 0.5;
         if (b < floor) b = 0;
         buf[i] = b < 0 ? 0 : b > 1 ? 1 : b;
@@ -218,6 +227,7 @@ const AsciiLab: FC = () => {
           ))}
 
           <button style={btn(edge)} onClick={() => setEdge((v) => !v)}>Контуры</button>
+          <button style={btn(colorOnly)} onClick={() => setColorOnly((v) => !v)}>Только цвет</button>
           <button style={btn(invert)} onClick={() => setInvert((v) => !v)}>Инверсия</button>
         </div>
 
@@ -235,6 +245,12 @@ const AsciiLab: FC = () => {
             Порог чёрного {floor.toFixed(2)}
             <input type="range" min={0} max={0.7} step={0.02} value={floor} onChange={(e) => setFloor(+e.target.value)} style={{ accentColor: ACS }} />
           </label>
+          {colorOnly && (
+            <label style={{ display: "flex", alignItems: "center", gap: 8, color: ACS }}>
+              Насыщенность {satThr.toFixed(2)}
+              <input type="range" min={0.05} max={0.6} step={0.01} value={satThr} onChange={(e) => setSatThr(+e.target.value)} style={{ accentColor: ACS }} />
+            </label>
+          )}
         </div>
 
         <div style={{ marginTop: 14, textAlign: "center", fontFamily: BODY_FONT, fontSize: 11, color: C.muted, lineHeight: 1.6 }}>
