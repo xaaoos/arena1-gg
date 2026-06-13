@@ -57,6 +57,20 @@ const Divisions: FC = () => {
   const rowRefs = useRef<Record<string, HTMLDivElement | null>>({});
   const [match, setMatch] = useState<string | null>(null);
 
+  // высота sticky-плашки кнопок — чтобы заголовок таблицы прилипал точно под ней
+  const panelRef = useRef<HTMLDivElement>(null);
+  const [panelH, setPanelH] = useState(0);
+  useEffect(() => {
+    const el = panelRef.current;
+    if (!el) return;
+    const upd = () => setPanelH(el.offsetHeight);
+    upd();
+    const ro = new ResizeObserver(upd);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [loading, divisions.length]);
+  const headTop = panelH ? 80 + panelH : (mob ? 216 : 124);
+
   useEffect(() => {
     if (!query || !found) {
       setMatch(null);
@@ -130,12 +144,11 @@ const Divisions: FC = () => {
       </section>
 
       {/* Поиск + кнопки дивизионов — sticky-плашка по ширине контента, не полоса на весь экран */}
-      <div style={{ position: "sticky", top: 80, zIndex: 99, display: "flex", justifyContent: "center", pointerEvents: "none" }}>
+      <div ref={panelRef} style={{ position: "sticky", top: 80, zIndex: 99, display: "flex", justifyContent: "center", pointerEvents: "none", background: C.bg }}>
         <div style={{
           pointerEvents: "auto",
           display: "flex", flexDirection: "column", alignItems: "center",
           gap: 8,
-          background: "transparent",
           padding: mob ? "6px 8px" : "6px 12px",
           maxWidth: "calc(100vw - 8px)",
         }}>
@@ -248,7 +261,7 @@ const Divisions: FC = () => {
               display: "grid", gridTemplateColumns: TCOLS,
               borderBottom: `1px solid ${C.accentBorder}`,
               background: `linear-gradient(rgba(var(--glow-rgb),0.03),rgba(var(--glow-rgb),0.03)) ${C.bg}`,
-              position: "sticky", top: mob ? 216 : 124, zIndex: 98,
+              position: "sticky", top: headTop, zIndex: 98,
             }}>
               <span style={{ padding: `${padV + 2}px 0`, textAlign: "center", borderRight: `1px solid ${C.borderLight}`, fontSize: 10, letterSpacing: 1.5, color: C.muted, fontWeight: 700 }}>#</span>
               <span style={{ padding: `${padV + 2}px 12px`, borderRight: `1px solid ${C.borderLight}`, fontSize: 10, letterSpacing: 1.5, color: C.muted, fontWeight: 700, textTransform: "uppercase" }}>{t.cols.player}</span>
@@ -260,7 +273,7 @@ const Divisions: FC = () => {
             {divisions.filter((d) => showPro || !isProGroup(d.label)).map((div) => {
               const di = divisions.indexOf(div);
               return (
-              <div key={div.label} ref={(el) => { divRefs.current[div.label] = el; }} style={{ scrollMarginTop: mob ? 258 : 168 }}>
+              <div key={div.label} ref={(el) => { divRefs.current[div.label] = el; }} style={{ scrollMarginTop: headTop + 48 }}>
                 {/* Division header row */}
                 <div style={{
                   display: "flex", alignItems: "center", gap: 12,
@@ -291,7 +304,7 @@ const Divisions: FC = () => {
                         display: "grid", gridTemplateColumns: TCOLS, alignItems: "stretch",
                         borderBottom: `1px solid ${C.borderLight}`,
                         background: isMatch || isTop3 ? C.accentSubtle : "transparent",
-                        scrollMarginTop: mob ? 150 : 160,
+                        scrollMarginTop: headTop + 48,
                       }}
                     >
                       <span style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: `${padV}px 0`, borderRight: `1px solid ${C.borderLight}`, fontFamily: BODY_FONT, fontSize: mob ? 10 : 11, color: isTop3 ? ACS : C.muted, fontWeight: isTop3 ? 700 : 400 }}>
