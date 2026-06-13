@@ -209,8 +209,8 @@ const Player: FC = () => {
                   cursor: "pointer",
                   transition: "all 0.2s",
                 }}
-                onMouseEnter={(e) => { e.currentTarget.style.background = ACS; e.currentTarget.style.color = C.accentContrast; }}
-                onMouseLeave={(e) => { e.currentTarget.style.background = "none"; e.currentTarget.style.color = ACS; }}
+                onMouseEnter={(e) => { e.currentTarget.style.background = ACS; e.currentTarget.style.color = C.accentContrast; e.currentTarget.style.boxShadow = "0 0 22px rgba(var(--glow-rgb),0.5)"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.background = "none"; e.currentTarget.style.color = ACS; e.currentTarget.style.boxShadow = "none"; }}
               >
                 {copied ? `✓ ${t.copied}` : `${t.share} ↗`}
               </button>

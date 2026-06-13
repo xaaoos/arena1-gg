@@ -94,7 +94,7 @@ const BlogPost: FC = () => {
         </div>
       </article>
 
-      <footer style={{ padding: mob ? "40px 16px" : "60px 20px", textAlign: "center", borderTop: `1px solid ${C.borderLight}` }}>
+      <footer style={{ position: "relative", background: C.bg, padding: mob ? "40px 16px" : "60px 20px", textAlign: "center", borderTop: `1px solid ${C.borderLight}` }}>
         <div style={{ fontSize: 16, fontWeight: 900, color: C.footer, letterSpacing: 4 }}>ARENA <span style={{ color: "#ff3e3e" }}>1</span></div>
         <div style={{ fontSize: 10, color: C.footer, letterSpacing: 3, marginTop: 8 }}>ARENA 1 BLOG · 2026</div>
       </footer>

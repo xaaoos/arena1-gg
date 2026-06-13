@@ -186,6 +186,8 @@ const Divisions: FC = () => {
                         transition: "all 0.2s",
                         flexShrink: 0,
                       }}
+                      onMouseEnter={(e) => { if (!active) { e.currentTarget.style.borderColor = ACS; e.currentTarget.style.color = ACS; e.currentTarget.style.boxShadow = "0 0 14px rgba(var(--glow-rgb),0.4)"; } }}
+                      onMouseLeave={(e) => { if (!active) { e.currentTarget.style.borderColor = C.border; e.currentTarget.style.color = C.muted; e.currentTarget.style.boxShadow = "none"; } }}
                     >
                       {d.label.replace(/non-?pro\s*/i, "").trim()}
                     </button>
@@ -319,7 +321,7 @@ const Divisions: FC = () => {
         )}
       </section>
 
-      <footer style={{ padding: mob ? "40px 16px" : "60px 20px", textAlign: "center", borderTop: `1px solid ${C.borderLight}` }}>
+      <footer style={{ position: "relative", background: C.bg, padding: mob ? "40px 16px" : "60px 20px", textAlign: "center", borderTop: `1px solid ${C.borderLight}` }}>
         <div style={{ fontSize: 16, fontWeight: 900, color: C.footer, letterSpacing: 4 }}>ARENA <span style={{ color: ACS }}>1</span></div>
         <div style={{ fontSize: 10, color: C.footer, letterSpacing: 3, marginTop: 8 }}>{t.footer}</div>
       </footer>

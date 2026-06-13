@@ -150,7 +150,11 @@ const Announce: FC = () => {
                   fontFamily: "'Xolonium','Tektur',sans-serif", fontSize: mob ? 11 : 12, fontWeight: 800,
                   letterSpacing: 2, textTransform: "uppercase", textDecoration: "none",
                   padding: mob ? "13px 24px" : "15px 36px",
-                }}>{t.next.cta} ↗</a>
+                  transition: "box-shadow 0.25s ease",
+                }}
+                  onMouseEnter={(e) => (e.currentTarget.style.boxShadow = "0 0 28px rgba(var(--glow-rgb),0.6)")}
+                  onMouseLeave={(e) => (e.currentTarget.style.boxShadow = "none")}
+                >{t.next.cta} ↗</a>
               )}
               {main.bracketUrl && (
                 <a href={main.bracketUrl} target="_blank" rel="noopener noreferrer" style={{
@@ -159,7 +163,11 @@ const Announce: FC = () => {
                   fontFamily: "'Xolonium','Tektur',sans-serif", fontSize: mob ? 11 : 12, fontWeight: 800,
                   letterSpacing: 2, textTransform: "uppercase", textDecoration: "none",
                   padding: mob ? "12px 24px" : "14px 36px",
-                }}>{t.archive.bracket} ↗</a>
+                  transition: "box-shadow 0.25s ease, border-color 0.25s ease",
+                }}
+                  onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 0 24px rgba(var(--glow-rgb),0.45)"; e.currentTarget.style.borderColor = ACS; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "none"; e.currentTarget.style.borderColor = C.accentBorder; }}
+                >{t.archive.bracket} ↗</a>
               )}
             </div>
           </div>
@@ -228,7 +236,7 @@ const Announce: FC = () => {
         </section>
       )}
 
-      <footer style={{ padding: mob ? "40px 16px" : "60px 20px", textAlign: "center", borderTop: `1px solid ${C.borderLight}`, marginTop: mob ? 60 : 100 }}>
+      <footer style={{ position: "relative", background: C.bg, padding: mob ? "40px 16px" : "60px 20px", textAlign: "center", borderTop: `1px solid ${C.borderLight}`, marginTop: mob ? 60 : 100 }}>
         <div style={{ fontSize: 16, fontWeight: 900, color: C.footer, letterSpacing: 4 }}>ARENA <span style={{ color: ACS }}>1</span></div>
         <div style={{ fontSize: 10, color: C.footer, letterSpacing: 3, marginTop: 8 }}>{t.footer}</div>
         <div style={{ fontSize: 10, color: C.footer, letterSpacing: 2, marginTop: 16, opacity: 0.5 }}>developed by <a href="https://selzio.com" target="_blank" rel="noopener noreferrer" style={{ color: "inherit", textDecoration: "underline" }}>selzio.com</a></div>
