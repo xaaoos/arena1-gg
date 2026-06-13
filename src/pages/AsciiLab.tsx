@@ -90,6 +90,18 @@ const AsciiLab: FC = () => {
     return () => cancelAnimationFrame(raf);
   }, []);
 
+  // демо-клип (лежит в public, same-origin — canvas не «пачкается»)
+  const loadDemo = () => {
+    const v = document.createElement("video");
+    v.src = "/ascii-demo.mp4"; v.loop = true; v.muted = true; v.playsInline = true;
+    v.play().catch(() => {});
+    videoRef.current = v;
+    setMode("video");
+  };
+
+  // при входе сразу показываем демо-клип
+  useEffect(() => { loadDemo(); }, []);
+
   const onFile = (file: File) => {
     const url = URL.createObjectURL(file);
     if (file.type.startsWith("video")) {
@@ -138,9 +150,10 @@ const AsciiLab: FC = () => {
 
         {/* контролы */}
         <div style={{ marginTop: 18, display: "flex", flexWrap: "wrap", gap: 10, alignItems: "center", justifyContent: "center" }}>
+          <button style={btn(mode === "video")} onClick={loadDemo}>Quake-клип</button>
           <button style={btn(mode === "plasma")} onClick={() => setMode("plasma")}>Плазма</button>
 
-          <label style={{ ...btn(mode === "video" || mode === "image"), display: "inline-block" }}>
+          <label style={{ ...btn(mode === "image"), display: "inline-block" }}>
             Загрузить видео / картинку
             <input type="file" accept="video/*,image/*" style={{ display: "none" }} onChange={(e) => e.target.files?.[0] && onFile(e.target.files[0])} />
           </label>
