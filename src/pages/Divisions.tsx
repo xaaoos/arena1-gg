@@ -264,6 +264,9 @@ const Divisions: FC = () => {
               borderBottom: `1px solid ${C.accentBorder}`,
               background: `linear-gradient(rgba(var(--glow-rgb),0.03),rgba(var(--glow-rgb),0.03)) ${C.bg}`,
               position: "sticky", top: headTop, zIndex: 98,
+              // непрозрачный «потолок» цветом фона — едет с заголовком и закрывает
+              // микрозазор при инерционной прокрутке вверх (рассинхрон двух sticky)
+              boxShadow: `0 -48px 0 0 ${C.bg}`,
             }}>
               {/* верхние угловые акценты */}
               {[{ top: -1, left: -1, borderWidth: "2px 0 0 2px" }, { top: -1, right: -1, borderWidth: "2px 2px 0 0" }].map((p, i) => (
