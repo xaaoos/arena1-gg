@@ -140,7 +140,7 @@ const AsciiLab: FC = () => {
       prev.removeAttribute("src");
       prev.load();
     }
-    v.muted = true; v.playsInline = true; v.loop = false;
+    v.muted = true; v.playsInline = true; v.loop = true;
     v.onloadedmetadata = () => setDur(v.duration || 0);
     v.ontimeupdate = () => { if (!seeking.current) setCur(v.currentTime); };
     v.onplay = () => setPlaying(true);
