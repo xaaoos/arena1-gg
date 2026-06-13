@@ -128,14 +128,25 @@ const AsciiLab: FC = () => {
     return () => cancelAnimationFrame(raf);
   }, []);
 
+  const seeking = useRef(false);
+
   // навешиваем слушатели на video для перемотки/времени
   const attachVideo = (v: HTMLVideoElement) => {
+    // остановить и отвязать предыдущее видео — иначе оно продолжает слать timeupdate и дёргает ползунок
+    const prev = videoRef.current;
+    if (prev) {
+      prev.pause();
+      prev.onloadedmetadata = prev.ontimeupdate = prev.onplay = prev.onpause = null;
+      prev.removeAttribute("src");
+      prev.load();
+    }
     v.muted = true; v.playsInline = true; v.loop = false;
     v.onloadedmetadata = () => setDur(v.duration || 0);
-    v.ontimeupdate = () => setCur(v.currentTime);
+    v.ontimeupdate = () => { if (!seeking.current) setCur(v.currentTime); };
     v.onplay = () => setPlaying(true);
     v.onpause = () => setPlaying(false);
     videoRef.current = v;
+    setCur(0); setDur(0);
     v.play().catch(() => {});
     setMode("video");
   };
@@ -209,7 +220,13 @@ const AsciiLab: FC = () => {
         {mode === "video" && dur > 0 && (
           <div style={{ marginTop: 16, display: "flex", alignItems: "center", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
             <button style={btn(false)} onClick={playPause}>{playing ? "❚❚ Пауза" : "▶ Играть"}</button>
-            <input type="range" min={0} max={dur} step={0.05} value={cur} onChange={(e) => seek(+e.target.value)} style={{ accentColor: ACS, width: mob ? 200 : 420 }} />
+            <input
+              type="range" min={0} max={dur} step={0.05} value={cur}
+              onPointerDown={() => { seeking.current = true; }}
+              onPointerUp={() => { seeking.current = false; }}
+              onChange={(e) => seek(+e.target.value)}
+              style={{ accentColor: ACS, width: mob ? 200 : 420 }}
+            />
             <span style={{ fontFamily: BODY_FONT, fontSize: 12, color: C.muted, fontVariantNumeric: "tabular-nums", whiteSpace: "nowrap" }}>{fmt(cur)} / {fmt(dur)}</span>
           </div>
         )}
