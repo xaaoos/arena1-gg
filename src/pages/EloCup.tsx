@@ -183,10 +183,10 @@ const EloCup: FC = () => {
                           padding: mob ? "14px 12px" : "20px 20px",
                           cursor: "pointer",
                           display: "flex", flexDirection: "column", gap: 8,
-                          transition: "border-color 0.2s",
+                          transition: "border-color 0.2s, box-shadow 0.2s",
                         }}
-                        onMouseEnter={e => (e.currentTarget.style.borderColor = C.accentBorder)}
-                        onMouseLeave={e => (e.currentTarget.style.borderColor = C.border)}
+                        onMouseEnter={e => { e.currentTarget.style.borderColor = ACS; e.currentTarget.style.boxShadow = "0 0 20px rgba(var(--glow-rgb),0.35)"; }}
+                        onMouseLeave={e => { e.currentTarget.style.borderColor = C.border; e.currentTarget.style.boxShadow = "none"; }}
                       >
                         <div style={{ fontSize: mob ? 11 : 12, fontWeight: 800, color: C.heading, letterSpacing: 0.5, lineHeight: 1.3 }}>{cup.name}</div>
                         <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 10 : 11, color: C.muted }}>{formatArchiveDate(cup.rawDate, lang)}</div>

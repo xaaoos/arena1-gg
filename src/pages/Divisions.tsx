@@ -284,11 +284,12 @@ const Divisions: FC = () => {
                     <div
                       key={pi}
                       ref={(el) => { rowRefs.current[p.name.toLowerCase()] = el; }}
+                      className={isMatch ? "a1-match" : undefined}
                       style={{
+                        position: "relative", zIndex: isMatch ? 1 : undefined,
                         display: "grid", gridTemplateColumns: TCOLS, alignItems: "stretch",
                         borderBottom: `1px solid ${C.borderLight}`,
                         background: isMatch || isTop3 ? C.accentSubtle : "transparent",
-                        boxShadow: isMatch ? `inset 0 0 0 1px ${ACS}` : "none",
                         scrollMarginTop: mob ? 150 : 160,
                       }}
                     >

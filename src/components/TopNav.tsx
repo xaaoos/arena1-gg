@@ -61,7 +61,11 @@ export const TopNav: FC = () => {
         transition: "background 0.3s",
       }}>
         <Link to="/" style={{ textDecoration: "none", display: "flex", alignItems: "center", flexShrink: 0 }}>
-          <span style={{ fontSize: 15, fontWeight: 900, color: C.heading, letterSpacing: 2, fontFamily: "'Xolonium','Tektur',monospace", whiteSpace: "nowrap" }}>
+          <span
+            style={{ fontSize: 15, fontWeight: 900, color: C.heading, letterSpacing: 2, fontFamily: "'Xolonium','Tektur',monospace", whiteSpace: "nowrap", transition: "text-shadow 0.25s ease" }}
+            onMouseEnter={(e) => (e.currentTarget.style.textShadow = "0 0 16px rgba(var(--glow-rgb),0.7)")}
+            onMouseLeave={(e) => (e.currentTarget.style.textShadow = "none")}
+          >
             ARENA <span style={{ color: "#ff3e3e" }}>1</span>
           </span>
         </Link>
@@ -75,6 +79,7 @@ export const TopNav: FC = () => {
                 fontFamily: "'Xolonium','Tektur',sans-serif",
                 color: isPageActive(pathname, p.path) ? p.color : C.muted,
                 borderBottom: isPageActive(pathname, p.path) ? `2px solid ${p.color}` : "2px solid transparent",
+                textShadow: isPageActive(pathname, p.path) ? `0 0 14px ${p.color}aa` : "none",
                 transition: "all 0.3s",
               }}>{p.label}</Link>
             ))}
@@ -142,6 +147,7 @@ export const TopNav: FC = () => {
                 padding: mobile ? "0 10px" : "0 14px",
                 display: "flex", alignItems: "center",
                 borderBottom: isActive(pathname, item.href) ? `2px solid ${ACS}` : "2px solid transparent",
+                textShadow: isActive(pathname, item.href) ? "0 0 14px rgba(var(--glow-rgb),0.7)" : "none",
                 fontFamily: "'Xolonium','Tektur',sans-serif", whiteSpace: "nowrap", flexShrink: 0,
                 transition: "all 0.2s",
               }}>{item.label}</Link>

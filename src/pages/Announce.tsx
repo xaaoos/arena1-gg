@@ -1,5 +1,6 @@
 import { useState, useEffect, type FC } from "react";
 import { useLang } from "../hooks/useLang";
+import { useTheme } from "../hooks/useTheme";
 import { useIsMobile } from "../hooks/useIsMobile";
 import { ELOCUP } from "../data/elocup";
 import { useAnnounceData } from "../hooks/useAnnounceData";
@@ -42,8 +43,10 @@ const Countdown: FC<{ target: Date; labels: [string, string, string, string]; mo
       {vals.map((v, i) => (
         <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: mob ? 4 : 22 }}>
           <div style={{ textAlign: "center", minWidth: mob ? 38 : 78 }}>
-            <div style={{ fontSize: mob ? 32 : 72, fontWeight: 900, color: C.heading, fontFamily: "'Xolonium','Tektur',monospace", lineHeight: 1, fontVariantNumeric: "tabular-nums" }}>
+            <div style={{ position: "relative", fontSize: mob ? 32 : 72, fontWeight: 900, color: C.heading, fontFamily: "'Xolonium','Tektur',monospace", lineHeight: 1, fontVariantNumeric: "tabular-nums" }}>
               {pad(v)}
+              {/* CRT-сканлайны только на цифрах */}
+              <span style={{ position: "absolute", inset: 0, pointerEvents: "none", background: "repeating-linear-gradient(0deg, transparent 0 2px, rgba(0,0,0,0.45) 2px 4px)" }} />
             </div>
             <div style={{ fontSize: mob ? 8 : 10, letterSpacing: mob ? 1 : 2.5, color: C.muted, textTransform: "uppercase", marginTop: 10, fontWeight: 700 }}>
               {labels[i]}
@@ -60,6 +63,8 @@ const Countdown: FC<{ target: Date; labels: [string, string, string, string]; mo
 
 const Announce: FC = () => {
   const { lang } = useLang();
+  const { theme } = useTheme();
+  const light = theme === "light";
   const t = ELOCUP[lang];
   const mob = useIsMobile();
   const { announces, loading } = useAnnounceData();
@@ -228,7 +233,8 @@ const Announce: FC = () => {
                 src={mob ? "/hero-ascii-v.mp4" : "/hero-ascii.mp4"}
                 cols={mob ? 96 : 200}
                 contrast={1.1} floor={0} ramp="classic" color={ACS}
-                maxWidth={mob ? 340 : 620}
+                maxWidth={mob ? 1000 : 860}
+                invert={light}
                 loop={false} onEnded={finishIntro}
               />
             </div>

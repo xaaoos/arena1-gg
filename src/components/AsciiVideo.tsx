@@ -15,13 +15,15 @@ interface Props {
   maxWidth?: number;
   loop?: boolean;
   onEnded?: () => void;
+  background?: string;
+  invert?: boolean;
 }
 
 // ASCII-плеер видео для прода: рисует кадры символами в <pre>.
 // Считает только когда виден на экране и вкладка активна.
 export const AsciiVideo: FC<Props> = ({
   src, cols = 200, contrast = 1.1, floor = 0, ramp = "classic", color = "#4ade80", maxWidth = 620,
-  loop = true, onEnded,
+  loop = true, onEnded, background = "var(--bg)", invert = false,
 }) => {
   const wrapRef = useRef<HTMLDivElement>(null);
   const preRef = useRef<HTMLPreElement>(null);
@@ -71,6 +73,7 @@ export const AsciiVideo: FC<Props> = ({
           b = (b - 0.5) * contrast + 0.5;
           if (b < floor) b = 0;
           b = b < 0 ? 0 : b > 1 ? 1 : b;
+          if (invert) b = 1 - b;
           out += chars[Math.floor(b * lastIdx)];
         }
         out += "\n";
@@ -97,10 +100,10 @@ export const AsciiVideo: FC<Props> = ({
       document.removeEventListener("visibilitychange", onVis);
       video.pause(); video.removeAttribute("src"); video.load();
     };
-  }, [src, cols, contrast, floor, ramp, maxWidth, loop]);
+  }, [src, cols, contrast, floor, ramp, maxWidth, loop, invert]);
 
   return (
-    <div ref={wrapRef} style={{ width: "100%", maxWidth, margin: "0 auto", background: "#000", overflow: "hidden", lineHeight: 0 }}>
+    <div ref={wrapRef} style={{ width: "100%", maxWidth, margin: "0 auto", background, overflow: "hidden", lineHeight: 0 }}>
       <pre
         ref={preRef}
         aria-hidden
