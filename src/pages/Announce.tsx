@@ -103,16 +103,13 @@ const Announce: FC = () => {
               <div key={i} style={{ position: "absolute", width: 14, height: 14, borderStyle: "solid", borderColor: ACS, ...p }} />
             ))}
 
-            <div style={{ fontSize: mob ? 9 : 11, letterSpacing: mob ? 3 : 5, color: ACS, fontWeight: 700, textTransform: "uppercase" }}>
-              {t.next.num} · {t.next.label}
-            </div>
-            <h2 style={{ fontSize: "clamp(30px,7vw,64px)", fontWeight: 900, color: C.heading, margin: mob ? "16px 0 0" : "20px 0 0", lineHeight: 1.02, fontFamily: "'Xolonium','Tektur',sans-serif", letterSpacing: mob ? 0 : 1, textShadow: `0 0 40px rgba(var(--glow-rgb),0.25)` }}>
-              {main.name}
-            </h2>
-            {/* дата под названием */}
-            <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 12 : 15, color: ACS, fontWeight: 700, marginTop: mob ? 14 : 18, letterSpacing: 1 }}>
+            {/* дата/время проведения — вместо метки "следующий турнир" */}
+            <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 11 : 13, letterSpacing: mob ? 1 : 1.5, color: ACS, fontWeight: 700 }}>
               {main.rawDate}
             </div>
+            <h2 style={{ fontSize: "clamp(30px,7vw,64px)", fontWeight: 900, color: C.heading, margin: mob ? "14px 0 0" : "18px 0 0", lineHeight: 1.02, fontFamily: "'Xolonium','Tektur',sans-serif", letterSpacing: mob ? 0 : 1, textShadow: `0 0 40px rgba(var(--glow-rgb),0.25)` }}>
+              {main.name}
+            </h2>
             {main.details.length > 0 && (
               <div style={{ marginTop: 14, display: "flex", flexDirection: "column", gap: 5 }}>
                 {main.details.map((d, i) => (

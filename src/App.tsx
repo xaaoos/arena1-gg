@@ -15,6 +15,7 @@ import Divisions from "./pages/Divisions";
 import Player from "./pages/Player";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
+import AsciiLab from "./pages/AsciiLab";
 
 const App: FC = () => {
   // фоновая клетка скроллится медленнее контента
@@ -38,6 +39,7 @@ const App: FC = () => {
               <Route path="/trainer" element={<Trainer />} />
               <Route path="/blog" element={<Blog />} />
               <Route path="/blog/:slug" element={<BlogPost />} />
+              <Route path="/ascii" element={<AsciiLab />} />
             </Routes>
           </div>
         </div>
