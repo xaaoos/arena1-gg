@@ -212,7 +212,7 @@ const Player: FC = () => {
                 onMouseEnter={(e) => { e.currentTarget.style.background = ACS; e.currentTarget.style.color = C.accentContrast; e.currentTarget.style.boxShadow = "0 0 22px rgba(var(--glow-rgb),0.5)"; }}
                 onMouseLeave={(e) => { e.currentTarget.style.background = "none"; e.currentTarget.style.color = ACS; e.currentTarget.style.boxShadow = "none"; }}
               >
-                {copied ? `✓ ${t.copied}` : `${t.share} ↗`}
+                {copied ? `✓ ${t.copied}` : `${t.share} ↗︎`}
               </button>
             </div>
 
@@ -264,7 +264,7 @@ const Player: FC = () => {
                           </span>
                         )}
                         <a href={h.cup.bracketUrl} target="_blank" rel="noopener noreferrer" style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: `${pv}px 0`, fontFamily: BODY_FONT, fontSize: mob ? 10 : 11, color: ACS, textDecoration: "none" }}>
-                          ↗
+                          ↗︎
                         </a>
                       </div>
                     );

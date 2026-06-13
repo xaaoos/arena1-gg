@@ -169,7 +169,7 @@ const Announce: FC = () => {
                 }}
                   onMouseEnter={(e) => (e.currentTarget.style.boxShadow = "0 0 28px rgba(var(--glow-rgb),0.6)")}
                   onMouseLeave={(e) => (e.currentTarget.style.boxShadow = "none")}
-                >{t.next.cta} ↗</a>
+                >{t.next.cta} ↗︎</a>
               )}
               {main.bracketUrl && (
                 <a href={main.bracketUrl} target="_blank" rel="noopener noreferrer" style={{
@@ -182,7 +182,7 @@ const Announce: FC = () => {
                 }}
                   onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 0 24px rgba(var(--glow-rgb),0.45)"; e.currentTarget.style.borderColor = ACS; }}
                   onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "none"; e.currentTarget.style.borderColor = C.accentBorder; }}
-                >{t.archive.bracket} ↗</a>
+                >{t.archive.bracket} ↗︎</a>
               )}
             </div>
           </div>
@@ -209,12 +209,12 @@ const Announce: FC = () => {
                   <div style={{ marginLeft: "auto", display: "flex", gap: mob ? 8 : 12, flexShrink: 0, alignItems: "center" }}>
                     {a.bracketUrl && (
                       <a href={a.bracketUrl} target="_blank" rel="noopener noreferrer" style={{ fontFamily: BODY_FONT, fontSize: 11, color: ACS, textDecoration: "none", whiteSpace: "nowrap" }}>
-                        {lang === "ru" ? "сетка" : "bracket"} ↗
+                        {lang === "ru" ? "сетка" : "bracket"} ↗︎
                       </a>
                     )}
                     {a.link && (
                       <a href={a.link} target="_blank" rel="noopener noreferrer" style={{ fontFamily: BODY_FONT, fontSize: 11, color: C.muted, textDecoration: "none", whiteSpace: "nowrap" }}>
-                        {lang === "ru" ? "инфо" : "info"} ↗
+                        {lang === "ru" ? "инфо" : "info"} ↗︎
                       </a>
                     )}
                   </div>

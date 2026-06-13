@@ -148,7 +148,7 @@ const EloCup: FC = () => {
                     <a href={r.cup.bracketUrl} target="_blank" rel="noopener noreferrer" style={{
                       fontFamily: BODY_FONT, fontSize: mob ? 10 : 11, color: C.muted, textDecoration: "none",
                       padding: mob ? "6px 8px" : "6px 12px", border: `1px solid ${C.border}`, whiteSpace: "nowrap",
-                    }}>{lang === "ru" ? "сетка" : "bracket"} ↗</a>
+                    }}>{lang === "ru" ? "сетка" : "bracket"} ↗︎</a>
                   </div>
                 </div>
               ))}
@@ -168,7 +168,7 @@ const EloCup: FC = () => {
                       <div style={{ fontFamily: BODY_FONT, fontSize: 11, color: C.muted, marginTop: 4 }}>{formatArchiveDate(cup.rawDate, lang)}</div>
                     </div>
                     <a href={cup.bracketUrl} target="_blank" rel="noopener noreferrer" style={{ fontFamily: BODY_FONT, fontSize: 10, color: ACS, letterSpacing: 1, textDecoration: "none", padding: "6px 12px", border: `1px solid ${C.accentBorder}`, whiteSpace: "nowrap", flexShrink: 0 }}>
-                      {t.archive.bracket} ↗
+                      {t.archive.bracket} ↗︎
                     </a>
                   </div>
                   <StandingsList standings={cup.standings} mob={mob} />
@@ -236,7 +236,7 @@ const EloCup: FC = () => {
               </div>
               <div style={{ display: "flex", gap: 8, alignItems: "center", flexShrink: 0 }}>
                 <a href={selected.bracketUrl} target="_blank" rel="noopener noreferrer" style={{ fontFamily: BODY_FONT, fontSize: 10, color: ACS, letterSpacing: 1, textDecoration: "none", padding: "6px 12px", border: `1px solid ${C.accentBorder}`, whiteSpace: "nowrap" }}>
-                  {t.archive.bracket} ↗
+                  {t.archive.bracket} ↗︎
                 </a>
                 <button onClick={() => setSelected(null)} style={{ background: "none", border: "none", cursor: "pointer", color: C.muted, fontSize: 18, lineHeight: 1, padding: "4px 6px" }}>✕</button>
               </div>
