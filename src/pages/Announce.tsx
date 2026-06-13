@@ -68,14 +68,10 @@ const Announce: FC = () => {
   const rest = announces.slice(1);
   const mainDate = main?.date ?? null;
 
-  // ASCII-интро играет один раз; за сессию показываем только при первом заходе
-  const seen = typeof sessionStorage !== "undefined" && sessionStorage.getItem("a1-intro") === "1";
-  const [introDone, setIntroDone] = useState(seen);   // клип доиграл → проявляем анонс
-  const [introHidden, setIntroHidden] = useState(seen); // overlay убран из DOM
-  const finishIntro = () => {
-    setIntroDone(true);
-    try { sessionStorage.setItem("a1-intro", "1"); } catch { /* ignore */ }
-  };
+  // ASCII-интро играет при каждом заходе
+  const [introDone, setIntroDone] = useState(false);   // клип доиграл → проявляем анонс
+  const [introHidden, setIntroHidden] = useState(false); // overlay убран из DOM
+  const finishIntro = () => setIntroDone(true);
   // фоллбэк: если автоплей видео заблокирован/не загрузилось — не держим анонс скрытым
   useEffect(() => {
     if (introDone) return;
@@ -108,8 +104,8 @@ const Announce: FC = () => {
           {/* контент анонса — проявляется после интро */}
           <div style={{
             opacity: introDone ? 1 : 0,
-            transform: introDone ? "translateY(0)" : "translateY(16px)",
-            transition: "opacity 0.7s ease, transform 0.7s ease",
+            transform: introDone ? "translateY(0)" : "translateY(12px)",
+            transition: "opacity 0.3s ease, transform 0.3s ease",
           }}>
           <div style={{
             position: "relative",
@@ -216,11 +212,17 @@ const Announce: FC = () => {
                 display: "flex", alignItems: "center", justifyContent: "center",
                 padding: mob ? "0 16px" : "0 20px",
                 opacity: introDone ? 0 : 1,
-                transition: "opacity 0.7s ease",
+                transition: "opacity 0.3s ease",
                 pointerEvents: introDone ? "none" : "auto",
               }}
             >
-              <AsciiVideo src="/hero-ascii.mp4" cols={200} contrast={1.1} floor={0} ramp="classic" color={ACS} maxWidth={620} loop={false} onEnded={finishIntro} />
+              <AsciiVideo
+                src={mob ? "/hero-ascii-v.mp4" : "/hero-ascii.mp4"}
+                cols={mob ? 96 : 200}
+                contrast={1.1} floor={0} ramp="classic" color={ACS}
+                maxWidth={mob ? 340 : 620}
+                loop={false} onEnded={finishIntro}
+              />
             </div>
           )}
         </section>
