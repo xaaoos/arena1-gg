@@ -37,19 +37,19 @@ const Countdown: FC<{ target: Date; labels: [string, string, string, string]; mo
     Math.floor(diff / 1000) % 60,
   ];
   return (
-    <div style={{ display: "flex", gap: mob ? 10 : 22, justifyContent: "center", alignItems: "flex-start" }}>
+    <div style={{ display: "flex", gap: mob ? 4 : 22, justifyContent: "center", alignItems: "flex-start" }}>
       {vals.map((v, i) => (
-        <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: mob ? 10 : 22 }}>
-          <div style={{ textAlign: "center", minWidth: mob ? 46 : 78 }}>
-            <div style={{ fontSize: mob ? 42 : 72, fontWeight: 900, color: C.heading, fontFamily: "'Xolonium','Tektur',monospace", lineHeight: 1, fontVariantNumeric: "tabular-nums" }}>
+        <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: mob ? 4 : 22 }}>
+          <div style={{ textAlign: "center", minWidth: mob ? 38 : 78 }}>
+            <div style={{ fontSize: mob ? 32 : 72, fontWeight: 900, color: C.heading, fontFamily: "'Xolonium','Tektur',monospace", lineHeight: 1, fontVariantNumeric: "tabular-nums" }}>
               {pad(v)}
             </div>
-            <div style={{ fontSize: mob ? 8 : 10, letterSpacing: mob ? 1.5 : 2.5, color: C.muted, textTransform: "uppercase", marginTop: 12, fontWeight: 700 }}>
+            <div style={{ fontSize: mob ? 8 : 10, letterSpacing: mob ? 1 : 2.5, color: C.muted, textTransform: "uppercase", marginTop: 10, fontWeight: 700 }}>
               {labels[i]}
             </div>
           </div>
           {i < 3 && (
-            <div style={{ fontSize: mob ? 42 : 72, fontWeight: 300, color: `rgba(var(--glow-rgb),0.3)`, lineHeight: 1, fontFamily: "'Xolonium','Tektur',monospace" }}>:</div>
+            <div style={{ fontSize: mob ? 32 : 72, fontWeight: 300, color: `rgba(var(--glow-rgb),0.3)`, lineHeight: 1, fontFamily: "'Xolonium','Tektur',monospace" }}>:</div>
           )}
         </div>
       ))}
@@ -93,7 +93,8 @@ const Announce: FC = () => {
             position: "relative",
             border: `1px solid ${C.accentBorder}`,
             // solid подложка: клетка фона не должна просвечивать внутрь рамки
-            background: `radial-gradient(ellipse at 50% 0%,rgba(var(--glow-rgb),0.07) 0%,transparent 70%) ${C.bg}`,
+            background: `radial-gradient(ellipse at 50% 0%,rgba(var(--glow-rgb),0.14) 0%,transparent 72%) ${C.bg}`,
+            boxShadow: `0 0 70px rgba(var(--glow-rgb),0.16)`,
             padding: mob ? "28px 16px 28px" : "48px 32px 44px",
             textAlign: "center",
           }}>
