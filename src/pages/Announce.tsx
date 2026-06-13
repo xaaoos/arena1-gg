@@ -5,6 +5,7 @@ import { ELOCUP } from "../data/elocup";
 import { useAnnounceData } from "../hooks/useAnnounceData";
 import { useParallax } from "../hooks/useParallax";
 import { Seo } from "../components/Seo";
+import { AsciiVideo } from "../components/AsciiVideo";
 import { BODY_FONT } from "../components/UI";
 import { C } from "../theme";
 
@@ -84,6 +85,11 @@ const Announce: FC = () => {
           </h1>
           <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 12 : 14, color: C.body, lineHeight: 1.7, maxWidth: 520, margin: "16px auto 0" }}>{t.hero.sub}</div>
         </div>
+      </section>
+
+      {/* ASCII-врезка перед блоком анонса */}
+      <section style={{ padding: mob ? "8px 16px 8px" : "16px 20px 8px", maxWidth: 700, margin: "0 auto" }}>
+        <AsciiVideo src="/hero-ascii.mp4" cols={200} contrast={1.1} floor={0} ramp="classic" color={ACS} maxWidth={620} />
       </section>
 
       {/* Announce — ближайший кубок крупно с отсчётом, следующие списком */}
