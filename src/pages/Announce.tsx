@@ -142,9 +142,12 @@ const Announce: FC = () => {
             </h2>
             {main.details.length > 0 && (
               <div style={{ marginTop: 14, display: "flex", flexDirection: "column", gap: 5 }}>
-                {main.details.map((d, i) => (
-                  <div key={i} style={{ fontFamily: BODY_FONT, fontSize: mob ? 11 : 12, color: C.muted, lineHeight: 1.6, letterSpacing: 0.3 }}>{d}</div>
-                ))}
+                {main.details.map((d, i) => {
+                  const isElo = /elo\s*limit/i.test(d); // строку с ELO-лимитом выделяем
+                  return (
+                    <div key={i} style={{ fontFamily: BODY_FONT, fontSize: mob ? 11 : 12, color: isElo ? C.heading : C.muted, fontWeight: isElo ? 700 : 400, lineHeight: 1.6, letterSpacing: 0.3 }}>{d}</div>
+                  );
+                })}
               </div>
             )}
 
