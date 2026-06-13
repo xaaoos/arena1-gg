@@ -4,7 +4,6 @@ import { useTheme } from "../hooks/useTheme";
 import { useIsMobile } from "../hooks/useIsMobile";
 import { ELOCUP } from "../data/elocup";
 import { useAnnounceData, type CupAnnounce } from "../hooks/useAnnounceData";
-import { useParallax } from "../hooks/useParallax";
 import { Seo } from "../components/Seo";
 import { AsciiVideo } from "../components/AsciiVideo";
 import { BODY_FONT } from "../components/UI";
@@ -145,7 +144,6 @@ const Announce: FC = () => {
   const t = ELOCUP[lang];
   const mob = useIsMobile();
   const { announces, loading } = useAnnounceData();
-  const heroRef = useParallax<HTMLDivElement>(0.3);
   const dated = announces.filter((a) => a.date !== null);   // крупными баннерами
   const undated = announces.filter((a) => a.date === null); // строкой в списке
 
@@ -170,7 +168,7 @@ const Announce: FC = () => {
 
       {/* Hero */}
       <section style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", position: "relative", padding: mob ? "92px 16px 12px" : "120px 20px 24px", textAlign: "center", background: `radial-gradient(ellipse at 50% 20%,rgba(var(--glow-rgb),0.06) 0%,transparent 60%)` }}>
-        <div ref={heroRef} style={{ position: "relative", zIndex: 1, maxWidth: 700, width: "100%" }}>
+        <div style={{ position: "relative", zIndex: 1, maxWidth: 700, width: "100%" }}>
           <img src="/quake-live-logo.png" alt="Quake Live" style={{ display: "block", height: mob ? 44 : 52, width: "auto", margin: "0 auto 14px" }} />
           <h1 style={{ fontSize: "clamp(24px,4.5vw,42px)", fontWeight: 900, margin: 0, lineHeight: 1.05, letterSpacing: -0.5, color: C.heading }}>
             {t.hero.t1}{t.hero.t1 && " "}<span style={{ color: ACS }}>{t.hero.t2}</span>
