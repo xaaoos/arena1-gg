@@ -34,8 +34,8 @@ export const ELOCUP: Record<"ru" | "en", EloCupData> = {
     nav: ["Анонс", "Результаты"],
     hero: {
       tag: "A R E N A  1",
-      t1: "NON-PRO", t2: "DUEL CUPS",
-      sub: "Еженедельные дуэльные турниры с ELO-ограничениями для верифицированных игроков.",
+      t1: "Следующие", t2: "турниры",
+      sub: "Еженедельные дуэльные турниры для игроков любого уровня.",
     },
     next: {
       num: "01", label: "СЛЕДУЮЩИЙ ТУРНИР", t1: "Следующий", t2: "турнир",
@@ -94,8 +94,8 @@ export const ELOCUP: Record<"ru" | "en", EloCupData> = {
     nav: ["Announce", "Results"],
     hero: {
       tag: "A R E N A  1",
-      t1: "NON-PRO", t2: "DUEL CUPS",
-      sub: "Weekly duel tournaments with ELO restrictions for verified players.",
+      t1: "Upcoming", t2: "tournaments",
+      sub: "Weekly duel tournaments for players of any level.",
     },
     next: {
       num: "01", label: "NEXT TOURNAMENT", t1: "Next", t2: "tournament",
