@@ -237,19 +237,18 @@ const Divisions: FC = () => {
         )}
 
         {!loading && !error && (
-          <div style={{ position: "relative", background: C.bg, border: `1px solid ${C.accentBorder}` }}>
+          <div style={{ position: "relative", background: C.bg, border: `1px solid ${C.accentBorder}`, display: "flex", flexDirection: "column", maxHeight: mob ? "calc(100vh - 260px)" : "calc(100vh - 230px)", overflow: "hidden" }}>
             {/* углы рамки — в стиле блока анонса */}
             {[{ top: -1, left: -1, borderWidth: "2px 0 0 2px" }, { top: -1, right: -1, borderWidth: "2px 2px 0 0" }, { bottom: -1, left: -1, borderWidth: "0 0 2px 2px" }, { bottom: -1, right: -1, borderWidth: "0 2px 2px 0" }].map((p, i) => (
               <div key={i} style={{ position: "absolute", width: 14, height: 14, borderStyle: "solid", borderColor: ACS, zIndex: 99, pointerEvents: "none", ...p }} />
             ))}
 
-            {/* Header */}
+            {/* Header — закреплён сверху панели */}
             <div style={{
               display: "grid", gridTemplateColumns: TCOLS,
               borderBottom: `1px solid ${C.accentBorder}`,
-              // непрозрачный фон: sticky-плашка, строки не должны просвечивать
               background: `linear-gradient(rgba(var(--glow-rgb),0.03),rgba(var(--glow-rgb),0.03)) ${C.bg}`,
-              position: "sticky", top: mob ? 216 : 124, zIndex: 98,
+              flexShrink: 0,
             }}>
               <span style={{ padding: `${padV + 2}px 0`, textAlign: "center", borderRight: `1px solid ${C.borderLight}`, fontSize: 10, letterSpacing: 1.5, color: C.muted, fontWeight: 700 }}>#</span>
               <span style={{ padding: `${padV + 2}px 12px`, borderRight: `1px solid ${C.borderLight}`, fontSize: 10, letterSpacing: 1.5, color: C.muted, fontWeight: 700, textTransform: "uppercase" }}>{t.cols.player}</span>
@@ -257,6 +256,8 @@ const Divisions: FC = () => {
               <span style={{ padding: `${padV + 2}px 0`, textAlign: "center", fontSize: 10, letterSpacing: 1.5, color: C.muted, fontWeight: 700 }}>±</span>
             </div>
 
+            {/* Прокручивается только тело таблицы */}
+            <div style={{ overflowY: "auto", flex: 1, minHeight: 0 }}>
             {/* Grouped by division; Pro/Semi-Pro только при showPro */}
             {divisions.filter((d) => showPro || !isProGroup(d.label)).map((div) => {
               const di = divisions.indexOf(div);
@@ -320,6 +321,7 @@ const Divisions: FC = () => {
               </div>
               );
             })}
+            </div>
           </div>
         )}
       </section>
