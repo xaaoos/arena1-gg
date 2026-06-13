@@ -118,3 +118,7 @@ input::placeholder { font-size: 13px; letter-spacing: 0; }
   50% { box-shadow: inset 0 0 0 1px var(--accent), 0 0 20px rgba(var(--glow-rgb), 0.6); }
 }
 .a1-match { animation: a1-pulse 1.4s ease-in-out infinite; }
+
+/* мигание двоеточий в обратном отсчёте (как на часах) */
+@keyframes a1-blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0.18; } }
+.a1-blink { animation: a1-blink 1s step-start infinite; }

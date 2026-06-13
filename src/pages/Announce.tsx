@@ -60,7 +60,7 @@ const Countdown: FC<{ target: Date; labels: [string, string, string, string]; mo
             </div>
           </div>
           {i < 3 && (
-            <div style={{ fontSize: mob ? 32 : 72, fontWeight: 300, color: `rgba(var(--glow-rgb),0.3)`, lineHeight: 1, fontFamily: "'Xolonium','Tektur',monospace" }}>:</div>
+            <div className="a1-blink" style={{ fontSize: mob ? 32 : 72, fontWeight: 300, color: `rgba(var(--glow-rgb),0.3)`, lineHeight: 1, fontFamily: "'Xolonium','Tektur',monospace" }}>:</div>
           )}
         </div>
       ))}
