@@ -1,4 +1,5 @@
-import { useState, type FC } from "react";
+import { useState, Fragment, type FC } from "react";
+import { Link } from "react-router-dom";
 import { useLang } from "../hooks/useLang";
 import { useIsMobile } from "../hooks/useIsMobile";
 import { ELOCUP } from "../data/elocup";
@@ -26,7 +27,17 @@ const StandingsList: FC<{ standings: ArchiveStanding[]; mob: boolean }> = ({ sta
             {placeLabel(s.place)}
           </div>
           <div style={{ fontFamily: BODY_FONT, fontSize: isTop3 ? (mob ? 13 : 14) : (mob ? 12 : 13), color: isTop3 ? C.heading : C.body, fontWeight: isTop3 ? 700 : 400, overflowWrap: "break-word" }}>
-            {s.players.join(", ")}
+            {s.players.map((pl, k) => (
+              <Fragment key={k}>
+                {k > 0 && ", "}
+                <Link
+                  to={`/player/${encodeURIComponent(pl)}`}
+                  style={{ color: "inherit", textDecoration: "none", cursor: "pointer" }}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = ACS)}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = "inherit")}
+                >{pl}</Link>
+              </Fragment>
+            ))}
           </div>
         </div>
       );
