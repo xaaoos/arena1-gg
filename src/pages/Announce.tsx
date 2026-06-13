@@ -59,6 +59,15 @@ const Countdown: FC<{ target: Date; labels: [string, string, string, string]; mo
               {labels[i]}
             </div>
           </div>
+          {i < 3 && (
+            <div style={{
+              fontSize: mob ? 32 : 72, fontWeight: 300, lineHeight: 1, fontFamily: "'Xolonium','Tektur',monospace",
+              color: "transparent", WebkitTextFillColor: "transparent",
+              backgroundImage: "repeating-linear-gradient(0deg, var(--text-heading) 0 2px, transparent 2px 4px)",
+              WebkitBackgroundClip: "text", backgroundClip: "text",
+              filter: "drop-shadow(0 0 5px rgba(var(--glow-rgb),0.55)) drop-shadow(0 0 14px rgba(var(--glow-rgb),0.28))",
+            }}>:</div>
+          )}
         </div>
       ))}
     </div>
