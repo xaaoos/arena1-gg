@@ -144,7 +144,7 @@ const Divisions: FC = () => {
       </section>
 
       {/* Поиск + кнопки дивизионов — sticky-плашка по ширине контента, не полоса на весь экран */}
-      <div ref={panelRef} style={{ position: "sticky", top: 80, zIndex: 99, display: "flex", justifyContent: "center", pointerEvents: "none", background: C.bg }}>
+      <div ref={panelRef} style={{ position: "sticky", top: 80, zIndex: 99, display: "flex", justifyContent: "center", pointerEvents: "none", background: C.bg, paddingBottom: mob ? 28 : 36 }}>
         <div style={{
           pointerEvents: "auto",
           display: "flex", flexDirection: "column", alignItems: "center",
@@ -237,7 +237,7 @@ const Divisions: FC = () => {
       </div>
 
       {/* Table */}
-      <section style={{ padding: mob ? "28px 10px 80px" : "36px 20px 120px", maxWidth: 520, margin: "0 auto" }}>
+      <section style={{ padding: mob ? "0 10px 80px" : "0 20px 120px", maxWidth: 520, margin: "0 auto" }}>
         {loading && (
           <div style={{ textAlign: "center", color: C.muted, padding: "80px 0", fontFamily: BODY_FONT, fontSize: 13, letterSpacing: 2 }}>
             {t.loading}

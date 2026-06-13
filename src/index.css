@@ -92,6 +92,8 @@ body {
     linear-gradient(rgba(var(--grid-rgb),var(--grid-line)) 1px, transparent 1px),
     linear-gradient(90deg, rgba(var(--grid-rgb),var(--grid-line)) 1px, transparent 1px);
   background-size: 60px 60px;
+  /* фон зафиксирован к экрану — нативный параллакс, плавно без JS */
+  background-attachment: fixed;
   color: var(--text);
   font-family: "Xolonium", "Tektur", "Courier New", monospace;
   overflow-x: clip;

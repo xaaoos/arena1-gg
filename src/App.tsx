@@ -4,7 +4,6 @@ import { LangProvider } from "./hooks/useLang";
 import { ThemeProvider } from "./hooks/useTheme";
 import { TopNav } from "./components/TopNav";
 import { Metrika } from "./components/Metrika";
-import { useGridParallax } from "./hooks/useParallax";
 import { C } from "./theme";
 import Championship from "./pages/Championship";
 import Announce from "./pages/Announce";
@@ -18,8 +17,6 @@ import BlogPost from "./pages/BlogPost";
 import AsciiLab from "./pages/AsciiLab";
 
 const App: FC = () => {
-  // только фоновая клетка движется медленнее контента (hero-параллакс убран)
-  useGridParallax(0.5);
   return (
   <ThemeProvider>
     <LangProvider>
