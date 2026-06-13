@@ -1,4 +1,5 @@
 import { useRef, useState, useEffect, type FC } from "react";
+import { Link } from "react-router-dom";
 import { useLang } from "../hooks/useLang";
 import { useIsMobile } from "../hooks/useIsMobile";
 import { useSheetData } from "../hooks/useSheetData";
@@ -292,8 +293,15 @@ const Divisions: FC = () => {
                       <span style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: `${padV}px 0`, borderRight: `1px solid ${C.borderLight}`, fontFamily: BODY_FONT, fontSize: mob ? 10 : 11, color: isTop3 ? ACS : C.muted, fontWeight: isTop3 ? 700 : 400 }}>
                         {rank}
                       </span>
-                      <div style={{ padding: `${padV}px 12px`, borderRight: `1px solid ${C.borderLight}`, fontFamily: BODY_FONT, fontSize: mob ? 12 : 13, color: p.uncertain ? C.muted : isTop3 ? C.heading : C.body, fontWeight: isTop3 ? 700 : 400, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                        {p.name}
+                      <div style={{ padding: `${padV}px 12px`, borderRight: `1px solid ${C.borderLight}`, overflow: "hidden" }}>
+                        <Link
+                          to={`/player/${encodeURIComponent(p.name)}`}
+                          style={{ display: "block", fontFamily: BODY_FONT, fontSize: mob ? 12 : 13, color: p.uncertain ? C.muted : isTop3 ? C.heading : C.body, fontWeight: isTop3 ? 700 : 400, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", textDecoration: "none", cursor: "pointer" }}
+                          onMouseEnter={(e) => (e.currentTarget.style.color = ACS)}
+                          onMouseLeave={(e) => (e.currentTarget.style.color = p.uncertain ? C.muted : isTop3 ? C.heading : C.body)}
+                        >
+                          {p.name}
+                        </Link>
                       </div>
                       <span style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", padding: `${padV}px 12px ${padV}px 0`, borderRight: `1px solid ${C.borderLight}`, fontFamily: BODY_FONT, fontSize: mob ? 12 : 13, color: p.uncertain ? C.muted : ACS, fontWeight: 600, letterSpacing: 1 }}>
                         {p.elo}

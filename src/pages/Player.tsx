@@ -1,4 +1,4 @@
-import { type FC } from "react";
+import { useState, type FC } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useLang } from "../hooks/useLang";
 import { useIsMobile } from "../hooks/useIsMobile";
@@ -28,6 +28,8 @@ const T = {
     podiums: "Топ-3",
     avg: "Ср. место",
     best: "Лучший",
+    share: "Поделиться",
+    copied: "Ссылка скопирована",
     history: "История выступлений",
     noHistory: "Пока нет сыгранных турниров",
     colPlace: "Место",
@@ -47,6 +49,8 @@ const T = {
     podiums: "Top-3",
     avg: "Avg place",
     best: "Best",
+    share: "Share",
+    copied: "Link copied",
     history: "Match history",
     noHistory: "No tournaments played yet",
     colPlace: "Place",
@@ -112,6 +116,21 @@ const Player: FC = () => {
   const HCOLS = mob ? "44px 1fr 44px" : "64px 1fr 150px 64px";
   const pv = mob ? 10 : 12;
 
+  const [copied, setCopied] = useState(false);
+  const share = async () => {
+    const url = window.location.href;
+    const title = `${displayName} — ${lang === "ru" ? "статистика" : "stats"} Arena 1`;
+    if (navigator.share) {
+      try { await navigator.share({ title, url }); } catch { /* отменено пользователем */ }
+    } else {
+      try {
+        await navigator.clipboard.writeText(url);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      } catch { /* нет доступа к буферу */ }
+    }
+  };
+
   return (
     <div style={{ overflowX: "hidden", minHeight: "100vh" }}>
       <Seo
@@ -172,6 +191,29 @@ const Player: FC = () => {
                   <div style={{ fontFamily: BODY_FONT, fontSize: 12, color: C.muted }}>{t.notInDiv}</div>
                 )}
               </div>
+
+              {/* Поделиться */}
+              <button
+                onClick={share}
+                style={{
+                  marginTop: mob ? 22 : 28,
+                  background: "none",
+                  border: `1px solid ${C.accentBorder}`,
+                  color: ACS,
+                  fontFamily: "'Xolonium','Tektur',sans-serif",
+                  fontSize: mob ? 10 : 11,
+                  fontWeight: 800,
+                  letterSpacing: 2,
+                  textTransform: "uppercase",
+                  padding: mob ? "10px 18px" : "11px 24px",
+                  cursor: "pointer",
+                  transition: "all 0.2s",
+                }}
+                onMouseEnter={(e) => { e.currentTarget.style.background = ACS; e.currentTarget.style.color = C.accentContrast; }}
+                onMouseLeave={(e) => { e.currentTarget.style.background = "none"; e.currentTarget.style.color = ACS; }}
+              >
+                {copied ? `✓ ${t.copied}` : `${t.share} ↗`}
+              </button>
             </div>
 
             {/* Статистика по турнирам */}
