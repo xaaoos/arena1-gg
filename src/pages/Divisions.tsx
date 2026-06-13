@@ -69,7 +69,8 @@ const Divisions: FC = () => {
     ro.observe(el);
     return () => ro.disconnect();
   }, [loading, divisions.length]);
-  const headTop = panelH ? 80 + panelH : (mob ? 216 : 124);
+  // плашка садится на 79px (на 1px заходит под саб-нав z199) — без 1px-зазора в стыке
+  const headTop = panelH ? 79 + panelH : (mob ? 216 : 124);
 
   useEffect(() => {
     if (!query || !found) {
@@ -144,7 +145,7 @@ const Divisions: FC = () => {
       </section>
 
       {/* Поиск + кнопки дивизионов — sticky-плашка по ширине контента, не полоса на весь экран */}
-      <div ref={panelRef} style={{ position: "sticky", top: 80, zIndex: 99, display: "flex", justifyContent: "center", pointerEvents: "none", background: C.bg, paddingBottom: mob ? 28 : 36 }}>
+      <div ref={panelRef} style={{ position: "sticky", top: 79, zIndex: 99, display: "flex", justifyContent: "center", pointerEvents: "none", background: C.bg, paddingBottom: mob ? 28 : 36 }}>
         <div style={{
           pointerEvents: "auto",
           display: "flex", flexDirection: "column", alignItems: "center",
