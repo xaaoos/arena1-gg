@@ -119,8 +119,7 @@ const Divisions: FC = () => {
       >
         {/* параллакс только на заголовке — кнопки не должны уезжать на таблицу */}
         <div ref={heroRef} style={{ position: "relative", zIndex: 1 }}>
-          <img src="/quake-live-logo.png" alt="Quake Live" style={{ display: "block", height: mob ? 44 : 52, width: "auto", margin: "0 auto 10px" }} />
-          <div style={{ fontSize: mob ? 10 : 12, letterSpacing: mob ? 3 : 5, color: ACS, marginBottom: 12, fontWeight: 600 }}>{t.tag}</div>
+          <img src="/quake-live-logo.png" alt="Quake Live" style={{ display: "block", height: mob ? 44 : 52, width: "auto", margin: "0 auto 14px" }} />
           <h1 style={{ fontSize: "clamp(24px,4.5vw,42px)", fontWeight: 900, margin: 0, lineHeight: 1.05, letterSpacing: -0.5, color: C.heading }}>
             {t.h1} <span style={{ color: ACS }}>{t.h2}</span>
           </h1>
