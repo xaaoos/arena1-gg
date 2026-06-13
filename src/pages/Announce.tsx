@@ -37,18 +37,20 @@ const Countdown: FC<{ target: Date; labels: [string, string, string, string]; mo
     Math.floor(diff / 1000) % 60,
   ];
   return (
-    <div style={{ display: "flex", gap: mob ? 8 : 14, justifyContent: "center" }}>
+    <div style={{ display: "flex", gap: mob ? 10 : 22, justifyContent: "center", alignItems: "flex-start" }}>
       {vals.map((v, i) => (
-        <div key={i} style={{ display: "flex", alignItems: "center", gap: mob ? 8 : 14 }}>
-          <div style={{ textAlign: "center", minWidth: mob ? 58 : 86, padding: mob ? "10px 6px" : "16px 10px", background: C.bgCard, border: `1px solid ${C.accentBorder}` }}>
-            <div style={{ fontSize: mob ? 26 : 44, fontWeight: 900, color: C.heading, fontFamily: "'Xolonium','Tektur',monospace", lineHeight: 1, fontVariantNumeric: "tabular-nums" }}>
+        <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: mob ? 10 : 22 }}>
+          <div style={{ textAlign: "center", minWidth: mob ? 46 : 78 }}>
+            <div style={{ fontSize: mob ? 42 : 72, fontWeight: 900, color: C.heading, fontFamily: "'Xolonium','Tektur',monospace", lineHeight: 1, fontVariantNumeric: "tabular-nums" }}>
               {pad(v)}
             </div>
-            <div style={{ fontSize: mob ? 9 : 10, letterSpacing: mob ? 1.5 : 2, color: C.muted, textTransform: "uppercase", marginTop: 8, fontWeight: 700 }}>
+            <div style={{ fontSize: mob ? 8 : 10, letterSpacing: mob ? 1.5 : 2.5, color: C.muted, textTransform: "uppercase", marginTop: 12, fontWeight: 700 }}>
               {labels[i]}
             </div>
           </div>
-          {i < 3 && <div style={{ fontSize: mob ? 18 : 28, fontWeight: 900, color: ACS, lineHeight: 1 }}>:</div>}
+          {i < 3 && (
+            <div style={{ fontSize: mob ? 42 : 72, fontWeight: 300, color: `rgba(var(--glow-rgb),0.3)`, lineHeight: 1, fontFamily: "'Xolonium','Tektur',monospace" }}>:</div>
+          )}
         </div>
       ))}
     </div>
@@ -100,25 +102,26 @@ const Announce: FC = () => {
               <div key={i} style={{ position: "absolute", width: 14, height: 14, borderStyle: "solid", borderColor: ACS, ...p }} />
             ))}
 
-            <div style={{ fontSize: mob ? 10 : 11, letterSpacing: mob ? 2 : 4, color: ACS, fontWeight: 700, textTransform: "uppercase" }}>
+            <div style={{ fontSize: mob ? 9 : 11, letterSpacing: mob ? 3 : 5, color: ACS, fontWeight: 700, textTransform: "uppercase" }}>
               {t.next.num} · {t.next.label}
             </div>
-            <h2 style={{ fontSize: "clamp(24px,5.5vw,52px)", fontWeight: 900, color: C.heading, margin: "14px 0 0", lineHeight: 1.1, fontFamily: "'Xolonium','Tektur',sans-serif", letterSpacing: 1 }}>
+            <h2 style={{ fontSize: "clamp(30px,7vw,64px)", fontWeight: 900, color: C.heading, margin: mob ? "16px 0 0" : "20px 0 0", lineHeight: 1.02, fontFamily: "'Xolonium','Tektur',sans-serif", letterSpacing: mob ? 0 : 1, textShadow: `0 0 40px rgba(var(--glow-rgb),0.25)` }}>
               {main.name}
             </h2>
-            <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 12 : 14, color: ACS, fontWeight: 700, marginTop: 12, letterSpacing: 1 }}>
+            {/* дата — акцентная плашка под названием */}
+            <div style={{ display: "inline-block", fontFamily: BODY_FONT, fontSize: mob ? 12 : 15, color: ACS, fontWeight: 700, marginTop: mob ? 14 : 18, letterSpacing: 1, padding: mob ? "6px 14px" : "8px 18px", border: `1px solid ${C.accentBorder}` }}>
               {main.rawDate}
             </div>
             {main.details.length > 0 && (
-              <div style={{ marginTop: 10, display: "flex", flexDirection: "column", gap: 4 }}>
+              <div style={{ marginTop: 14, display: "flex", flexDirection: "column", gap: 5 }}>
                 {main.details.map((d, i) => (
-                  <div key={i} style={{ fontFamily: BODY_FONT, fontSize: mob ? 11 : 12, color: C.body, lineHeight: 1.6 }}>{d}</div>
+                  <div key={i} style={{ fontFamily: BODY_FONT, fontSize: mob ? 11 : 12, color: C.muted, lineHeight: 1.6, letterSpacing: 0.3 }}>{d}</div>
                 ))}
               </div>
             )}
 
             {mainDate && (
-              <div style={{ marginTop: mob ? 24 : 32 }}>
+              <div style={{ marginTop: mob ? 32 : 44 }}>
                 <Countdown target={mainDate} labels={t.next.cd} mob={mob} />
               </div>
             )}
