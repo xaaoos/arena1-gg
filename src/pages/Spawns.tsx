@@ -150,7 +150,7 @@ const Spawns: FC = () => {
   return (
     <div style={{ minHeight: "calc(100vh - 80px)", padding: mob ? "92px 12px 24px" : "104px 20px 32px", overflowX: "hidden" }}>
       <Seo
-        path="/spawns"
+        path="/skill/respawns"
         title="Карта спаунов Quake Live"
         description="Интерактивная карта спаунов Quake Live (дуэль): наведи курсор — увидишь возможные точки респауна противника. Рендеры карт by Memento_Mori."
       />

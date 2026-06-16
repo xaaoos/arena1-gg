@@ -16,7 +16,7 @@ const blogSrc = readFileSync(join(root, "src/data/blog.ts"), "utf8");
 const blogSlugs = [...blogSrc.matchAll(/slug:\s*["'`]([^"'`]+)["'`]/g)].map((m) => m[1]);
 
 // роуты для пререндера и sitemap (championship/verified скрыты — не индексируем)
-const indexable = ["/", "/non-pro-duel-cups", "/divisions", "/trainer", "/spawns", "/blog", ...blogSlugs.map((s) => `/blog/${s}`)];
+const indexable = ["/", "/non-pro-duel-cups", "/divisions", "/skill/trainer", "/skill/respawns", "/blog", ...blogSlugs.map((s) => `/blog/${s}`)];
 const hidden = ["/championship", "/verified"];
 const routes = [...indexable, ...hidden];
 

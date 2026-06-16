@@ -1,5 +1,5 @@
 import { type FC } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { LangProvider } from "./hooks/useLang";
 import { ThemeProvider } from "./hooks/useTheme";
 import { TopNav } from "./components/TopNav";
@@ -34,8 +34,11 @@ const App: FC = () => {
               <Route path="/divisions" element={<Divisions />} />
               <Route path="/player/:nick" element={<Player />} />
               <Route path="/verified" element={<Verified />} />
-              <Route path="/trainer" element={<Trainer />} />
-              <Route path="/spawns" element={<Spawns />} />
+              <Route path="/skill/trainer" element={<Trainer />} />
+              <Route path="/skill/respawns" element={<Spawns />} />
+              {/* старые URL → новые (редирект для SEO/закладок) */}
+              <Route path="/trainer" element={<Navigate to="/skill/trainer" replace />} />
+              <Route path="/spawns" element={<Navigate to="/skill/respawns" replace />} />
               <Route path="/blog" element={<Blog />} />
               <Route path="/blog/:slug" element={<BlogPost />} />
               <Route path="/ascii" element={<AsciiLab />} />

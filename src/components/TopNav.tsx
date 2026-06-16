@@ -13,7 +13,7 @@ const SKILL_ACCENT = "#fbbf24";
 const PAGES = [
   // зелёный — через var(--accent): в светлой теме только тёмный зелёный
   { path: "/", label: "Non-Pro Duel Cups", color: "var(--accent)", border: "var(--accent-border)" },
-  { path: "/trainer", label: "Skill", color: SKILL_ACCENT, border: "#fbbf2466" },
+  { path: "/skill/trainer", label: "Skill", color: SKILL_ACCENT, border: "#fbbf2466" },
   { path: "/blog", label: "Blog", color: "#c084fc", border: "#c084fc66" },
 ] as const;
 
@@ -22,8 +22,7 @@ const isNonPro = (pathname: string) =>
   pathname === "/" || pathname.startsWith("/non-pro-duel-cups") || pathname.startsWith("/divisions");
 
 // страницы раздела Skill: тренажёр таймингов, карта спаунов
-const isSkill = (pathname: string) =>
-  pathname.startsWith("/trainer") || pathname.startsWith("/spawns");
+const isSkill = (pathname: string) => pathname.startsWith("/skill");
 
 const SUB_NAV = {
   ru: [
@@ -42,12 +41,12 @@ const SUB_NAV = {
 
 const SKILL_SUB = {
   ru: [
-    { label: "Timing Trainer", href: "/trainer", external: false },
-    { label: "Респауны", href: "/spawns", external: false },
+    { label: "Timing Trainer", href: "/skill/trainer", external: false },
+    { label: "Респауны", href: "/skill/respawns", external: false },
   ],
   en: [
-    { label: "Timing Trainer", href: "/trainer", external: false },
-    { label: "Respawns", href: "/spawns", external: false },
+    { label: "Timing Trainer", href: "/skill/trainer", external: false },
+    { label: "Respawns", href: "/skill/respawns", external: false },
   ],
 };
 
@@ -56,7 +55,7 @@ const isActive = (pathname: string, path: string) =>
 
 // для главного меню: пункт активен на всех страницах своего раздела
 const isPageActive = (pathname: string, path: string) =>
-  path === "/" ? isNonPro(pathname) : path === "/trainer" ? isSkill(pathname) : pathname.startsWith(path);
+  path === "/" ? isNonPro(pathname) : path.startsWith("/skill") ? isSkill(pathname) : pathname.startsWith(path);
 
 export const TopNav: FC = () => {
   const { pathname } = useLocation();

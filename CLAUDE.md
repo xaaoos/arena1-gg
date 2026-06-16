@@ -34,15 +34,16 @@ Arena 1 — медиабренд и чемпионат по Arena FPS (Quake Liv
 - / → pages/Announce.tsx — главная: анонсы кубков с обратным отсчётом
 - /non-pro-duel-cups → pages/EloCup.tsx — результаты: первые 4 кубка раскрыты, остальные попапом + поиск игрока по истории
 - /divisions → pages/Divisions.tsx — дивизионы и игроки (данные из Google Sheets)
-- /trainer → pages/Trainer.tsx — тренажёр таймингов (раздел Skill)
-- /spawns → pages/Spawns.tsx — интерактивная карта спаунов QL (canvas), рендеры карт by Memento_Mori (раздел Skill); данные src/data/spawns.ts, картинки public/spawns/
+- /skill/trainer → pages/Trainer.tsx — тренажёр таймингов (раздел Skill). Старый /trainer редиректит сюда
+- /skill/respawns → pages/Spawns.tsx — интерактивная карта спаунов QL (canvas), рендеры карт by Memento_Mori (раздел Skill); данные src/data/spawns.ts, картинки public/spawns/ (ассеты остаются на /spawns/*.png). Старый /spawns редиректит сюда
 - /blog → pages/Blog.tsx — блог
 - /blog/:slug → pages/BlogPost.tsx
 - /championship → pages/Championship.tsx — скрыт (не в навигации)
 - /verified → pages/Verified.tsx — скрыт (не в навигации)
 
 ## Навигация
-- TopNav: главное меню (Non-Pro Duel Cups → /, Skill → /trainer, Blog); пункт Non-Pro активен на /, /non-pro-duel-cups, /divisions (isNonPro); пункт Skill активен на /trainer, /spawns (isSkill)
+- TopNav: главное меню (Non-Pro Duel Cups → /, Skill → /skill/trainer, Blog); пункт Non-Pro активен на /, /non-pro-duel-cups, /divisions (isNonPro); пункт Skill активен на /skill/* (isSkill)
+- Старые URL /trainer и /spawns → редирект (React Router Navigate) на /skill/trainer и /skill/respawns
 - Sub-nav (второй уровень) — общий механизм для разделов Non-Pro и Skill (showSub, subAccent):
   - Non-Pro (зелёный accent): Анонсы | Результаты | Рейтинг | Участвовать
   - Skill (жёлтый #fbbf24): Timing Trainer | Респауны
