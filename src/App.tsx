@@ -9,6 +9,7 @@ import Championship from "./pages/Championship";
 import Announce from "./pages/Announce";
 import Verified from "./pages/Verified";
 import Trainer from "./pages/Trainer";
+import Spawns from "./pages/Spawns";
 import EloCup from "./pages/EloCup";
 import Divisions from "./pages/Divisions";
 import Player from "./pages/Player";
@@ -34,6 +35,7 @@ const App: FC = () => {
               <Route path="/player/:nick" element={<Player />} />
               <Route path="/verified" element={<Verified />} />
               <Route path="/trainer" element={<Trainer />} />
+              <Route path="/spawns" element={<Spawns />} />
               <Route path="/blog" element={<Blog />} />
               <Route path="/blog/:slug" element={<BlogPost />} />
               <Route path="/ascii" element={<AsciiLab />} />

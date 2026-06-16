@@ -8,16 +8,22 @@ import { C } from "../theme";
 const AC = "#4ade80";
 const ACS = C.accent;
 
+const SKILL_ACCENT = "#fbbf24";
+
 const PAGES = [
   // зелёный — через var(--accent): в светлой теме только тёмный зелёный
   { path: "/", label: "Non-Pro Duel Cups", color: "var(--accent)", border: "var(--accent-border)" },
-  { path: "/trainer", label: "Trainer", color: "#fbbf24", border: "#fbbf2466" },
+  { path: "/trainer", label: "Skill", color: SKILL_ACCENT, border: "#fbbf2466" },
   { path: "/blog", label: "Blog", color: "#c084fc", border: "#c084fc66" },
 ] as const;
 
 // страницы раздела Non-Pro: анонсы (главная), результаты, дивизионы
 const isNonPro = (pathname: string) =>
   pathname === "/" || pathname.startsWith("/non-pro-duel-cups") || pathname.startsWith("/divisions");
+
+// страницы раздела Skill: тренажёр таймингов, карта спаунов
+const isSkill = (pathname: string) =>
+  pathname.startsWith("/trainer") || pathname.startsWith("/spawns");
 
 const SUB_NAV = {
   ru: [
@@ -34,12 +40,23 @@ const SUB_NAV = {
   ],
 };
 
+const SKILL_SUB = {
+  ru: [
+    { label: "Timing Trainer", href: "/trainer", external: false },
+    { label: "Респауны", href: "/spawns", external: false },
+  ],
+  en: [
+    { label: "Timing Trainer", href: "/trainer", external: false },
+    { label: "Respawns", href: "/spawns", external: false },
+  ],
+};
+
 const isActive = (pathname: string, path: string) =>
   path === "/" ? pathname === "/" : pathname.startsWith(path);
 
-// для главного меню: пункт Non-Pro активен на всех страницах раздела
+// для главного меню: пункт активен на всех страницах своего раздела
 const isPageActive = (pathname: string, path: string) =>
-  path === "/" ? isNonPro(pathname) : pathname.startsWith(path);
+  path === "/" ? isNonPro(pathname) : path === "/trainer" ? isSkill(pathname) : pathname.startsWith(path);
 
 export const TopNav: FC = () => {
   const { pathname } = useLocation();
@@ -48,7 +65,10 @@ export const TopNav: FC = () => {
   const mobile = useIsMobile();
   const [open, setOpen] = useState(false);
   const activePage = PAGES.find((p) => isPageActive(pathname, p.path)) ?? PAGES[0];
-  const subItems = SUB_NAV[lang];
+  const onSkill = isSkill(pathname);
+  const subItems = onSkill ? SKILL_SUB[lang] : SUB_NAV[lang];
+  const showSub = isNonPro(pathname) || onSkill;
+  const subAccent = onSkill ? SKILL_ACCENT : ACS;
 
   return (
     <>
@@ -115,8 +135,8 @@ export const TopNav: FC = () => {
         </div>
       </div>
 
-      {/* Sub-nav — non-pro-duel-cups and divisions */}
-      {isNonPro(pathname) && (
+      {/* Sub-nav — раздел Non-Pro или Skill */}
+      {showSub && (
         <div style={{
           position: "fixed", top: 48, left: 0, right: 0, zIndex: 199, height: 32,
           background: C.bgNavSub, backdropFilter: "blur(12px)",
@@ -130,7 +150,7 @@ export const TopNav: FC = () => {
             item.external ? (
               <a key={item.href} href={item.href} target="_blank" rel="noopener noreferrer" style={{
                 textDecoration: "none",
-                color: ACS,
+                color: subAccent,
                 fontSize: mobile ? 10 : 11, fontWeight: 700, letterSpacing: 1.5,
                 textTransform: "uppercase",
                 padding: mobile ? "0 10px" : "0 14px",
@@ -141,12 +161,12 @@ export const TopNav: FC = () => {
             ) : (
               <Link key={item.href} to={item.href} style={{
                 textDecoration: "none",
-                color: isActive(pathname, item.href) ? ACS : C.muted,
+                color: isActive(pathname, item.href) ? subAccent : C.muted,
                 fontSize: mobile ? 10 : 11, fontWeight: 700, letterSpacing: 1.5,
                 textTransform: "uppercase",
                 padding: mobile ? "0 10px" : "0 14px",
                 display: "flex", alignItems: "center",
-                borderBottom: isActive(pathname, item.href) ? `2px solid ${ACS}` : "2px solid transparent",
+                borderBottom: isActive(pathname, item.href) ? `2px solid ${subAccent}` : "2px solid transparent",
                 textShadow: isActive(pathname, item.href) ? "0 0 14px rgba(var(--glow-rgb),0.7)" : "none",
                 fontFamily: "'Xolonium','Tektur',sans-serif", whiteSpace: "nowrap", flexShrink: 0,
                 transition: "all 0.2s",
@@ -174,20 +194,21 @@ export const TopNav: FC = () => {
               transition: "all 0.3s",
             }}>{p.label}</Link>
           ))}
-          {isNonPro(pathname) && (
+          {showSub && (
             <div style={{ marginTop: 24, borderTop: `1px solid ${C.border}`, paddingTop: 24, display: "flex", flexDirection: "column", gap: 4 }}>
               {subItems.map((item) =>
                 item.external ? (
                   <a key={item.href} href={item.href} target="_blank" rel="noopener noreferrer" onClick={() => setOpen(false)} style={{
                     textDecoration: "none", padding: "14px 0",
                     fontSize: 12, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase",
-                    fontFamily: "'Xolonium','Tektur',sans-serif", color: ACS,
+                    fontFamily: "'Xolonium','Tektur',sans-serif", color: subAccent,
                   }}>{item.label}</a>
                 ) : (
                   <Link key={item.href} to={item.href} onClick={() => setOpen(false)} style={{
                     textDecoration: "none", padding: "14px 0",
                     fontSize: 12, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase",
-                    fontFamily: "'Xolonium','Tektur',sans-serif", color: C.secondary,
+                    fontFamily: "'Xolonium','Tektur',sans-serif",
+                    color: isActive(pathname, item.href) ? subAccent : C.secondary,
                   }}>{item.label}</Link>
                 )
               )}

@@ -133,7 +133,7 @@ const Trainer: FC = () => {
   const gd = t.grades[grade as keyof typeof t.grades];
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "calc(100vh - 48px)", padding: mob ? "60px 12px 16px" : "68px 20px 20px", overflowX: "hidden" }}>
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "calc(100vh - 80px)", padding: mob ? "80px 12px 16px" : "88px 20px 20px", overflowX: "hidden" }}>
       <Seo
         path="/trainer"
         title="Тренажёр таймингов"

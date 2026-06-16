@@ -34,18 +34,21 @@ Arena 1 — медиабренд и чемпионат по Arena FPS (Quake Liv
 - / → pages/Announce.tsx — главная: анонсы кубков с обратным отсчётом
 - /non-pro-duel-cups → pages/EloCup.tsx — результаты: первые 4 кубка раскрыты, остальные попапом + поиск игрока по истории
 - /divisions → pages/Divisions.tsx — дивизионы и игроки (данные из Google Sheets)
-- /trainer → pages/Trainer.tsx — тренажёр таймингов
+- /trainer → pages/Trainer.tsx — тренажёр таймингов (раздел Skill)
+- /spawns → pages/Spawns.tsx — интерактивная карта спаунов QL (canvas), рендеры карт by Memento_Mori (раздел Skill); данные src/data/spawns.ts, картинки public/spawns/
 - /blog → pages/Blog.tsx — блог
 - /blog/:slug → pages/BlogPost.tsx
 - /championship → pages/Championship.tsx — скрыт (не в навигации)
 - /verified → pages/Verified.tsx — скрыт (не в навигации)
 
 ## Навигация
-- TopNav: главное меню (Non-Pro Duel Cups → /, Trainer, Blog); пункт Non-Pro активен на /, /non-pro-duel-cups, /divisions (isNonPro)
-- Sub-nav (второй уровень): на /, /non-pro-duel-cups, /divisions
-  Порядок: Анонсы | Результаты | Дивизионы и игроки | Регистрация
+- TopNav: главное меню (Non-Pro Duel Cups → /, Skill → /trainer, Blog); пункт Non-Pro активен на /, /non-pro-duel-cups, /divisions (isNonPro); пункт Skill активен на /trainer, /spawns (isSkill)
+- Sub-nav (второй уровень) — общий механизм для разделов Non-Pro и Skill (showSub, subAccent):
+  - Non-Pro (зелёный accent): Анонсы | Результаты | Рейтинг | Участвовать
+  - Skill (жёлтый #fbbf24): Timing Trainer | Респауны
   На мобильном justifyContent flex-start (center при overflow обрезает левый край)
 - В мобильном drawer: sub-nav тоже только на релевантных страницах
+- ВАЖНО: страницы с sub-nav должны иметь верхний отступ ≥80px (нав 48 + саб-нав 32). Trainer/Spawns: padding-top 88/80, minHeight calc(100vh - 80px)
 
 ## Компоненты
 - TopNav.tsx — хедер + sub-nav + мобильный drawer
