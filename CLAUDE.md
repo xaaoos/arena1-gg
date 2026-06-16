@@ -35,7 +35,7 @@ Arena 1 — медиабренд и чемпионат по Arena FPS (Quake Liv
 - /non-pro-duel-cups → pages/EloCup.tsx — результаты: первые 4 кубка раскрыты, остальные попапом + поиск игрока по истории
 - /divisions → pages/Divisions.tsx — дивизионы и игроки (данные из Google Sheets)
 - /skill/trainer → pages/Trainer.tsx — тренажёр таймингов (раздел Skill). Старый /trainer редиректит сюда
-- /skill/respawns → pages/Spawns.tsx — интерактивная карта спаунов QL (canvas), рендеры карт by Memento_Mori (раздел Skill); данные src/data/spawns.ts, картинки public/spawns/ (ассеты остаются на /spawns/*.png). Старый /spawns редиректит сюда
+- /skill/respawns → pages/Spawns.tsx — интерактивная карта спаунов QL (canvas), рендеры карт by Memento_Mori (раздел Skill); данные src/data/spawns.ts, картинки public/respawn-maps/ (отдаются на /respawn-maps/*.png — отдельно от роута, чтобы не было коллизии). Старый /spawns редиректит сюда
 - /blog → pages/Blog.tsx — блог
 - /blog/:slug → pages/BlogPost.tsx
 - /championship → pages/Championship.tsx — скрыт (не в навигации)

@@ -34,7 +34,7 @@ const SpawnView: FC<{ map: MapData }> = ({ map }) => {
     setLoaded(false);
     const img = new Image();
     img.onload = () => { imgRef.current = img; setLoaded(true); };
-    img.src = `/spawns/${map.id}.png`;
+    img.src = `/respawn-maps/${map.id}.png`;
     return () => { imgRef.current = null; };
   }, [map.id]);
 

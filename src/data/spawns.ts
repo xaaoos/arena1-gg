@@ -4,7 +4,7 @@
 // Ported from the standalone HTML to React for arena1.gg.
 
 export interface MapData {
-  id: string; // matches /spawns/<id>.png
+  id: string; // matches /respawn-maps/<id>.png
   name: string;
   origin: [number, number, number]; // top, left, lowestSP
   end: [number, number, number]; // bottom, right, highestSP
