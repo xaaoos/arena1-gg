@@ -165,6 +165,7 @@ export const SPAWNS_TXT = {
     hintMobile: "Веди пальцем по карте",
     legendPossible: "возможный спаун",
     legendRejected: "исключён",
+    legendSize: "размер кружка = высота точки спауна",
     creditTitle: "Источник данных",
     creditBody:
       "Визуализация и рендеры карт — Memento_Mori (март 2015). Перенесено на arena1.gg с сохранением авторства.",
@@ -179,6 +180,7 @@ export const SPAWNS_TXT = {
     hintMobile: "Drag your finger across the map",
     legendPossible: "possible spawn",
     legendRejected: "rejected",
+    legendSize: "circle size = spawn height",
     creditTitle: "Data source",
     creditBody:
       "Visualization & map renders by Memento_Mori (March 2015). Ported to arena1.gg with original credit preserved.",

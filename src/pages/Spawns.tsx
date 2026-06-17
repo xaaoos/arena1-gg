@@ -187,6 +187,13 @@ const Spawns: FC = () => {
           <span style={{ display: "flex", alignItems: "center", gap: 8 }}>
             <span style={{ width: 14, height: 14, borderRadius: "50%", background: "rgb(170,51,51)", border: "1px solid #000" }} /> {t.legendRejected}
           </span>
+          <span style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <span style={{ display: "flex", alignItems: "center", gap: 3 }}>
+              <span style={{ width: 8, height: 8, borderRadius: "50%", background: C.muted, border: "1px solid #000" }} />
+              <span style={{ width: 16, height: 16, borderRadius: "50%", background: C.muted, border: "1px solid #000" }} />
+            </span>
+            {t.legendSize}
+          </span>
           <span style={{ color: C.muted }}>{mob ? t.hintMobile : t.hintDesktop}</span>
         </div>
 
