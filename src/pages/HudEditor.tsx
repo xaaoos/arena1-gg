@@ -1,89 +1,85 @@
-import { useState, useRef, useCallback, type FC, type CSSProperties } from "react";
+import { useState, useRef, type FC, type CSSProperties, type ChangeEvent } from "react";
 import { useLang } from "../hooks/useLang";
 import { useIsMobile } from "../hooks/useIsMobile";
 import { BODY_FONT } from "../components/UI";
 import { Seo } from "../components/Seo";
 import { C } from "../theme";
+import { exportHud, type HudItem, type HudPreset } from "../hud/export";
+import { ELEMENT_LIBRARY, ELEMENT_ORDER, DEFAULT_PRESET } from "../hud/presets";
 
-// ВНИМАНИЕ: тестовая (скрытая) страница — WIP HUD-редактор для Quake Live.
-// Не в навигации, не в пререндере, noindex. Вдохновлено namad/visualHUD.
+// СКРЫТАЯ тестовая страница (WIP). Адаптация visualHUD (by namad) — редактор HUD
+// для Quake Live с экспортом в игру (.cfg/.menu). Не в навигации/пререндере, noindex.
 
 const ACCENT = "#fbbf24";
 const HEAD_FONT = "'Xolonium','Tektur',monospace";
-
-type ElemType = "health" | "armor" | "ammo" | "timer" | "score" | "powerup" | "name" | "fps" | "text";
-
-interface HudElem {
-  id: string;
-  type: ElemType;
-  label: string; // имя в списке
-  x: number; // % по ширине (центр)
-  y: number; // % по высоте (центр)
-  scale: number; // 0.5–2
-  color: string;
-  value: string; // отображаемое значение/текст
-  visible: boolean;
-  colorEditable: boolean;
-  valueEditable: boolean;
-}
-
-const ICONS: Partial<Record<ElemType, string>> = {
-  health: "✚", armor: "◈", ammo: "▣", powerup: "✦", timer: "⏱", score: "⚔",
-};
-
-const DEFAULTS: Omit<HudElem, "id">[] = [
-  { type: "timer",   label: "Game Clock", x: 50, y: 6,  scale: 1, color: "#ffffff", value: "08:00", visible: true, colorEditable: true, valueEditable: true },
-  { type: "score",   label: "Score",      x: 50, y: 15, scale: 1, color: "#ffffff", value: "12 : 9", visible: true, colorEditable: true, valueEditable: true },
-  { type: "fps",     label: "FPS",        x: 94, y: 6,  scale: 0.8, color: "#7a7a7a", value: "125", visible: false, colorEditable: true, valueEditable: true },
-  { type: "powerup", label: "Powerup",    x: 6,  y: 50, scale: 1, color: "#b066ff", value: "0:18", visible: false, colorEditable: true, valueEditable: true },
-  { type: "health",  label: "Health",     x: 16, y: 90, scale: 1, color: "#ff4444", value: "100", visible: true, colorEditable: true, valueEditable: true },
-  { type: "armor",   label: "Armor",      x: 33, y: 90, scale: 1, color: "#ffd24a", value: "50",  visible: true, colorEditable: true, valueEditable: true },
-  { type: "ammo",    label: "Ammo",       x: 84, y: 90, scale: 1, color: "#4ade80", value: "25",  visible: true, colorEditable: true, valueEditable: true },
-  { type: "name",    label: "Player Name", x: 50, y: 96, scale: 0.9, color: "#cfcfcf", value: "Player", visible: false, colorEditable: true, valueEditable: true },
-];
-
-const makeDefaults = (): HudElem[] => DEFAULTS.map((d, i) => ({ ...d, id: `${d.type}-${i}` }));
+const VW = 640, VH = 480; // виртуальная сетка QL
 
 const T = {
   ru: {
-    title: "HUD EDITOR", subtitle: "Редактор HUD для Quake Live · тестовая версия (WIP)",
-    wip: "Это тестовая страница, инструмент в разработке",
-    elements: "Элементы", properties: "Свойства", noSel: "Выбери элемент на экране или включи в списке",
-    visible: "Показывать", posX: "Позиция X", posY: "Позиция Y", scale: "Размер", color: "Цвет", value: "Значение",
-    export: "Экспорт JSON", reset: "Сбросить", hint: "Перетаскивай элементы мышью. Клик — выбрать.",
+    title: "HUD EDITOR", subtitle: "Редактор HUD для Quake Live · адаптация visualHUD (WIP)",
+    wip: "Тестовая страница, инструмент в разработке",
+    add: "Добавить элемент", elements: "Элементы сцены", props: "Свойства",
+    noSel: "Выбери элемент на экране или добавь из списка",
+    posX: "X", posY: "Y", w: "Ширина", h: "Высота", textColor: "Цвет текста", textSize: "Размер текста",
+    opacity: "Прозрачность фона", value: "Значение", ranges: "Цветовые диапазоны", remove: "Удалить элемент",
+    dlMenu: "Скачать .menu", dlCfg: "Скачать .cfg", importV: "Импорт .vhud", reset: "Сброс",
+    hint: "Перетаскивай элементы. Сетка 640×480 как в игре.",
+    installT: "Установка в Quake Live",
+    install: [
+      "1. Скачай .cfg и .menu (кнопки выше).",
+      "2. Положи оба файла в папку игры: …/quakelive/home/baseq3/ui/",
+      "3. В autoexec.cfg (в baseq3) добавь строку: seta cg_hudFiles \"ui/arena1.cfg\"",
+      "4. Перезапусти Quake Live.",
+    ],
   },
   en: {
-    title: "HUD EDITOR", subtitle: "Quake Live HUD editor · test build (WIP)",
+    title: "HUD EDITOR", subtitle: "Quake Live HUD editor · visualHUD adaptation (WIP)",
     wip: "Test page, tool is work in progress",
-    elements: "Elements", properties: "Properties", noSel: "Select an element on screen or enable it in the list",
-    visible: "Visible", posX: "Position X", posY: "Position Y", scale: "Scale", color: "Color", value: "Value",
-    export: "Export JSON", reset: "Reset", hint: "Drag elements with the mouse. Click to select.",
+    add: "Add element", elements: "Scene elements", props: "Properties",
+    noSel: "Select an element on screen or add one from the list",
+    posX: "X", posY: "Y", w: "Width", h: "Height", textColor: "Text color", textSize: "Text size",
+    opacity: "Background opacity", value: "Value", ranges: "Color ranges", remove: "Remove element",
+    dlMenu: "Download .menu", dlCfg: "Download .cfg", importV: "Import .vhud", reset: "Reset",
+    hint: "Drag elements. 640×480 grid, same as in-game.",
+    installT: "Install in Quake Live",
+    install: [
+      "1. Download .cfg and .menu (buttons above).",
+      "2. Put both files into: …/quakelive/home/baseq3/ui/",
+      "3. In autoexec.cfg (in baseq3) add: seta cg_hudFiles \"ui/arena1.cfg\"",
+      "4. Restart Quake Live.",
+    ],
   },
 };
 
-// Визуальное представление элемента HUD на превью.
-const ElemVisual: FC<{ el: HudElem }> = ({ el }) => {
-  const icon = ICONS[el.type];
-  const big: CSSProperties = { fontFamily: HEAD_FONT, fontWeight: 900, lineHeight: 1, textShadow: "0 2px 4px rgba(0,0,0,0.8)" };
+const ICON: Record<string, string> = {
+  healthIndicator: "✚", armorIndicator: "◈", ammoIndicator: "▣", timer: "⏱",
+  scoreBox: "⚔", powerupIndicator: "✦", playerItem: "◆", CTFPowerupIndicator: "✦",
+  flagIndicator: "⚑", chatArea: "▭", rectangleBox: "▢",
+};
 
-  if (el.type === "timer" || el.type === "fps")
-    return <div style={{ ...big, fontSize: 30, color: el.color }}>{el.value}</div>;
-  if (el.type === "score")
-    return <div style={{ ...big, fontSize: 26, color: el.color, letterSpacing: 2 }}>{el.value}</div>;
-  if (el.type === "name")
-    return <div style={{ fontFamily: BODY_FONT, fontSize: 16, color: el.color, fontWeight: 700, textShadow: "0 2px 4px rgba(0,0,0,0.8)" }}>{el.value}</div>;
-  if (el.type === "powerup")
-    return (
-      <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-        <span style={{ fontSize: 26, color: el.color, textShadow: "0 0 10px " + el.color }}>{icon}</span>
-        <span style={{ ...big, fontSize: 22, color: "#fff" }}>{el.value}</span>
-      </div>
-    );
-  // health / armor / ammo: иконка + крупное число
+const download = (filename: string, text: string) => {
+  const blob = new Blob([text], { type: "text/plain" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(a.href);
+};
+
+// визуал элемента в превью
+const Visual: FC<{ it: HudItem }> = ({ it }) => {
+  const col = "#" + (it.textColor || "FFFFFF");
+  if (it.itemType === "rect" || it.name === "chatArea") {
+    const a = Number(it.opacity ?? 60) / 100;
+    return <div style={{ width: "100%", height: "100%", background: `#${it.color || "000000"}`, opacity: a, border: "1px solid rgba(255,255,255,0.25)" }} />;
+  }
+  if (it.itemType === "iconItem")
+    return <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", color: col, fontSize: 14, textShadow: "0 1px 2px #000" }}>{ICON[it.name]}</div>;
+  // general / score: иконка + значение
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-      <span style={{ fontSize: 28, color: el.color, textShadow: "0 0 8px " + el.color + "88" }}>{icon}</span>
-      <span style={{ ...big, fontSize: 44, color: el.color }}>{el.value}</span>
+    <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", gap: 4, color: col, fontFamily: HEAD_FONT, fontWeight: 900, textShadow: "0 2px 3px rgba(0,0,0,0.9)", whiteSpace: "nowrap", lineHeight: 1 }}>
+      <span style={{ fontSize: "0.55em", opacity: 0.9 }}>{ICON[it.name]}</span>
+      <span style={{ fontSize: "1em" }}>{it.text ?? "0"}</span>
     </div>
   );
 };
@@ -92,153 +88,211 @@ const HudEditor: FC = () => {
   const { lang } = useLang();
   const mob = useIsMobile();
   const t = T[lang];
-  const [elems, setElems] = useState<HudElem[]>(makeDefaults);
-  const [selId, setSelId] = useState<string | null>(null);
+  const [items, setItems] = useState<HudItem[]>(() => DEFAULT_PRESET.items.map((i) => ({ ...i })));
+  const [selIdx, setSelIdx] = useState<number | null>(0);
+  const [showAdd, setShowAdd] = useState(false);
   const screenRef = useRef<HTMLDivElement>(null);
-  const dragRef = useRef<{ id: string } | null>(null);
+  const drag = useRef<{ idx: number; ox: number; oy: number } | null>(null);
 
-  const sel = elems.find((e) => e.id === selId) ?? null;
-  const update = (id: string, patch: Partial<HudElem>) =>
-    setElems((prev) => prev.map((e) => (e.id === id ? { ...e, ...patch } : e)));
+  const sel = selIdx != null ? items[selIdx] : null;
+  const patch = (idx: number, p: Partial<HudItem>) =>
+    setItems((prev) => prev.map((it, i) => (i === idx ? { ...it, ...p } : it)));
+  const patchCoord = (idx: number, key: "left" | "top" | "width" | "height", v: number) =>
+    setItems((prev) => prev.map((it, i) => (i === idx ? { ...it, coordinates: { ...it.coordinates, [key]: v } } : it)));
 
-  const onPointerDown = (e: React.PointerEvent, id: string) => {
+  const scale = () => (screenRef.current ? screenRef.current.getBoundingClientRect().width / VW : 1);
+
+  const onDown = (e: React.PointerEvent, idx: number) => {
     e.preventDefault();
-    setSelId(id);
-    dragRef.current = { id };
+    setSelIdx(idx);
+    const s = scale();
+    drag.current = { idx, ox: e.clientX / s - items[idx].coordinates.left, oy: e.clientY / s - items[idx].coordinates.top };
     (e.target as HTMLElement).setPointerCapture(e.pointerId);
   };
-  const onPointerMove = useCallback((e: React.PointerEvent) => {
-    const d = dragRef.current;
-    const rect = screenRef.current?.getBoundingClientRect();
-    if (!d || !rect) return;
-    const x = Math.max(0, Math.min(100, ((e.clientX - rect.left) / rect.width) * 100));
-    const y = Math.max(0, Math.min(100, ((e.clientY - rect.top) / rect.height) * 100));
-    update(d.id, { x: Math.round(x * 10) / 10, y: Math.round(y * 10) / 10 });
-  }, []);
-  const onPointerUp = () => { dragRef.current = null; };
+  const onMove = (e: React.PointerEvent) => {
+    const d = drag.current;
+    if (!d) return;
+    const s = scale();
+    const left = Math.round(Math.max(0, Math.min(VW - 4, e.clientX / s - d.ox)));
+    const top = Math.round(Math.max(0, Math.min(VH - 4, e.clientY / s - d.oy)));
+    patchCoord(d.idx, "left", left);
+    patchCoord(d.idx, "top", top);
+  };
+  const onUp = () => { drag.current = null; };
 
-  const exportJson = () => {
-    const data = JSON.stringify(elems.filter((e) => e.visible).map(({ id, label, colorEditable, valueEditable, ...rest }) => { void id; void label; void colorEditable; void valueEditable; return rest; }), null, 2);
-    const blob = new Blob([data], { type: "application/json" });
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = "arena1-hud.json";
-    a.click();
-    URL.revokeObjectURL(a.href);
+  const addElement = (key: string) => {
+    setItems((prev) => [...prev, ELEMENT_LIBRARY[key]()]);
+    setSelIdx(items.length);
+    setShowAdd(false);
+  };
+  const removeSel = () => {
+    if (selIdx == null) return;
+    setItems((prev) => prev.filter((_, i) => i !== selIdx));
+    setSelIdx(null);
   };
 
-  const panel: CSSProperties = { background: C.bgCard, border: `1px solid ${C.border}`, padding: 16 };
-  const lbl: CSSProperties = { fontFamily: BODY_FONT, fontSize: 11, color: C.muted, textTransform: "uppercase", letterSpacing: 1, marginBottom: 6, display: "block" };
+  const doExport = (kind: "menu" | "cfg") => {
+    const preset: HudPreset = { name: "arena1", items };
+    const { cfg, menu } = exportHud(preset);
+    if (kind === "menu") download("arena1.menu", menu);
+    else download("arena1.cfg", cfg);
+  };
+
+  const onImport = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const j = JSON.parse(String(reader.result));
+        const preset = Array.isArray(j) ? j[0] : j;
+        if (preset?.items?.length) { setItems(preset.items); setSelIdx(0); }
+      } catch { /* игнор битого файла */ }
+    };
+    reader.readAsText(file);
+    e.target.value = "";
+  };
+
+  const panel: CSSProperties = { background: C.bgCard, border: `1px solid ${C.border}`, padding: 14 };
+  const lbl: CSSProperties = { fontFamily: BODY_FONT, fontSize: 10, color: C.muted, textTransform: "uppercase", letterSpacing: 1, marginBottom: 4, display: "block" };
+  const inp: CSSProperties = { width: "100%", padding: "6px 8px", fontSize: 13, fontFamily: BODY_FONT, background: C.inputBg, border: `1px solid ${C.inputBorder}`, color: C.heading, outline: "none", boxSizing: "border-box" };
+  const btn = (bg: string, fg: string): CSSProperties => ({ padding: "10px 8px", background: bg, border: bg === "transparent" ? `1px solid ${C.subtle}` : "none", color: fg, fontSize: 10, fontWeight: 700, letterSpacing: 1, textTransform: "uppercase", cursor: "pointer", fontFamily: HEAD_FONT });
 
   return (
     <div style={{ minHeight: "calc(100vh - 48px)", padding: mob ? "60px 12px 24px" : "72px 20px 32px", overflowX: "hidden" }}>
-      <Seo path="/skill/hud" title="HUD Editor (WIP)" description="Тестовый редактор HUD для Quake Live." noindex />
+      <Seo path="/skill/hud" title="HUD Editor (WIP)" description="Тестовый редактор HUD для Quake Live с экспортом в игру." noindex />
       <div style={{ maxWidth: 1280, width: "100%", margin: "0 auto" }}>
-        <div style={{ textAlign: "center", marginBottom: 8 }}>
+        <div style={{ textAlign: "center", marginBottom: 6 }}>
           <div style={{ fontSize: 11, letterSpacing: 6, color: ACCENT, marginBottom: 8, fontWeight: 600 }}>A R E N A  1</div>
           <h1 style={{ fontSize: "clamp(26px,5vw,38px)", fontWeight: 900, color: C.heading, margin: "0 0 6px", letterSpacing: 2, fontFamily: HEAD_FONT }}>{t.title}</h1>
           <div style={{ fontFamily: BODY_FONT, fontSize: 13, color: C.muted }}>{t.subtitle}</div>
         </div>
-        <div style={{ textAlign: "center", marginBottom: 20, fontFamily: BODY_FONT, fontSize: 11, color: "#ff8800", letterSpacing: 1 }}>⚠ {t.wip}</div>
+        <div style={{ textAlign: "center", marginBottom: 18, fontFamily: BODY_FONT, fontSize: 11, color: "#ff8800" }}>⚠ {t.wip}</div>
 
         <div style={{ display: "flex", flexDirection: mob ? "column" : "row", gap: 16, alignItems: "flex-start" }}>
-          {/* Превью игрового экрана 16:9 */}
+          {/* Превью 640×480 */}
           <div style={{ flex: "1 1 auto", width: "100%", minWidth: 0 }}>
             <div
               ref={screenRef}
-              onPointerMove={onPointerMove}
-              onPointerUp={onPointerUp}
-              onPointerLeave={onPointerUp}
-              style={{
-                position: "relative", width: "100%", aspectRatio: "16 / 9",
-                background: "linear-gradient(160deg,#1a2230,#0c0f16)",
-                border: `1px solid ${C.border}`, overflow: "hidden",
-                touchAction: "none", userSelect: "none",
-              }}
+              onPointerMove={onMove}
+              onPointerUp={onUp}
+              onPointerLeave={onUp}
+              style={{ position: "relative", width: "100%", aspectRatio: "4 / 3", background: "linear-gradient(160deg,#222d3d,#0c0f16)", border: `1px solid ${C.border}`, overflow: "hidden", touchAction: "none", userSelect: "none" }}
             >
-              {/* центр-маркер прицела */}
               <div style={{ position: "absolute", left: "50%", top: "50%", width: 6, height: 6, marginLeft: -3, marginTop: -3, border: "1px solid rgba(255,255,255,0.4)", borderRadius: "50%" }} />
-              {elems.filter((e) => e.visible).map((el) => (
+              {items.map((it, idx) => (
                 <div
-                  key={el.id}
-                  onPointerDown={(e) => onPointerDown(e, el.id)}
+                  key={idx}
+                  onPointerDown={(e) => onDown(e, idx)}
                   style={{
-                    position: "absolute", left: `${el.x}%`, top: `${el.y}%`,
-                    transform: `translate(-50%,-50%) scale(${el.scale})`,
-                    cursor: "move", padding: 4,
-                    outline: selId === el.id ? `1px dashed ${ACCENT}` : "1px solid transparent",
+                    position: "absolute",
+                    left: `${(it.coordinates.left / VW) * 100}%`,
+                    top: `${(it.coordinates.top / VH) * 100}%`,
+                    width: `${(it.coordinates.width / VW) * 100}%`,
+                    height: `${(it.coordinates.height / VH) * 100}%`,
+                    cursor: "move",
+                    outline: selIdx === idx ? `1px dashed ${ACCENT}` : "1px solid rgba(255,255,255,0.08)",
                   }}
                 >
-                  <ElemVisual el={el} />
+                  <Visual it={it} />
                 </div>
               ))}
             </div>
             <div style={{ fontFamily: BODY_FONT, fontSize: 11, color: C.muted, marginTop: 8, textAlign: "center" }}>{t.hint}</div>
+
+            {/* Экспорт + установка */}
+            <div style={{ display: "flex", gap: 8, marginTop: 14, flexWrap: "wrap" }}>
+              <button onClick={() => doExport("cfg")} style={{ ...btn(ACCENT, "#08080c"), flex: 1 }}>{t.dlCfg}</button>
+              <button onClick={() => doExport("menu")} style={{ ...btn(ACCENT, "#08080c"), flex: 1 }}>{t.dlMenu}</button>
+              <label style={{ ...btn("transparent", C.body), flex: 1, textAlign: "center" }}>
+                {t.importV}
+                <input type="file" accept=".vhud,.json,application/json" onChange={onImport} style={{ display: "none" }} />
+              </label>
+              <button onClick={() => { setItems(DEFAULT_PRESET.items.map((i) => ({ ...i }))); setSelIdx(0); }} style={{ ...btn("transparent", C.body), flex: 1 }}>{t.reset}</button>
+            </div>
+            <div style={{ ...panel, marginTop: 14 }}>
+              <div style={{ fontFamily: HEAD_FONT, fontSize: 11, fontWeight: 700, color: ACCENT, letterSpacing: 2, textTransform: "uppercase", marginBottom: 8 }}>{t.installT}</div>
+              {t.install.map((line, i) => (
+                <div key={i} style={{ fontFamily: BODY_FONT, fontSize: 12, color: C.secondary, lineHeight: 1.7 }}>{line}</div>
+              ))}
+            </div>
           </div>
 
-          {/* Сайдбар: список элементов + свойства */}
-          <div style={{ flex: mob ? "1 1 auto" : "0 0 280px", width: mob ? "100%" : 280, display: "flex", flexDirection: "column", gap: 16 }}>
+          {/* Сайдбар */}
+          <div style={{ flex: mob ? "1 1 auto" : "0 0 300px", width: mob ? "100%" : 300, display: "flex", flexDirection: "column", gap: 14 }}>
             <div style={panel}>
-              <div style={{ fontFamily: HEAD_FONT, fontSize: 12, fontWeight: 700, color: ACCENT, letterSpacing: 2, textTransform: "uppercase", marginBottom: 12 }}>{t.elements}</div>
-              {elems.map((el) => (
-                <div key={el.id} style={{ display: "flex", alignItems: "center", gap: 8, padding: "6px 0" }}>
-                  <input type="checkbox" checked={el.visible} onChange={(e) => update(el.id, { visible: e.target.checked })} style={{ accentColor: ACCENT, cursor: "pointer" }} />
-                  <button onClick={() => setSelId(el.id)} style={{
-                    flex: 1, textAlign: "left", background: "none", border: "none", cursor: "pointer",
-                    fontFamily: BODY_FONT, fontSize: 13, padding: 0,
-                    color: selId === el.id ? ACCENT : el.visible ? C.body : C.subtle,
-                  }}>{el.label}</button>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
+                <span style={{ fontFamily: HEAD_FONT, fontSize: 11, fontWeight: 700, color: ACCENT, letterSpacing: 2, textTransform: "uppercase" }}>{t.elements}</span>
+                <button onClick={() => setShowAdd((v) => !v)} style={{ background: "none", border: `1px solid ${ACCENT}`, color: ACCENT, cursor: "pointer", fontSize: 11, padding: "3px 8px", fontFamily: HEAD_FONT }}>+ {t.add}</button>
+              </div>
+              {showAdd && (
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 4, marginBottom: 10, paddingBottom: 10, borderBottom: `1px solid ${C.border}` }}>
+                  {ELEMENT_ORDER.map((k) => (
+                    <button key={k} onClick={() => addElement(k)} style={{ background: C.bg, border: `1px solid ${C.border}`, color: C.body, cursor: "pointer", fontSize: 11, padding: "5px 8px", fontFamily: BODY_FONT }}>{ELEMENT_LIBRARY[k]().label}</button>
+                  ))}
+                </div>
+              )}
+              {items.map((it, idx) => (
+                <div key={idx} onClick={() => setSelIdx(idx)} style={{ padding: "6px 8px", cursor: "pointer", fontFamily: BODY_FONT, fontSize: 13, color: selIdx === idx ? ACCENT : C.body, background: selIdx === idx ? "rgba(251,191,36,0.08)" : "transparent" }}>
+                  {ICON[it.name]} {it.label || it.name}
                 </div>
               ))}
             </div>
 
             <div style={panel}>
-              <div style={{ fontFamily: HEAD_FONT, fontSize: 12, fontWeight: 700, color: ACCENT, letterSpacing: 2, textTransform: "uppercase", marginBottom: 12 }}>{t.properties}</div>
-              {!sel ? (
+              <div style={{ fontFamily: HEAD_FONT, fontSize: 11, fontWeight: 700, color: ACCENT, letterSpacing: 2, textTransform: "uppercase", marginBottom: 12 }}>{t.props}</div>
+              {!sel || selIdx == null ? (
                 <div style={{ fontFamily: BODY_FONT, fontSize: 12, color: C.muted, lineHeight: 1.6 }}>{t.noSel}</div>
               ) : (
-                <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-                  <label style={{ display: "flex", alignItems: "center", gap: 8, fontFamily: BODY_FONT, fontSize: 12, color: C.body, cursor: "pointer" }}>
-                    <input type="checkbox" checked={sel.visible} onChange={(e) => update(sel.id, { visible: e.target.checked })} style={{ accentColor: ACCENT }} /> {t.visible}
-                  </label>
-                  {sel.valueEditable && (
-                    <div>
-                      <span style={lbl}>{t.value}</span>
-                      <input type="text" value={sel.value} onChange={(e) => update(sel.id, { value: e.target.value })}
-                        style={{ width: "100%", padding: "8px 10px", fontSize: 14, fontFamily: BODY_FONT, background: C.inputBg, border: `1px solid ${C.inputBorder}`, color: C.heading, outline: "none", boxSizing: "border-box" }} />
+                <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
+                    {(["left", "top", "width", "height"] as const).map((k) => (
+                      <div key={k}>
+                        <span style={lbl}>{k === "left" ? t.posX : k === "top" ? t.posY : k === "width" ? t.w : t.h}</span>
+                        <input type="number" value={Math.round(sel.coordinates[k] ?? 0)} onChange={(e) => patchCoord(selIdx, k, +e.target.value)} style={inp} />
+                      </div>
+                    ))}
+                  </div>
+                  {sel.text !== undefined && (
+                    <div><span style={lbl}>{t.value}</span><input type="text" value={sel.text} onChange={(e) => patch(selIdx, { text: e.target.value })} style={inp} /></div>
+                  )}
+                  {sel.textColor !== undefined && sel.itemType !== "rect" && sel.name !== "chatArea" && (
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
+                      <div><span style={lbl}>{t.textColor}</span><input type="color" value={"#" + sel.textColor} onChange={(e) => patch(selIdx, { textColor: e.target.value.slice(1).toUpperCase() })} style={{ ...inp, height: 32, padding: 2 }} /></div>
+                      <div><span style={lbl}>{t.textSize}: {sel.textSize}</span><input type="range" min={20} max={200} value={Number(sel.textSize ?? 100)} onChange={(e) => patch(selIdx, { textSize: +e.target.value })} style={{ width: "100%", accentColor: ACCENT }} /></div>
                     </div>
                   )}
-                  <div>
-                    <span style={lbl}>{t.posX}: {sel.x}%</span>
-                    <input type="range" min={0} max={100} step={0.5} value={sel.x} onChange={(e) => update(sel.id, { x: +e.target.value })} style={{ width: "100%", accentColor: ACCENT }} />
-                  </div>
-                  <div>
-                    <span style={lbl}>{t.posY}: {sel.y}%</span>
-                    <input type="range" min={0} max={100} step={0.5} value={sel.y} onChange={(e) => update(sel.id, { y: +e.target.value })} style={{ width: "100%", accentColor: ACCENT }} />
-                  </div>
-                  <div>
-                    <span style={lbl}>{t.scale}: {sel.scale.toFixed(2)}×</span>
-                    <input type="range" min={0.5} max={2} step={0.05} value={sel.scale} onChange={(e) => update(sel.id, { scale: +e.target.value })} style={{ width: "100%", accentColor: ACCENT }} />
-                  </div>
-                  {sel.colorEditable && (
-                    <div>
-                      <span style={lbl}>{t.color}</span>
-                      <input type="color" value={sel.color} onChange={(e) => update(sel.id, { color: e.target.value })} style={{ width: "100%", height: 34, background: C.inputBg, border: `1px solid ${C.inputBorder}`, cursor: "pointer" }} />
+                  {(sel.itemType === "rect" || sel.name === "chatArea") && (
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
+                      <div><span style={lbl}>{t.textColor}</span><input type="color" value={"#" + (sel.color || "000000")} onChange={(e) => patch(selIdx, { color: e.target.value.slice(1).toUpperCase() })} style={{ ...inp, height: 32, padding: 2 }} /></div>
+                      <div><span style={lbl}>{t.opacity}: {sel.opacity}</span><input type="range" min={0} max={100} value={Number(sel.opacity ?? 60)} onChange={(e) => patch(selIdx, { opacity: +e.target.value })} style={{ width: "100%", accentColor: ACCENT }} /></div>
                     </div>
                   )}
+                  {sel.colorRanges && sel.colorRanges.length > 0 && (
+                    <div>
+                      <span style={lbl}>{t.ranges}</span>
+                      <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                        {sel.colorRanges.map((r, ri) => (
+                          <div key={ri} style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                            <input type="color" value={"#" + r.color} onChange={(e) => {
+                              const next = sel.colorRanges!.map((x, xi) => xi === ri ? { ...x, color: e.target.value.slice(1).toUpperCase() } : x);
+                              patch(selIdx, { colorRanges: next });
+                            }} style={{ width: 34, height: 26, padding: 1, background: C.inputBg, border: `1px solid ${C.inputBorder}`, cursor: "pointer" }} />
+                            <span style={{ fontFamily: BODY_FONT, fontSize: 11, color: C.muted }}>{r.name}: {r.range[0]}…{r.range[1]}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  <button onClick={removeSel} style={{ ...btn("transparent", "#f87171"), borderColor: "#f8717155" }}>{t.remove}</button>
                 </div>
               )}
-            </div>
-
-            <div style={{ display: "flex", gap: 8 }}>
-              <button onClick={exportJson} style={{ flex: 1, padding: "12px 8px", background: ACCENT, border: "none", color: "#08080c", fontSize: 11, fontWeight: 700, letterSpacing: 1.5, textTransform: "uppercase", cursor: "pointer", fontFamily: HEAD_FONT }}>{t.export}</button>
-              <button onClick={() => { setElems(makeDefaults()); setSelId(null); }} style={{ flex: 1, padding: "12px 8px", background: "transparent", border: `1px solid ${C.subtle}`, color: C.body, fontSize: 11, fontWeight: 700, letterSpacing: 1.5, textTransform: "uppercase", cursor: "pointer", fontFamily: HEAD_FONT }}>{t.reset}</button>
             </div>
           </div>
         </div>
 
-        <div style={{ fontSize: 10, color: C.muted, letterSpacing: 2, marginTop: 32, opacity: 0.5, textAlign: "center" }}>
-          developed by <a href="https://selzio.com" target="_blank" rel="noopener noreferrer" style={{ color: "inherit", textDecoration: "underline" }}>selzio.com</a>
+        <div style={{ fontSize: 10, color: C.muted, letterSpacing: 2, marginTop: 32, opacity: 0.6, textAlign: "center", fontFamily: BODY_FONT }}>
+          адаптация <a href="https://github.com/namad/visualHUD" target="_blank" rel="noopener noreferrer" style={{ color: "inherit" }}>visualHUD by namad</a> · developed by <a href="https://selzio.com" target="_blank" rel="noopener noreferrer" style={{ color: "inherit", textDecoration: "underline" }}>selzio.com</a>
         </div>
       </div>
     </div>
