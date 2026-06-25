@@ -17,9 +17,9 @@ const PAGES = [
   { path: "/blog", label: "Blog", color: "#c084fc", border: "#c084fc66" },
 ] as const;
 
-// страницы раздела Non-Pro: анонсы (главная), результаты, дивизионы
+// страницы раздела Non-Pro: анонсы (главная), результаты, дивизионы, участвовать
 const isNonPro = (pathname: string) =>
-  pathname === "/" || pathname.startsWith("/non-pro-duel-cups") || pathname.startsWith("/divisions");
+  pathname === "/" || pathname.startsWith("/non-pro-duel-cups") || pathname.startsWith("/divisions") || pathname.startsWith("/join");
 
 // страницы раздела Skill: тренажёр таймингов, карта спаунов
 const isSkill = (pathname: string) => pathname.startsWith("/skill");
@@ -29,13 +29,13 @@ const SUB_NAV = {
     { label: "Анонсы", href: "/", external: false },
     { label: "Результаты", href: "/non-pro-duel-cups", external: false },
     { label: "Рейтинг", href: "/divisions", external: false },
-    { label: "Участвовать", href: "https://discord.gg/dgPwNAph2j", external: true },
+    { label: "Участвовать", href: "/join", external: false },
   ],
   en: [
     { label: "Announces", href: "/", external: false },
     { label: "Results", href: "/non-pro-duel-cups", external: false },
     { label: "Ranking", href: "/divisions", external: false },
-    { label: "Join", href: "https://discord.gg/dgPwNAph2j", external: true },
+    { label: "Join", href: "/join", external: false },
   ],
 };
 

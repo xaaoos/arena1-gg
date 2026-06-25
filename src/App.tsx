@@ -13,6 +13,7 @@ import Spawns from "./pages/Spawns";
 import HudEditor from "./pages/HudEditor";
 import EloCup from "./pages/EloCup";
 import Divisions from "./pages/Divisions";
+import Join from "./pages/Join";
 import Player from "./pages/Player";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
@@ -33,6 +34,7 @@ const App: FC = () => {
               <Route path="/championship" element={<Championship />} />
               <Route path="/non-pro-duel-cups" element={<EloCup />} />
               <Route path="/divisions" element={<Divisions />} />
+              <Route path="/join" element={<Join />} />
               <Route path="/player/:nick" element={<Player />} />
               <Route path="/verified" element={<Verified />} />
               <Route path="/skill/trainer" element={<Trainer />} />
