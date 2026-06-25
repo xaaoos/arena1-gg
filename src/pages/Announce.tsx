@@ -1,4 +1,5 @@
 import { useState, useEffect, type FC } from "react";
+import { Link } from "react-router-dom";
 import { useLang } from "../hooks/useLang";
 import { useTheme } from "../hooks/useTheme";
 import { useIsMobile } from "../hooks/useIsMobile";
@@ -174,6 +175,16 @@ const Announce: FC = () => {
             {t.hero.t1}{t.hero.t1 && " "}<span style={{ color: ACS }}>{t.hero.t2}</span>
           </h1>
           <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 12 : 14, color: C.body, lineHeight: 1.7, maxWidth: 520, margin: "16px auto 0" }}>{t.hero.sub}</div>
+          <Link to="/join" style={{
+            display: "inline-block", marginTop: mob ? 16 : 22,
+            background: ACS, color: C.accentContrast,
+            fontFamily: "'Xolonium','Tektur',sans-serif", fontSize: mob ? 11 : 12, fontWeight: 800,
+            letterSpacing: 1.5, textTransform: "uppercase", textDecoration: "none",
+            padding: mob ? "10px 26px" : "12px 32px", transition: "box-shadow 0.25s ease",
+          }}
+            onMouseEnter={(e) => (e.currentTarget.style.boxShadow = "0 0 28px rgba(var(--glow-rgb),0.6)")}
+            onMouseLeave={(e) => (e.currentTarget.style.boxShadow = "none")}
+          >{lang === "ru" ? "Участвовать" : "Join"}</Link>
         </div>
       </section>
 

@@ -1,4 +1,4 @@
-import { type FC } from "react";
+import { type FC, type MouseEvent } from "react";
 import { Link } from "react-router-dom";
 import { useLang } from "../hooks/useLang";
 import { useIsMobile } from "../hooks/useIsMobile";
@@ -16,15 +16,27 @@ const btnSolid = (mob: boolean) => ({
   background: ACS, border: "none", color: C.accentContrast,
   fontSize: mob ? 11 : 12, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase" as const,
   cursor: "pointer", fontFamily: "'Xolonium','Tektur',monospace",
+  transition: "box-shadow 0.25s ease",
 });
 
 const btnGhost = (mob: boolean) => ({
   display: "inline-block", textDecoration: "none", textAlign: "center" as const,
   padding: mob ? "12px 24px" : "13px 32px",
-  background: "transparent", border: `1px solid ${ACS}`, color: ACS,
+  background: "transparent", border: `1px solid ${C.accentBorder}`, color: ACS,
   fontSize: mob ? 11 : 12, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase" as const,
   cursor: "pointer", fontFamily: "'Xolonium','Tektur',monospace",
+  transition: "box-shadow 0.25s ease, border-color 0.25s ease",
 });
+
+// glow-подсветка на hover — как у кнопок на других страницах (rgba(var(--glow-rgb)))
+const solidHover = {
+  onMouseEnter: (e: MouseEvent<HTMLElement>) => { e.currentTarget.style.boxShadow = "0 0 28px rgba(var(--glow-rgb),0.6)"; },
+  onMouseLeave: (e: MouseEvent<HTMLElement>) => { e.currentTarget.style.boxShadow = "none"; },
+};
+const ghostHover = {
+  onMouseEnter: (e: MouseEvent<HTMLElement>) => { e.currentTarget.style.boxShadow = "0 0 24px rgba(var(--glow-rgb),0.45)"; e.currentTarget.style.borderColor = ACS; },
+  onMouseLeave: (e: MouseEvent<HTMLElement>) => { e.currentTarget.style.boxShadow = "none"; e.currentTarget.style.borderColor = C.accentBorder; },
+};
 
 const Join: FC = () => {
   const { lang } = useLang();
@@ -51,7 +63,7 @@ const Join: FC = () => {
             {t.h1}<br /><span style={{ color: ACS }}>{t.h2}</span>
           </h1>
           <p style={{ fontFamily: BODY_FONT, fontSize: mob ? 13 : 15, color: C.body, marginTop: 26, lineHeight: 1.8, maxWidth: 580, marginLeft: "auto", marginRight: "auto" }}>{t.intro}</p>
-          <Link to="/divisions" style={{ ...btnGhost(mob), marginTop: mob ? 28 : 36 }}>{t.introLink}</Link>
+          <Link to="/divisions" {...ghostHover} style={{ ...btnGhost(mob), marginTop: mob ? 28 : 36 }}>{t.introLink}</Link>
         </div>
       </section>
 
@@ -78,7 +90,7 @@ const Join: FC = () => {
                   <span style={{ fontFamily: "'Xolonium','Tektur',monospace", fontSize: mob ? 16 : 18, fontWeight: 800, color: ACS, letterSpacing: 2, userSelect: "all" }}>{p.code}</span>
                 </div>
               )}
-              <a href={p.url} target="_blank" rel="noopener noreferrer" style={{ ...btnSolid(mob), marginTop: 20 }}>{p.btn}</a>
+              <a href={p.url} target="_blank" rel="noopener noreferrer" {...solidHover} style={{ ...btnSolid(mob), marginTop: 20 }}>{p.btn}</a>
             </div>
           ))}
         </div>
@@ -90,7 +102,7 @@ const Join: FC = () => {
         <div style={{ background: C.bgCard, padding: mob ? "24px 18px" : "32px 32px", borderLeft: `3px solid ${ACS}` }}>
           <div style={{ fontSize: mob ? 15 : 18, fontWeight: 800, color: C.heading, letterSpacing: 0.5, marginBottom: 12 }}>{t.ql.title}</div>
           <p style={{ fontFamily: BODY_FONT, fontSize: 13, color: C.body, lineHeight: 1.8, margin: "0 0 22px" }}>{t.ql.text}</p>
-          <a href="https://qlstats.net/" target="_blank" rel="noopener noreferrer" style={btnGhost(mob)}>{t.ql.btn}</a>
+          <a href="https://qlstats.net/" target="_blank" rel="noopener noreferrer" {...ghostHover} style={btnGhost(mob)}>{t.ql.btn}</a>
         </div>
       </section>
 
@@ -99,7 +111,7 @@ const Join: FC = () => {
         <SL num={t.cta.num} text={t.cta.label} color={ACS} />
         <ST>{t.cta.t1}<br /><span style={{ color: ACS }}>{t.cta.t2}</span></ST>
         <p style={{ fontFamily: BODY_FONT, fontSize: 13, color: C.secondary, margin: "0 auto 32px", maxWidth: 480, lineHeight: 1.7 }}>{t.cta.text}</p>
-        <a href={t.paths[1].url} target="_blank" rel="noopener noreferrer" style={btnSolid(mob)}>{t.cta.btn}</a>
+        <a href={t.paths[1].url} target="_blank" rel="noopener noreferrer" {...solidHover} style={btnSolid(mob)}>{t.cta.btn}</a>
       </section>
 
       <footer style={{ padding: mob ? "40px 16px" : "60px 20px", textAlign: "center", borderTop: `1px solid ${AC}14` }}>
