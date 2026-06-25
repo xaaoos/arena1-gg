@@ -50,22 +50,17 @@ const Join: FC = () => {
 
       {/* Hero */}
       <section style={{
-        minHeight: "62vh", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center",
-        position: "relative", padding: mob ? "100px 16px 40px" : "120px 20px 56px", textAlign: "center",
-        background: "radial-gradient(ellipse at 50% 30%,rgba(74,222,128,0.07) 0%,transparent 60%)",
+        display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center",
+        position: "relative", padding: mob ? "92px 16px 32px" : "120px 20px 48px", textAlign: "center",
+        background: `radial-gradient(ellipse at 50% 20%,rgba(var(--glow-rgb),0.06) 0%,transparent 60%)`,
       }}>
-        <div style={{ position: "absolute", inset: 0, pointerEvents: "none",
-          backgroundImage: `linear-gradient(rgba(74,222,128,var(--grid-line)) 1px,transparent 1px),linear-gradient(90deg,rgba(74,222,128,var(--grid-line)) 1px,transparent 1px)`,
-          backgroundSize: "60px 60px" }} />
         <div style={{ position: "relative", zIndex: 1, maxWidth: 720, width: "100%" }}>
-          <img src="/duel-cups-banner.png" alt="Arena 1 — Non-Pro Duel Cups · Дуэльные турниры для игроков любого уровня"
-            style={{ display: "block", width: "100%", height: "auto", border: `1px solid ${C.accentBorder}`, marginBottom: mob ? 24 : 34 }} />
-          <div style={{ fontSize: mob ? 10 : 12, letterSpacing: mob ? 3 : 5, color: ACS, marginBottom: 18, fontWeight: 600 }}>{t.tag}</div>
-          <h1 style={{ fontSize: "clamp(28px,6vw,64px)", fontWeight: 900, margin: 0, lineHeight: 1.1, color: C.heading }}>
-            {t.h1}<br /><span style={{ color: ACS }}>{t.h2}</span>
+          <img src="/quake-live-logo.png" alt="Quake Live" style={{ display: "block", height: mob ? 44 : 52, width: "auto", margin: "0 auto 14px" }} />
+          <h1 style={{ fontSize: "clamp(24px,4.5vw,42px)", fontWeight: 900, margin: 0, lineHeight: 1.05, letterSpacing: -0.5, color: C.heading }}>
+            {t.h1} <span style={{ color: ACS }}>{t.h2}</span>
           </h1>
-          <p style={{ fontFamily: BODY_FONT, fontSize: mob ? 13 : 15, color: C.body, marginTop: 26, lineHeight: 1.8, maxWidth: 580, marginLeft: "auto", marginRight: "auto" }}>{t.intro}</p>
-          <Link to="/divisions" {...ghostHover} style={{ ...btnGhost(mob), marginTop: mob ? 28 : 36 }}>{t.introLink}</Link>
+          <p style={{ fontFamily: BODY_FONT, fontSize: mob ? 13 : 15, color: C.body, marginTop: mob ? 18 : 22, lineHeight: 1.8, maxWidth: 580, marginLeft: "auto", marginRight: "auto" }}>{t.intro}</p>
+          <Link to="/divisions" {...ghostHover} style={{ ...btnGhost(mob), marginTop: mob ? 26 : 32 }}>{t.introLink}</Link>
         </div>
       </section>
 
