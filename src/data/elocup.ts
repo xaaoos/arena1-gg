@@ -17,7 +17,7 @@ export interface EloCupData {
     num: string; label: string; t1: string; t2: string;
     name: string; date: string; elo: string; format: string;
     mappool: string; maps: string[]; prize: string; cta: string;
-    ctaDivisions: string; ctaVerified: string;
+    ctaDivisions: string; ctaVerified: string; wantJoin: string;
     upcoming: string; cd: [string, string, string, string];
   };
   archive: {
@@ -49,6 +49,7 @@ export const ELOCUP: Record<"ru" | "en", EloCupData> = {
       cta: "Регистрация — Discord",
       ctaDivisions: "Дивизионы и игроки",
       ctaVerified: "Верифицированные игроки",
+      wantJoin: "Хочу участвовать",
       upcoming: "Далее",
       cd: ["дни", "часы", "мин", "сек"],
     },
@@ -109,6 +110,7 @@ export const ELOCUP: Record<"ru" | "en", EloCupData> = {
       cta: "Register — Discord",
       ctaDivisions: "Divisions & Players",
       ctaVerified: "Verified Players",
+      wantJoin: "I want to join",
       upcoming: "Upcoming",
       cd: ["days", "hrs", "min", "sec"],
     },

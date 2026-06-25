@@ -123,6 +123,15 @@ const CupBanner: FC<{ cup: CupAnnounce; mob: boolean; t: T }> = ({ cup, mob, t }
           onMouseLeave={(e) => (e.currentTarget.style.boxShadow = "none")}
         >{t.next.cta} ↗︎</a>
       )}
+      <Link to="/join" style={{
+        display: "inline-block", border: `1px solid ${C.accentBorder}`, color: ACS,
+        fontFamily: "'Xolonium','Tektur',sans-serif", fontSize: mob ? 10 : 11, fontWeight: 800,
+        letterSpacing: 1.5, textTransform: "uppercase", textDecoration: "none",
+        padding: mob ? "9px 18px" : "10px 26px", transition: "box-shadow 0.25s ease, border-color 0.25s ease",
+      }}
+        onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 0 24px rgba(var(--glow-rgb),0.45)"; e.currentTarget.style.borderColor = ACS; }}
+        onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "none"; e.currentTarget.style.borderColor = C.accentBorder; }}
+      >{t.next.wantJoin}</Link>
       {cup.bracketUrl && (
         <a href={cup.bracketUrl} target="_blank" rel="noopener noreferrer" style={{
           display: "inline-block", border: `1px solid ${C.accentBorder}`, color: ACS,
@@ -175,16 +184,6 @@ const Announce: FC = () => {
             {t.hero.t1}{t.hero.t1 && " "}<span style={{ color: ACS }}>{t.hero.t2}</span>
           </h1>
           <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 12 : 14, color: C.body, lineHeight: 1.7, maxWidth: 520, margin: "16px auto 0" }}>{t.hero.sub}</div>
-          <Link to="/join" style={{
-            display: "inline-block", marginTop: mob ? 16 : 22,
-            background: ACS, color: C.accentContrast,
-            fontFamily: "'Xolonium','Tektur',sans-serif", fontSize: mob ? 11 : 12, fontWeight: 800,
-            letterSpacing: 1.5, textTransform: "uppercase", textDecoration: "none",
-            padding: mob ? "10px 26px" : "12px 32px", transition: "box-shadow 0.25s ease",
-          }}
-            onMouseEnter={(e) => (e.currentTarget.style.boxShadow = "0 0 28px rgba(var(--glow-rgb),0.6)")}
-            onMouseLeave={(e) => (e.currentTarget.style.boxShadow = "none")}
-          >{lang === "ru" ? "Участвовать" : "Join"}</Link>
         </div>
       </section>
 
