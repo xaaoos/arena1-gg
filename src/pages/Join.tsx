@@ -58,6 +58,8 @@ const Join: FC = () => {
           backgroundImage: `linear-gradient(rgba(74,222,128,var(--grid-line)) 1px,transparent 1px),linear-gradient(90deg,rgba(74,222,128,var(--grid-line)) 1px,transparent 1px)`,
           backgroundSize: "60px 60px" }} />
         <div style={{ position: "relative", zIndex: 1, maxWidth: 720, width: "100%" }}>
+          <img src="/duel-cups-banner.png" alt="Arena 1 — Non-Pro Duel Cups · Дуэльные турниры для игроков любого уровня"
+            style={{ display: "block", width: "100%", height: "auto", border: `1px solid ${C.accentBorder}`, marginBottom: mob ? 24 : 34 }} />
           <div style={{ fontSize: mob ? 10 : 12, letterSpacing: mob ? 3 : 5, color: ACS, marginBottom: 18, fontWeight: 600 }}>{t.tag}</div>
           <h1 style={{ fontSize: "clamp(28px,6vw,64px)", fontWeight: 900, margin: 0, lineHeight: 1.1, color: C.heading }}>
             {t.h1}<br /><span style={{ color: ACS }}>{t.h2}</span>
