@@ -187,89 +187,91 @@ const Announce: FC = () => {
         </div>
       </section>
 
-      {/* ASCII-интро: играет один раз, затем схлопывается. Не зависит от загрузки анонсов */}
-      {!introHidden && (
-        <div
-          onTransitionEnd={(e) => { if (introDone && e.propertyName === "max-height") setIntroHidden(true); }}
-          style={{
-            overflow: "hidden", maxWidth: 900, margin: "0 auto",
-            padding: mob ? "8px 16px 0" : "16px 20px 0",
-            opacity: introDone ? 0 : 1,
-            maxHeight: introDone ? 0 : 2000,
-            transition: "opacity 0.3s ease, max-height 0.45s ease",
-          }}
-        >
-          <AsciiVideo
-            src={mob ? "/hero-ascii-v.mp4" : "/hero-ascii.mp4"}
-            cols={mob ? 96 : 200}
-            contrast={1.1} floor={0} ramp="classic" color={ACS}
-            maxWidth={mob ? 1000 : 860}
-            invert={light}
-            loop={false} onEnded={finishIntro}
-          />
-        </div>
-      )}
-
-      {/* Announce — ближайший кубок крупно с отсчётом, следующие списком */}
-      {!loading && announces.length > 0 && (
-        <section style={{ position: "relative", padding: mob ? "8px 16px 0" : "16px 20px 0", maxWidth: 900, margin: "0 auto" }}>
-          {/* контент анонса — проявляется после интро */}
-          <div style={{
-            opacity: introDone ? 1 : 0,
-            transform: introDone ? "translateY(0)" : "translateY(12px)",
-            transition: "opacity 0.3s ease, transform 0.3s ease",
-          }}>
-          {/* каждый датированный кубок — крупным баннером */}
-          {dated.map((cup, idx) => (
-            <div key={idx} style={{ marginTop: idx > 0 ? (mob ? 16 : 28) : 0 }}>
-              <CupBanner cup={cup} mob={mob} t={t} />
-            </div>
-          ))}
-
-          {/* кубки без даты — компактным списком */}
-          {undated.length > 0 && (
-            <div style={{ marginTop: mob ? 20 : 28 }}>
-              <div style={{ fontSize: 10, letterSpacing: 2, color: C.muted, fontWeight: 700, textTransform: "uppercase", marginBottom: 8 }}>
-                {t.next.upcoming}
-              </div>
-              {undated.map((a, i) => {
-                // ELO-лимит из деталей (значение после "Elo limit:")
-                const eloDetail = a.details.find((d) => /elo\s*limit/i.test(d));
-                const elo = eloDetail ? eloDetail.replace(/.*elo\s*limit:?\s*/i, "").trim() : "";
-                return (
-                  <div key={i} style={{
-                    display: "flex", alignItems: "center", gap: mob ? 8 : 14,
-                    padding: mob ? "11px 12px" : "13px 18px",
-                    background: C.bgCard, border: `1px solid ${C.border}`,
-                    borderTop: i > 0 ? "none" : `1px solid ${C.border}`,
-                  }}>
-                    {/* 1. Название */}
-                    <div style={{ fontSize: mob ? 11 : 12, fontWeight: 800, color: C.heading, letterSpacing: 0.5, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", flexShrink: 0 }}>
-                      {a.name}
-                    </div>
-                    {/* 2. ELO */}
-                    {elo && (
-                      <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 10 : 11, color: ACS, fontWeight: 700, whiteSpace: "nowrap", flexShrink: 0 }}>
-                        ELO {elo}
-                      </div>
-                    )}
-                    {/* 3. Дата уточняется */}
-                    <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 10 : 11, color: C.muted, whiteSpace: "nowrap" }}>
-                      {lang === "ru" ? "дата уточняется" : "date TBA"}
-                    </div>
-                    {/* Участвовать → Discord */}
-                    <a href={a.link} target="_blank" rel="noopener noreferrer" style={{ marginLeft: "auto", fontFamily: BODY_FONT, fontSize: 11, color: ACS, fontWeight: 700, textDecoration: "none", whiteSpace: "nowrap", flexShrink: 0 }}>
-                      {lang === "ru" ? "Участвовать" : "Join"} ↗︎
-                    </a>
-                  </div>
-                );
-              })}
-            </div>
-          )}
-          {/* конец контента анонса */}
+      {/* ASCII-интро + анонс — кроссфейд ТОЛЬКО по opacity (композитится GPU, без reflow → нет рывков).
+          Интро в потоке задаёт высоту во время проигрывания; анонс лежит абсолютным оверлеем поверх него
+          и проявляется на своём финальном месте (никакого «выезжания»). Когда интро доиграло и угасло —
+          размонтируется, и анонс встаёт в обычный поток (контент при этом не двигается). */}
+      <div style={{ position: "relative", maxWidth: 900, margin: "0 auto" }}>
+        {!introHidden && (
+          <div
+            onTransitionEnd={(e) => { if (introDone && e.propertyName === "opacity") setIntroHidden(true); }}
+            style={{
+              padding: mob ? "8px 16px 0" : "16px 20px 0",
+              opacity: introDone ? 0 : 1,
+              transition: "opacity 0.45s ease",
+              pointerEvents: introDone ? "none" : "auto",
+            }}
+          >
+            <AsciiVideo
+              src={mob ? "/hero-ascii-v.mp4" : "/hero-ascii.mp4"}
+              cols={mob ? 96 : 200}
+              contrast={1.1} floor={0} ramp="classic" color={ACS}
+              maxWidth={mob ? 1000 : 860}
+              invert={light}
+              loop={false} onEnded={finishIntro}
+            />
           </div>
-        </section>
-      )}
+        )}
+
+        {/* Announce — ближайший кубок крупно с отсчётом, следующие списком */}
+        {!loading && announces.length > 0 && (
+          <section style={{
+            ...(introHidden ? {} : { position: "absolute" as const, top: 0, left: 0, right: 0 }),
+            padding: mob ? "8px 16px 0" : "16px 20px 0",
+            opacity: introDone ? 1 : 0,
+            transition: "opacity 0.45s ease",
+            pointerEvents: introDone ? "auto" : "none",
+          }}>
+            {/* каждый датированный кубок — крупным баннером */}
+            {dated.map((cup, idx) => (
+              <div key={idx} style={{ marginTop: idx > 0 ? (mob ? 16 : 28) : 0 }}>
+                <CupBanner cup={cup} mob={mob} t={t} />
+              </div>
+            ))}
+
+            {/* кубки без даты — компактным списком */}
+            {undated.length > 0 && (
+              <div style={{ marginTop: mob ? 20 : 28 }}>
+                <div style={{ fontSize: 10, letterSpacing: 2, color: C.muted, fontWeight: 700, textTransform: "uppercase", marginBottom: 8 }}>
+                  {t.next.upcoming}
+                </div>
+                {undated.map((a, i) => {
+                  // ELO-лимит из деталей (значение после "Elo limit:")
+                  const eloDetail = a.details.find((d) => /elo\s*limit/i.test(d));
+                  const elo = eloDetail ? eloDetail.replace(/.*elo\s*limit:?\s*/i, "").trim() : "";
+                  return (
+                    <div key={i} style={{
+                      display: "flex", alignItems: "center", gap: mob ? 8 : 14,
+                      padding: mob ? "11px 12px" : "13px 18px",
+                      background: C.bgCard, border: `1px solid ${C.border}`,
+                      borderTop: i > 0 ? "none" : `1px solid ${C.border}`,
+                    }}>
+                      {/* 1. Название */}
+                      <div style={{ fontSize: mob ? 11 : 12, fontWeight: 800, color: C.heading, letterSpacing: 0.5, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", flexShrink: 0 }}>
+                        {a.name}
+                      </div>
+                      {/* 2. ELO */}
+                      {elo && (
+                        <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 10 : 11, color: ACS, fontWeight: 700, whiteSpace: "nowrap", flexShrink: 0 }}>
+                          ELO {elo}
+                        </div>
+                      )}
+                      {/* 3. Дата уточняется */}
+                      <div style={{ fontFamily: BODY_FONT, fontSize: mob ? 10 : 11, color: C.muted, whiteSpace: "nowrap" }}>
+                        {lang === "ru" ? "дата уточняется" : "date TBA"}
+                      </div>
+                      {/* Участвовать → Discord */}
+                      <a href={a.link} target="_blank" rel="noopener noreferrer" style={{ marginLeft: "auto", fontFamily: BODY_FONT, fontSize: 11, color: ACS, fontWeight: 700, textDecoration: "none", whiteSpace: "nowrap", flexShrink: 0 }}>
+                        {lang === "ru" ? "Участвовать" : "Join"} ↗︎
+                      </a>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </section>
+        )}
+      </div>
 
       <footer style={{ position: "relative", background: C.bg, padding: mob ? "40px 16px" : "60px 20px", textAlign: "center", borderTop: `1px solid ${C.borderLight}`, marginTop: mob ? 60 : 100 }}>
         <div style={{ fontSize: 16, fontWeight: 900, color: C.footer, letterSpacing: 4 }}>ARENA <span style={{ color: ACS }}>1</span></div>
